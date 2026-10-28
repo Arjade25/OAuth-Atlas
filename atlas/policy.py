@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
+from .evidence import normalize
 from .schema import CheckResult, Claim, ClaimKind, ClaimStatus, Guide, ReviewStatus, ScenarioState, SourceType
 from .scoring import scenario_score
 
@@ -50,7 +51,7 @@ def _numbers(text: str) -> set[str]:
 # not evidence that something is required.
 _STRONG_CLAIM = re.compile(r"\b(required|requires|requirement|mandatory|must|only|always|never|cannot)\b")
 _STRONG_QUOTE = re.compile(
-    r"\b(must|required|requires?|requirement|mandatory|need|needs|needed|only|always|never|cannot|can't|"
+    r"\b(must|required|requires?|requirements?|mandatory|need|needs|needed|only|always|never|cannot|can't|"
     r"not allowed|make sure|have to|has to|limited|at most|up to)\b")
 
 
@@ -78,6 +79,18 @@ def claim_issues(c: Claim, today: date) -> list[Issue]:
     if strong and not _STRONG_QUOTE.search(ev.quote.lower()):
         out.append(Issue("obligation_not_in_quote", "error",
                          f"Claim '{c.id}' says '{strong[0]}', but its quote does not state an obligation or limit", c.id))
+
+    # The same test for a claim *filed* as a requirement, whatever its wording:
+    # copying "Sign up for a sandbox account" and labelling it a requirement is
+    # the same overstatement, moved into the claim's type.
+    if c.kind == ClaimKind.requirement and not strong and not _STRONG_QUOTE.search(ev.quote.lower()):
+        out.append(Issue("requirement_not_in_quote", "error",
+                         f"Claim '{c.id}' is filed as a requirement, but its quote does not state an obligation", c.id))
+
+    # A claim that only repeats its quote passes every check trivially and reads as a fragment.
+    if normalize(c.text) == normalize(ev.quote):
+        out.append(Issue("claim_repeats_quote", "warning",
+                         f"Claim '{c.id}' repeats its quote word for word instead of stating it plainly", c.id))
 
     if ev.source_type == SourceType.third_party:
         out.append(Issue("third_party_source", "warning",

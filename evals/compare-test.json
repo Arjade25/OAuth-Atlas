@@ -1,0 +1,1175 @@
+{
+  "best": "window-lower",
+  "results": {
+    "window-lower": {
+      "input_format": "window-lower",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8",
+          "pd-15-alt",
+          "pd-5-alt",
+          "pd-17-alt",
+          "pd-16-alt"
+        ],
+        "false_flags": []
+      },
+      "judge": "yes",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 12,
+      "false_passes": [
+        "pd-0",
+        "pd-6",
+        "pd-7",
+        "pd-8",
+        "pd-9",
+        "pd-15-alt",
+        "pd-5-alt",
+        "pd-17-alt",
+        "pd-16-alt",
+        "pd-3-alt"
+      ],
+      "false_flags": [],
+      "contradictions_caught": 0,
+      "contradictions_total": 4,
+      "median_ms": 0,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        }
+      ]
+    },
+    "window": {
+      "input_format": "window",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8",
+          "pd-15-alt",
+          "pd-5-alt",
+          "pd-17-alt",
+          "pd-16-alt"
+        ],
+        "false_flags": []
+      },
+      "judge": "yes",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 12,
+      "false_passes": [
+        "pd-0",
+        "pd-6",
+        "pd-7",
+        "pd-8",
+        "pd-9",
+        "pd-15-alt",
+        "pd-5-alt",
+        "pd-17-alt",
+        "pd-16-alt",
+        "pd-3-alt"
+      ],
+      "false_flags": [],
+      "contradictions_caught": 0,
+      "contradictions_total": 4,
+      "median_ms": 0,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        }
+      ]
+    },
+    "window+source": {
+      "input_format": "window+source",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8",
+          "pd-15-alt",
+          "pd-5-alt",
+          "pd-17-alt",
+          "pd-16-alt"
+        ],
+        "false_flags": []
+      },
+      "judge": "yes",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 12,
+      "false_passes": [
+        "pd-0",
+        "pd-6",
+        "pd-7",
+        "pd-8",
+        "pd-9",
+        "pd-15-alt",
+        "pd-5-alt",
+        "pd-17-alt",
+        "pd-16-alt",
+        "pd-3-alt"
+      ],
+      "false_flags": [],
+      "contradictions_caught": 0,
+      "contradictions_total": 4,
+      "median_ms": 0,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        }
+      ]
+    },
+    "sentence": {
+      "input_format": "sentence",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8",
+          "pd-15-alt",
+          "pd-5-alt",
+          "pd-17-alt",
+          "pd-16-alt"
+        ],
+        "false_flags": []
+      },
+      "judge": "yes",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 12,
+      "false_passes": [
+        "pd-0",
+        "pd-6",
+        "pd-7",
+        "pd-8",
+        "pd-9",
+        "pd-15-alt",
+        "pd-5-alt",
+        "pd-17-alt",
+        "pd-16-alt",
+        "pd-3-alt"
+      ],
+      "false_flags": [],
+      "contradictions_caught": 0,
+      "contradictions_total": 4,
+      "median_ms": 0,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        }
+      ]
+    },
+    "sentence+source": {
+      "input_format": "sentence+source",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8",
+          "pd-15-alt",
+          "pd-5-alt",
+          "pd-17-alt",
+          "pd-16-alt"
+        ],
+        "false_flags": []
+      },
+      "judge": "yes",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 12,
+      "false_passes": [
+        "pd-0",
+        "pd-6",
+        "pd-7",
+        "pd-8",
+        "pd-9",
+        "pd-15-alt",
+        "pd-5-alt",
+        "pd-17-alt",
+        "pd-16-alt",
+        "pd-3-alt"
+      ],
+      "false_flags": [],
+      "contradictions_caught": 0,
+      "contradictions_total": 4,
+      "median_ms": 0,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "pass",
+          "p_supports": 1.0,
+          "ms": 0,
+          "note": "",
+          "policy": false
+        }
+      ]
+    }
+  }
+}

@@ -98,8 +98,8 @@
     },
     {
       "id": "commercial-needs-marketplace",
-      "text": "Apps meant for commercial distribution are expected to be submitted and approved for Marketplace listing.",
-      "kind": "requirement",
+      "text": "Slack says apps meant for commercial distribution should be submitted and approved for Marketplace listing.",
+      "kind": "fact",
       "applies_to": ["marketplace"],
       "evidence": {
         "url": "https://docs.slack.dev/app-management/distribution/",

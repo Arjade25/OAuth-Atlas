@@ -159,3 +159,20 @@ def test_obligation_backed_by_its_quote_passes(raw):
 def test_plain_claim_needs_no_obligation(raw):
     raw["claims"][0]["text"] = "You register the app in the console."
     assert "obligation_not_in_quote" not in error_codes(raw)
+
+
+def test_requirement_kind_needs_an_obligation_in_its_quote(raw):
+    """Copying an instruction and filing it as a requirement is still an overstatement."""
+    c = raw["claims"][0]
+    c["text"] = "Sign up for a developer sandbox account"
+    c["evidence"]["quote"] = "Sign up for a developer sandbox account"
+    c["kind"] = "requirement"
+    assert "requirement_not_in_quote" in error_codes(raw)
+    c["kind"] = "fact"
+    assert "requirement_not_in_quote" not in error_codes(raw)
+
+
+def test_claim_that_repeats_its_quote_is_a_warning(raw):
+    c = raw["claims"][1]
+    c["text"] = c["evidence"]["quote"]
+    assert "claim_repeats_quote" in codes(raw) and "claim_repeats_quote" not in error_codes(raw)
