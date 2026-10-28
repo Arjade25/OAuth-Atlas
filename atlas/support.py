@@ -66,15 +66,27 @@ def verdict_from_probs(probs: dict[str, float], cutoff: Optional[float] = None) 
 
 
 def window(quote: str, passage: str, words: int = 70) -> str:
-    """The quote with some context on each side, short enough for Laya's 512 tokens."""
-    norm = normalize(passage)
-    q = normalize(quote)
-    i = norm.find(q)
-    if i == -1:
-        return " ".join(passage.split()[: words * 2])
-    before = norm[:i].split()[-words:]
-    after = norm[i + len(q):].split()[:words]
-    return " ".join(before + [q] + after)
+    """The quote with some context on each side, in the page's own wording and
+    capitals (a cased model reads lowercased text worse). Short enough for
+    small judges' 512-token limit."""
+    import re
+
+    toks = re.findall(r"\w+", quote)
+    if toks:
+        # Match the quote's words in order, tolerating punctuation and formatting between them.
+        pat = r"\W+".join(re.escape(t) for t in toks)
+        m = re.search(pat, passage, flags=re.I)
+        if m:
+            before = passage[:m.start()].split()[-words:]
+            after = passage[m.end():].split()[:words]
+            return " ".join(before + [passage[m.start():m.end()]] + after)
+    return " ".join(passage.split()[: words * 2])
+
+
+def judge_input(quote: str, passage: str, source: str) -> str:
+    """What the judge reads: who is speaking, then the passage around the quote.
+    Naming the source lets 'we allow only one callback URL' count as the provider speaking."""
+    return f"{source}: {window(quote, passage)}"
 
 
 class SupportChecker(Protocol):
@@ -176,6 +188,7 @@ class ReplaySupport:
 
     def __init__(self, recorded: list[dict], name: str = "replay"):
         self._by_key = {(r["claim"], r["passage"]): r for r in recorded}
+        self._by_claim = {r["claim"]: r for r in recorded}  # recordings made before the judge input changed
         self._name = name
         self.last_judge = None
 
@@ -185,7 +198,7 @@ class ReplaySupport:
         return self.last_judge or self._name
 
     def check(self, claim: str, passage: str) -> Verdict:
-        r = self._by_key.get((claim, passage))
+        r = self._by_key.get((claim, passage)) or self._by_claim.get(claim)
         if r is None:
             return Verdict(CheckResult.not_run, None, "not in the recorded run")
         self.last_judge = r.get("judge")
