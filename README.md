@@ -35,6 +35,8 @@ Day 1 needs no API keys. The agent will read them from a local `.env` (copy `.en
 
 ## Branches
 
-- `main`: reviewed work
-- `comp-test`: work done in the cloud session
-- `own-test`: work done on a local machine
+- `main`: the most up-to-date branch; everything lands here
+- `own-test`: work on the main development machine
+- `comp-test`: work on the secondary machine
+
+Each machine branch pulls from `main` before starting work.
