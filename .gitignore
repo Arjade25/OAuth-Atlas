@@ -1,0 +1,22 @@
+# Secrets: never commit
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Local data
+data/*.sqlite
+data/snapshots/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
