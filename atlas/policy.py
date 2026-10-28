@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-from .schema import CheckResult, ClaimKind, ClaimStatus, Guide, ReviewStatus, ScenarioState, SourceType
+from .schema import CheckResult, Claim, ClaimKind, ClaimStatus, Guide, ReviewStatus, ScenarioState, SourceType
 from .scoring import scenario_score
 
 # How old evidence may be before a guide is stale, by scenario score.
@@ -36,6 +36,43 @@ def _has_number(text: str) -> bool:
     return bool(re.search(r"\d", text)) or bool(
         re.search(r"\b(one|two|three|four|five|six|seven|eight|nine|ten|twelve)\b", text, re.I)
     )
+
+
+_NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
+
+
+def _numbers(text: str) -> set[str]:
+    return {m.group().replace(",", "") for m in _NUM.finditer(text)}
+
+
+def claim_issues(c: Claim, today: date) -> list[Issue]:
+    """Rules that judge one claim against its own evidence. Used both by
+    check_guide and by the pipeline to set a claim's policy check."""
+    out: list[Issue] = []
+    ev = c.evidence
+    if ev is None:
+        return out
+
+    # Over-precision: a numeric wait needs a number in its source.
+    if c.kind == ClaimKind.wait_time and c.wait_days is not None and not _has_number(ev.quote):
+        out.append(Issue("over_precise_wait", "error",
+                         f"Claim '{c.id}' states a numeric wait but its quote contains no number", c.id))
+
+    # Every number the claim states must appear in its quote ("21 days" vs "several weeks").
+    missing = _numbers(c.text) - _numbers(ev.quote)
+    if missing:
+        out.append(Issue("number_not_in_quote", "error",
+                         f"Claim '{c.id}' states {', '.join(sorted(missing))}, which its quote does not contain", c.id))
+
+    if ev.source_type == SourceType.third_party:
+        out.append(Issue("third_party_source", "warning",
+                         f"Claim '{c.id}' rests on a third-party source; show it as reported, not fact", c.id))
+    if len(ev.quote.split()) > MAX_QUOTE_WORDS:
+        out.append(Issue("quote_too_long", "warning",
+                         f"Claim '{c.id}' quote exceeds {MAX_QUOTE_WORDS} words; keep evidence to the passage", c.id))
+    if ev.retrieved_at > today:
+        out.append(Issue("future_evidence", "error", f"Claim '{c.id}' evidence is dated in the future", c.id))
+    return out
 
 
 def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
@@ -88,20 +125,7 @@ def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
         if c.status != ClaimStatus.flagged and CheckResult.failed in (c.checks.exists, c.checks.supports, c.checks.policy):
             add("failed_check_not_flagged", "error", f"Claim '{c.id}' failed a check but is not flagged", c.id)
 
-        # Over-precision: a numeric wait needs a number in its source.
-        if c.kind == ClaimKind.wait_time and c.wait_days is not None and ev is not None and not _has_number(ev.quote):
-            add("over_precise_wait", "error",
-                f"Claim '{c.id}' states a numeric wait but its quote contains no number", c.id)
-
-        if ev is not None:
-            if ev.source_type == SourceType.third_party:
-                add("third_party_source", "warning",
-                    f"Claim '{c.id}' rests on a third-party source; show it as reported, not fact", c.id)
-            if len(ev.quote.split()) > MAX_QUOTE_WORDS:
-                add("quote_too_long", "warning",
-                    f"Claim '{c.id}' quote exceeds {MAX_QUOTE_WORDS} words; keep evidence to the passage", c.id)
-            if ev.retrieved_at > today:
-                add("future_evidence", "error", f"Claim '{c.id}' evidence is dated in the future", c.id)
+        issues.extend(claim_issues(c, today))
 
     # Conflicts: claims on the same topic must agree.
     by_topic: dict[str, set[str]] = {}

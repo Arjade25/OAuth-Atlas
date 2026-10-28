@@ -59,10 +59,22 @@ def test_over_precise_wait_is_caught(raw):
 
 def test_vague_wait_without_numbers_is_fine(raw):
     c = raw["claims"][2]
+    c["text"] = "Review can take several weeks."
     c["wait_days"] = None
     c["evidence"]["quote"] = "Verification can take several weeks."
     raw["scenarios"][1]["wait_days"] = None
     assert error_codes(raw) == set()
+
+
+def test_number_in_claim_must_be_in_quote(raw):
+    raw["claims"][0]["text"] = "Apps for your own account need no review for 30 days."
+    assert "number_not_in_quote" in error_codes(raw)
+
+
+def test_numbers_match_despite_thousands_separator(raw):
+    raw["claims"][0]["text"] = "Up to 1,000 installs need no review."
+    raw["claims"][0]["evidence"]["quote"] = "No review is required below 1000 installs."
+    assert "number_not_in_quote" not in error_codes(raw)
 
 
 def test_wait_on_scenario_needs_a_wait_claim(raw):
