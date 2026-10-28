@@ -65,7 +65,18 @@ python -m atlas.judge_eval --judge laya   # local Laya (pip install "pydecide[la
 python -m atlas.judge_eval --judge llm    # free OpenRouter chat model
 ```
 
-It reports false passes (unsupported claims let through, the costly error) and false flags (good claims held back). In the first live run the chat-model judge let all 5 overstated claims through and held back 1 good one, which is why `auto` now prefers a local NLI model.
+It reports false passes (unsupported claims let through, the costly error) and false flags (good claims held back), for the judge alone and for the judge plus the fixed rules, which is what decides "verified" on the page.
+
+**Measured so far** (22 claims; small, so read these as direction, not proof):
+
+| Judge | Judge alone: false pass / false flag | With fixed rules: false pass / false flag |
+| --- | --- | --- |
+| Free chat model (Inkling, then Dots3-Note), live run, 18 of the claims | 5 / 1 | 2 / 1 |
+| NLI, `cross-encoder/nli-deberta-v3-base`, local | 4 / 1 | 2 / 1 |
+
+The NLI judge is the default: same result with the rules, but it also caught all 4 contradicted claims, runs locally in about half a second per claim, costs nothing and has no rate limits. Its input format was also chosen by measurement (`--compare-inputs`): the lowercased context window beat the cased window, adding the source name, and the quote's sentence alone.
+
+What still gets through: claims that call something "required" when the quote uses "needs" or "must" in another sense (for example "Access scopes are required" from "specify precisely what data access your application needs"). Neither judge nor rule catches these yet, which is why generated guides stay "not yet reviewed" until a person approves them.
 
 ## API
 
