@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Write a new guide, OAuth Atlas{% endblock %}
+{% block main %}
+<nav class="crumbs"><a href="/">All guides</a></nav>
+
+<section class="generate">
+  <h1>Write a guide for any app</h1>
+  <p class="lede">Give an app name or its website. The agent searches the provider's docs, drafts a guide, then checks every claim against the passage it quotes. Expect one to three minutes.</p>
+
+  {% if not ready %}
+  <p class="setup-note">Live research needs <code>COMPOSIO_API_KEY</code> and <code>OPENROUTER_API_KEY</code> in <code>.env</code>. {{ setup_message }}</p>
+  {% endif %}
+
+  <form id="gen" class="gen-form" autocomplete="off">
+    <label for="app">App name or website</label>
+    <div class="gen-row">
+      <input id="app" name="app" required placeholder="Pipedrive, or pipedrive.com" value="{{ prefill }}">
+      <button type="submit" id="go">Write the guide</button>
+    </div>
+    {% if recordings %}
+    <p class="note">No keys? Replay a recorded run:
+      {% for r in recordings %}<button type="button" class="linkish replay" data-app="{{ r }}">{{ r }}</button>{% if not loop.last %}, {% endif %}{% endfor %}
+    </p>
+    {% endif %}
+  </form>
+
+  <ol id="log" class="log" aria-live="polite"></ol>
+  <p id="result" class="result" hidden></p>
+</section>
+
+<script>
+  const form = document.getElementById('gen'), log = document.getElementById('log'),
+        result = document.getElementById('result'), go = document.getElementById('go');
+  let source = null;
+
+  function start(app, replay) {
+    if (source) source.close();
+    log.innerHTML = ''; result.hidden = true; go.disabled = true; go.textContent = 'Working';
+    const url = `/generate/stream?app=${encodeURIComponent(app)}${replay ? '&replay=1' : ''}`;
+    source = new EventSource(url);
+    source.onmessage = (m) => {
+      const ev = JSON.parse(m.data);
+      const li = document.createElement('li');
+      li.className = 'ev ev-' + ev.type;
+      li.textContent = ev.message;
+      log.appendChild(li);
+      if (ev.type === 'done' || ev.type === 'error') {
+        source.close(); go.disabled = false; go.textContent = 'Write the guide';
+        if (ev.type === 'done') {
+          result.hidden = false;
+          result.innerHTML = '';
+          const a = document.createElement('a');
+          a.href = '/guides/' + ev.slug; a.textContent = 'Open the ' + app + ' guide';
+          result.appendChild(a);
+        }
+      }
+    };
+    source.onerror = () => {
+      if (source.readyState === EventSource.CLOSED) return;
+      source.close(); go.disabled = false; go.textContent = 'Write the guide';
+      const li = document.createElement('li'); li.className = 'ev ev-error';
+      li.textContent = 'Lost the connection to the server. Check the terminal running the app.';
+      log.appendChild(li);
+    };
+  }
+
+  form.addEventListener('submit', (e) => { e.preventDefault(); start(document.getElementById('app').value.trim(), false); });
+  document.querySelectorAll('button.replay').forEach(b => b.addEventListener('click', () => {
+    document.getElementById('app').value = b.dataset.app; start(b.dataset.app, true);
+  }));
+</script>
+{% endblock %}

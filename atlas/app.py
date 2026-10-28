@@ -1,18 +1,22 @@
-"""Web app: the guide library and guide pages.
+"""Web app: the guide library, guide pages and live guide generation.
 
 Run:  uvicorn atlas.app:app --reload
 """
 
 from __future__ import annotations
 
+import json
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .library import load_all
+from . import pipeline
+from .extract import slugify
+from .library import load_library
 from .policy import check_guide
 from .schema import Guide, Range, Scenario
 from .scoring import DIMENSION_LABELS, driver, label, scenario_score
@@ -66,8 +70,12 @@ def scenario_view(s: Scenario, g: Guide) -> dict:
 def guide_view(g: Guide) -> dict:
     numbering = {c.id: i + 1 for i, c in enumerate(g.claims)}
     issues = check_guide(g)
+    statuses = [c.status.value for c in g.claims]
     return {
         "g": g,
+        "counts": {"total": len(statuses), "verified": statuses.count("verified"),
+                   "flagged": statuses.count("flagged"), "unverified": statuses.count("unverified")},
+        "errors": [i for i in issues if i.is_error],
         "scenarios": [scenario_view(s, g) for s in g.scenarios],
         "numbering": numbering,
         "issues": issues,
@@ -80,14 +88,14 @@ def guide_view(g: Guide) -> dict:
 
 @app.get("/", response_class=HTMLResponse)
 def library(request: Request):
-    guides = [guide_view(g) for g in load_all().values()]
+    guides = [guide_view(g) for g in load_library().values()]
     guides.sort(key=lambda v: (v["min_score"], v["g"].app))
     return templates.TemplateResponse(request, "library.html", {"guides": guides})
 
 
 @app.get("/guides/{slug}", response_class=HTMLResponse)
 def guide_page(request: Request, slug: str):
-    g = load_all().get(slug)
+    g = load_library().get(slug)
     if g is None:
         raise HTTPException(404, f"No guide for '{slug}' yet")
     return templates.TemplateResponse(request, "guide.html", guide_view(g))
@@ -98,16 +106,82 @@ def api_list():
     return [
         {"slug": g.slug, "app": g.app, "scenarios": [
             {"id": s.id, "state": s.state.value, "score": scenario_score(s)} for s in g.scenarios]}
-        for g in load_all().values()
+        for g in load_library().values()
     ]
 
 
 @app.get("/api/guides/{slug}")
 def api_guide(slug: str):
-    g = load_all().get(slug)
+    g = load_library().get(slug)
     if g is None:
         raise HTTPException(404, f"No guide for '{slug}' yet")
     data = g.model_dump(mode="json")
     for s in data["scenarios"]:
         s["score"] = scenario_score(g.scenario(s["id"]))
     return JSONResponse(data)
+
+
+# --- live generation ---------------------------------------------------------
+
+def _recordings() -> list[str]:
+    if not pipeline.RUNS_DIR.exists():
+        return []
+    return sorted(json.loads(p.read_text(encoding="utf-8")).get("query", p.stem) for p in pipeline.RUNS_DIR.glob("*.json"))
+
+
+def _keys_ready() -> tuple[bool, str]:
+    from dotenv import load_dotenv
+
+    load_dotenv(override=True)
+    c, o = os.getenv("COMPOSIO_API_KEY", "").strip(), os.getenv("OPENROUTER_API_KEY", "").strip()
+    if not c or not o:
+        return False, "One or both are missing."
+    if c.startswith("ck_"):
+        return False, "COMPOSIO_API_KEY is a consumer key (ck_); use the project key that starts with ak_."
+    return True, ""
+
+
+@app.get("/generate", response_class=HTMLResponse)
+def generate_page(request: Request, app_name: str = ""):
+    ready, msg = _keys_ready()
+    return templates.TemplateResponse(request, "generate.html", {
+        "ready": ready, "setup_message": msg, "recordings": _recordings(), "prefill": app_name})
+
+
+def _events(query: str, replay: bool):
+    def send(d: dict) -> str:
+        return f"data: {json.dumps(d)}\n\n"
+
+    query = query.strip()[:100]
+    if not query:
+        yield send({"type": "error", "message": "Enter an app name or website."})
+        return
+    try:
+        if replay:
+            path = pipeline.RUNS_DIR / f"{slugify(pipeline.resolve(query).app)}.json"
+            if not path.exists():
+                yield send({"type": "error", "message": f"No recording for {query}."})
+                return
+            record = json.loads(path.read_text(encoding="utf-8"))
+            sources, model, support = pipeline.replay_parts(record)
+            query = record["query"]
+        else:
+            from .generate import live_parts
+
+            sources, model, support = live_parts()
+    except Exception as e:
+        yield send({"type": "error", "message": f"Setup failed: {e}"})
+        return
+
+    for ev in pipeline.run(query, sources, model, support, replayed=replay):
+        if ev.type == "done":
+            pipeline.save(ev.guide, None if replay else ev.run)
+        yield send(ev.public())
+        if ev.type in ("done", "error"):
+            return
+
+
+@app.get("/generate/stream")
+def generate_stream(app: str, replay: int = 0):
+    return StreamingResponse(_events(app, bool(replay)), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})

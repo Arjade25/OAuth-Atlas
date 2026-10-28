@@ -17,6 +17,28 @@
   </p>
 </section>
 
+{% if g.origin.value == "generated" %}
+<section class="review-panel" aria-label="What the checks found">
+  <h2>What the checks found</h2>
+  <p>{{ counts.verified }} of {{ counts.total }} claims verified{% if counts.flagged %}, {{ counts.flagged }} flagged{% endif %}{% if counts.unverified %}, {{ counts.unverified }} not checked{% endif %}.
+    A person hasn't reviewed this guide yet, so treat anything flagged as unconfirmed.</p>
+  {% if errors %}
+  <ul class="issues">
+    {% for i in errors %}<li>{{ i.message }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+  {% if g.generation and g.generation.notes %}
+  <details>
+    <summary>Corrections made to the draft ({{ g.generation.notes | length }})</summary>
+    <ul class="issues quiet">{% for n in g.generation.notes %}<li>{{ n }}</li>{% endfor %}</ul>
+  </details>
+  {% endif %}
+  {% if g.generation %}
+  <p class="note">Drafted by {{ g.generation.extraction_model }}; claims judged by {{ g.generation.support_backend }}; {{ g.generation.pages | length }} pages read{% if g.generation.replayed %}; replayed from a recording{% endif %}.</p>
+  {% endif %}
+</section>
+{% endif %}
+
 <section class="scenarios" aria-label="Paths">
   <h2>Pick your path</h2>
   {% for v in scenarios %}
@@ -106,7 +128,7 @@
   <ol>
     {% for c in g.claims %}
     <li id="claim-{{ c.id }}" class="claim status-{{ c.status.value }}{% if c.evidence and c.evidence.source_type.value == 'third_party' %} reported{% endif %}">
-      <p class="claim-text">{{ c.text }}</p>
+      <p class="claim-text">{% if c.status.value == "flagged" %}<span class="flag">Flagged</span> {% elif c.status.value == "unverified" %}<span class="flag quiet">Not checked</span> {% endif %}{{ c.text }}</p>
       {% if c.evidence %}
       <blockquote cite="{{ c.evidence.url }}">{{ c.evidence.quote }}</blockquote>
       <p class="source">
@@ -120,9 +142,10 @@
       <p class="checks">
         {% for name, key in [("Quote found", "exists"), ("Supports claim", "supports"), ("Policy", "policy")] %}
           {% set r = c.checks[key].value %}
-          <span class="check check-{{ r }}">{{ name }}: {{ {"pass": "yes", "fail": "no", "unclear": "unclear", "not_run": "not run"}[r] }}</span>
+          <span class="check check-{{ r }}">{{ name }}: {{ {"pass": "yes", "fail": "no", "unclear": "unclear", "not_run": "not run"}[r] }}{% if key == "supports" and c.checks.supports_p is not none %} ({{ "%.2f" | format(c.checks.supports_p) }}){% endif %}</span>
         {% endfor %}
       </p>
+      {% if c.checks.notes %}<p class="check-notes">{{ c.checks.notes | join("; ") }}</p>{% endif %}
     </li>
     {% endfor %}
   </ol>

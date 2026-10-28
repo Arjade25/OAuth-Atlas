@@ -8,7 +8,9 @@ from pathlib import Path
 from .policy import Issue, check_guide
 from .schema import Guide
 
-GUIDES_DIR = Path(__file__).resolve().parent.parent / "guides"
+ROOT = Path(__file__).resolve().parent.parent
+GUIDES_DIR = ROOT / "guides"        # curated: must pass every policy check
+GENERATED_DIR = ROOT / "generated"  # agent-written: shown with their issues, pending review
 
 
 def load_guide(path: Path) -> Guide:
@@ -20,6 +22,14 @@ def load_all(directory: Path = GUIDES_DIR) -> dict[str, Guide]:
     for path in sorted(directory.glob("*.json")):
         g = load_guide(path)
         guides[g.slug] = g
+    return guides
+
+
+def load_library() -> dict[str, Guide]:
+    """Curated guides plus generated ones. A curated guide wins over a
+    generated guide with the same slug."""
+    guides = load_all(GENERATED_DIR) if GENERATED_DIR.exists() else {}
+    guides.update(load_all(GUIDES_DIR))
     return guides
 
 
