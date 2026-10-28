@@ -288,3 +288,22 @@ def test_only_requirements_can_block_a_path():
     s = g.scenario("marketplace")
     assert s.blocked_by == ["security-review"] and "register" in s.claims
     assert any("not a requirement" in e.message for e in events if e.type == "warn")
+
+
+def test_nli_label_mapping_follows_the_models_own_label_order():
+    from atlas.support import nli_probs
+    probs = nli_probs([0.0, 5.0, 0.0], {0: "contradiction", 1: "entailment", 2: "neutral"})
+    assert probs["supports"] > 0.9 and abs(sum(probs.values()) - 1) < 1e-9
+    probs = nli_probs([5.0, 0.0, 0.0], {0: "ENTAILMENT", 1: "NEUTRAL", 2: "CONTRADICTION"})
+    assert max(probs, key=probs.get) == "supports"
+
+
+def test_judge_eval_counts_false_passes_and_flags():
+    import json
+    from atlas.judge_eval import SET, score
+
+    items = json.loads(SET.read_text(encoding="utf-8"))["items"]
+    yes_man = type("Y", (), {"name": "always-yes",
+                             "check": lambda self, c, p: verdict_from_probs({"supports": 1.0, "contradicts": 0, "unclear": 0})})()
+    res = score(yes_man, items)
+    assert res["false_flags"] == [] and len(res["false_passes"]) == 10   # every bad claim gets through

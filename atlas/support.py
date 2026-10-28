@@ -5,14 +5,16 @@ passage entails the claim: supports, contradicts or unclear. Anything short of
 a confident "supports" keeps the claim from being verified.
 
 Backends, picked by SUPPORT_BACKEND (default "auto"):
+  nli   - a natural-language-inference model run locally (default
+          cross-encoder/nli-deberta-v3-base). Trained for exactly this question;
+          returns entailment / neutral / contradiction probabilities.
   laya  - Laya, an open-weight decision model run locally (pip install "pydecide[laya]").
-          Returns probabilities over the three options. Different model family
-          from the extractor, which is the point.
+          Its model card warns base checkpoints are near chance without fine-tuning.
   llm   - a free chat model on OpenRouter (SUPPORT_MODELS, else a default list
           that starts with a different family from the extractor), asked the same question.
           Weaker: its probability is self-reported.
   none  - skip; claims stay unverified.
-  auto  - laya if installed, else llm if OPENROUTER_API_KEY is set, else none.
+  auto  - nli, else laya, else llm if OPENROUTER_API_KEY is set, else none.
 """
 
 from __future__ import annotations
@@ -97,6 +99,47 @@ class LayaSupport:
         return verdict_from_probs(dict(r.choices["verdict"].probabilities))
 
 
+NLI_LABELS = {"entailment": "supports", "neutral": "unclear", "contradiction": "contradicts"}
+
+
+def nli_probs(logits: list[float], id2label: dict) -> dict[str, float]:
+    """Softmax over an NLI model's three labels, renamed to ours."""
+    import math
+
+    m = max(logits)
+    exps = [math.exp(x - m) for x in logits]
+    total = sum(exps)
+    out = {k: 0.0 for k in OPTIONS}
+    for i, e in enumerate(exps):
+        name = NLI_LABELS.get(str(id2label[i]).lower())
+        if name:
+            out[name] += e / total
+    return out
+
+
+class NLISupport:
+    """A natural-language-inference model: trained for exactly this question
+    (does the premise entail the hypothesis?) and returns probabilities for
+    entailment, neutral and contradiction. Runs locally on CPU.
+    pip install torch transformers sentencepiece protobuf"""
+
+    def __init__(self, model: Optional[str] = None):
+        import torch
+        from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+        model = model or os.getenv("NLI_MODEL", "cross-encoder/nli-deberta-v3-base")
+        self._torch = torch
+        self.tok = AutoTokenizer.from_pretrained(model)
+        self.model = AutoModelForSequenceClassification.from_pretrained(model).eval()
+        self.name = f"nli ({model})"
+
+    def check(self, claim: str, passage: str) -> Verdict:
+        enc = self.tok(passage, claim, truncation="only_first", max_length=512, return_tensors="pt")
+        with self._torch.no_grad():
+            logits = self.model(**enc).logits[0].tolist()
+        return verdict_from_probs(nli_probs(logits, self.model.config.id2label))
+
+
 class LLMSupport:
     def __init__(self, models=None):
         from .llm import DEFAULT_SUPPORT_CHAIN, OpenRouterModel, model_chain
@@ -150,7 +193,17 @@ class ReplaySupport:
 
 
 def make_support(kind: Optional[str] = None) -> SupportChecker:
+    """auto tries, in order: an NLI model, Laya, a chat model, nothing.
+    NLI first because it is trained for this exact question; Laya's own model
+    card says its base checkpoints are near chance on decisions without
+    fine-tuning. Compare them on your data with: python -m atlas.judge_eval"""
     kind = (kind or os.getenv("SUPPORT_BACKEND", "auto")).lower()
+    if kind in ("nli", "auto"):
+        try:
+            return NLISupport()
+        except ImportError:
+            if kind == "nli":
+                raise RuntimeError("The NLI judge needs: pip install torch transformers sentencepiece protobuf")
     if kind in ("laya", "auto"):
         try:
             return LayaSupport()

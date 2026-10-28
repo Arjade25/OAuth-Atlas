@@ -55,7 +55,17 @@ python -m atlas.generate Pipedrive --replay # re-run the recording, no keys
 
 Or open `/generate` in the app and watch it work. Results land in `generated/` and appear in the library.
 
-The support judge defaults to Laya when installed (`pip install "pydecide[laya]"`, a large download), otherwise a second OpenRouter model. Set `SUPPORT_BACKEND` to choose.
+### Choosing the support judge
+
+The judge is the weakest of the three checks, so it is chosen by measurement. `evals/judge_set.json` holds 22 hand-labelled claim/passage pairs from the Pipedrive run: 12 supported, 6 that overstate their passage, 4 contradicted. Score any judge with:
+
+```bash
+python -m atlas.judge_eval --judge nli    # local NLI model (pip install torch transformers sentencepiece protobuf)
+python -m atlas.judge_eval --judge laya   # local Laya (pip install "pydecide[laya]")
+python -m atlas.judge_eval --judge llm    # free OpenRouter chat model
+```
+
+It reports false passes (unsupported claims let through, the costly error) and false flags (good claims held back). In the first live run the chat-model judge let all 5 overstated claims through and held back 1 good one, which is why `auto` now prefers a local NLI model.
 
 ## API
 

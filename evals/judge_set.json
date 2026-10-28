@@ -1,0 +1,160 @@
+{
+  "about": "Hand-labelled claim/passage pairs for comparing support judges. Passages are from the Pipedrive live run (runs/pipedrive.json); '-alt' items rewrite the claim to be unsupported or contradicted.",
+  "labelled_by": "Claude, reviewed against the passages; borderline inferences (pd-1, pd-13, pd-14) left out",
+  "items": [
+    {
+      "id": "pd-2",
+      "claim": "The Basic Info tab requires App name and OAuth Callback URL.",
+      "passage": "clientid and clientsecret are values you need to go through oauth authorization and receive the accesstoken and refreshtoken to be used in api requests. how to get your clientid and clientsecret 1. log in to developer hub on your developer sandbox account 2. click on \"create an app\" 3. choose whether you would like to create a public or private app 4. in the basic info tab of developer hub, fill in the required fields - app name and oauth callback url",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-3",
+      "claim": "You may insert a non-functioning OAuth Callback URL temporarily during setup.",
+      "passage": "- you can insert a non-functioning oauth callback url for the time being . after implementing the logic needed for accepting user authorization in your code, you must update the field with a proper url. - keep in mind that we allow only one callback url per app 5. click the green \"save\" button to save the form 6. you'll automatically be brought to the second tab, \"oauth & access scopes\", where you'll get your clientid and clientsecret > 📘 > > take",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-4",
+      "claim": "A non-functioning callback URL must be changed to a functioning one before submitting for approval.",
+      "passage": "in your code, you must update the field with a proper url. - keep in mind that we allow only one callback url per app 5. click the green \"save\" button to save the form 6. you'll automatically be brought to the second tab, \"oauth & access scopes\", where you'll get your clientid and clientsecret > 📘 > > take note: if you initially inserted a non-functioning oauth callback url, make sure you change it to a functioning one before submitting it for approval . existing apps",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-5",
+      "claim": "Pipedrive allows only one callback URL per app.",
+      "passage": "- you can insert a non-functioning oauth callback url for the time being. after implementing the logic needed for accepting user authorization in your code, you must update the field with a proper url. - keep in mind that we allow only one callback url per app 5. click the green \"save\" button to save the form 6. you'll automatically be brought to the second tab, \"oauth & access scopes\", where you'll get your clientid and clientsecret > 📘 > > take note: if you initially inserted a non-functioning oauth callback url, make sure you change it to a functioning one before submitting it for approval. existing apps",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-10",
+      "claim": "You should install and test your app before sending it for review.",
+      "passage": "registering a public app # registering a public app requested a developer sandbox account? ready with your app? find out how to register your app and send it off for the app approval process. - how do i find developer hub to register my app? - what do i write in each tab of the app registration form in developer hub? - install and test your app before sending it for review - save your app to send it for review how to find developer hub",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-11",
+      "claim": "To send a public app for review, agree to the Pipedrive Developer Partner Agreement and click the green “Send to review” button.",
+      "passage": "ready with your app? send it for review by agreeing to the terms and conditions of the pipedrive developer partner agreement and clicking on the green \"send to review\" button . you will then be asked to provide us with any test account information or details that the marketplace team should know to properly install and test your app during approval. the final step involves confirming your email address - a requirement for all public apps. you will receive the confirmation email in the main contact email you specified. once you've confirmed your email address, your app will be sent",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-12",
+      "claim": "After saving, you are brought to the “OAuth & access scopes” tab where you get your client_id and client_secret.",
+      "passage": "- you can insert a non-functioning oauth callback url for the time being. after implementing the logic needed for accepting user authorization in your code, you must update the field with a proper url. - keep in mind that we allow only one callback url per app 5. click the green \"save\" button to save the form 6. you'll automatically be brought to the second tab, \"oauth & access scopes\", where you'll get your clientid and clientsecret > 📘 > > take note: if you initially inserted a non-functioning oauth callback url, make sure you change it to a functioning one before submitting it for approval. existing apps",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-15",
+      "claim": "After email confirmation the app is sent to the Marketplace team for review and its Developer Hub status changes to “In review”.",
+      "passage": "the green \"send to review\" button. you will then be asked to provide us with any test account information or details that the marketplace team should know to properly install and test your app during approval. the final step involves confirming your email address - a requirement for all public apps. you will receive the confirmation email in the main contact email you specified. once you've confirmed your email address, your app will be sent to the marketplace team for review, and its status in the developer hub dashboard will be changed to \"in review\"",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-16",
+      "claim": "Developer sandbox data is completely separate and not synced with live/production accounts.",
+      "passage": "to the correct scopes. for more information about which scopes to use and when to use them, see scopes and permissions explained. can apps be installed for the whole company or does each user need to install the app for themselves? no, each user must individually install and allow access to the app for their account. can the data in my live/production account be replicated in my developer sandbox account? no, the data in developer sandbox accounts are completely separate and are in no way synced with live/production accounts",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-17",
+      "claim": "Private apps are not published in the Pipedrive Marketplace.",
+      "passage": "apps that are private will not be published in the pipedrive marketplace . to be able to publish your app and make it publicly available in our marketplace), you'd need to submit it for the app approval process. when the app is approved and works as expected (e.g., app listing is technically, logically and grammatically correct; all installation flows work flawlessly, etc.), you'll be able to use the \"publish\" button. updated 12 months ago",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-18",
+      "claim": "Each user must individually install and allow access to the app for their account.",
+      "passage": "why do i get the following error message {\"success\":false,\"error\":\"scope and url mismatch\"}? this error message appears because you might not have requested access to the correct scopes. for more information about which scopes to use and when to use them, see scopes and permissions explained. can apps be installed for the whole company or does each user need to install the app for themselves? no, each user must individually install and allow access to the app for their account . can the data in my live/production account be replicated in my developer sandbox account? no, the data in developer sandbox accounts are completely separate and are in no way synced with live/production accounts",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-19",
+      "claim": "When the app is approved and works as expected, you can use the “Publish” button.",
+      "passage": "apps that are private will not be published in the pipedrive marketplace. to be able to publish your app and make it publicly available in our marketplace), you'd need to submit it for the app approval process. when the app is approved and works as expected (e.g., app listing is technically, logically and grammatically correct; all installation flows work flawlessly, etc.), you'll be able to use the \"publish\" button . updated 12 months ago",
+      "label": "supports",
+      "why": "claim restates the passage"
+    },
+    {
+      "id": "pd-0",
+      "claim": "A developer sandbox account is required to access Developer Hub and create an app.",
+      "passage": "faq where can i find my clientid? to find your clientid, you will have to 1. sign up for a developer sandbox account 2. go to settings > (company name) developer hub in your developer sandbox account 3. click on \"create an app\" or \"+ create an app\" if you have existing apps 4. choose whether you would like to create a public or private app 5. in the basic info tab of developer hub, fill in the required fields - app name and oauth callback url > 📘 > > you can",
+      "label": "unclear",
+      "why": "passage says to sign up, not that a sandbox is required"
+    },
+    {
+      "id": "pd-6",
+      "claim": "Access scopes are required and specify precisely what data access your application needs.",
+      "passage": "| field | description | | --- | --- | | access scopes (required) | using scopes, you can specify precisely what data access your application needs . your selection will depend significantly on the endpoints you use in your app. you can also select the respective scope in this section if you are building a manifest-based app extension. example: ✅ read users data ✅ see recent account activity | | installation url | this is where you can add an optional url to which users will be redirected when clicking the \"proceed to install\" button in",
+      "label": "unclear",
+      "why": "passage says scopes specify access, not that they are required"
+    },
+    {
+      "id": "pd-7",
+      "claim": "A Website URL is required for the app registration.",
+      "passage": "| field | description | | --- | --- | | website url (required) | insert a link to your app's website. example: https://www.carservicesapp.com | | terms of service url (required) | insert a link to your app's terms of service webpage with rules that users must agree to abide by to use your service/app. example: https://www.carservicesapp.com/termsofservice | | privacy policy url (required) | insert a link to your app's privacy policy webpage of a legal document that has most or all the information of how users' data is gathered, used, communicated and managed.",
+      "label": "unclear",
+      "why": "instruction to insert a link, not a requirement"
+    },
+    {
+      "id": "pd-8",
+      "claim": "A Terms of Service URL is required, linking to rules users must agree to.",
+      "passage": "| field | description | | --- | --- | | website url (required) | insert a link to your app's website. example: https://www.carservicesapp.com | | terms of service url (required) | insert a link to your app's terms of service webpage with rules that users must agree to abide by to use your service/app . example: https://www.carservicesapp.com/termsofservice | | privacy policy url (required) | insert a link to your app's privacy policy webpage of a legal document that has most or all the information of how users' data is gathered, used, communicated and managed. example: https://www.carservicesapp.com/help/privacypolicy | additional resources",
+      "label": "unclear",
+      "why": "instruction to insert a link, not a requirement"
+    },
+    {
+      "id": "pd-9",
+      "claim": "A Privacy Policy URL is required, describing how users’ data is gathered, used, communicated and managed.",
+      "passage": "| field | description | | --- | --- | | website url (required) | insert a link to your app's website. example: https://www.carservicesapp.com | | terms of service url (required) | insert a link to your app's terms of service webpage with rules that users must agree to abide by to use your service/app. example: https://www.carservicesapp.com/termsofservice | | privacy policy url (required) | insert a link to your app's privacy policy webpage of a legal document that has most or all the information of how users' data is gathered, used, communicated and managed . example: https://www.carservicesapp.com/help/privacypolicy | additional resources",
+      "label": "unclear",
+      "why": "instruction to insert a link, not a requirement"
+    },
+    {
+      "id": "pd-15-alt",
+      "claim": "Pipedrive's Marketplace review takes about two weeks.",
+      "passage": "the green \"send to review\" button. you will then be asked to provide us with any test account information or details that the marketplace team should know to properly install and test your app during approval. the final step involves confirming your email address - a requirement for all public apps. you will receive the confirmation email in the main contact email you specified. once you've confirmed your email address, your app will be sent to the marketplace team for review, and its status in the developer hub dashboard will be changed to \"in review\"",
+      "label": "unclear",
+      "why": "no review duration in the passage"
+    },
+    {
+      "id": "pd-5-alt",
+      "claim": "Pipedrive allows up to five callback URLs per app.",
+      "passage": "- you can insert a non-functioning oauth callback url for the time being. after implementing the logic needed for accepting user authorization in your code, you must update the field with a proper url. - keep in mind that we allow only one callback url per app 5. click the green \"save\" button to save the form 6. you'll automatically be brought to the second tab, \"oauth & access scopes\", where you'll get your clientid and clientsecret > 📘 > > take note: if you initially inserted a non-functioning oauth callback url, make sure you change it to a functioning one before submitting it for approval. existing apps",
+      "label": "contradicts",
+      "why": "passage allows only one callback URL"
+    },
+    {
+      "id": "pd-17-alt",
+      "claim": "Private apps are published in the Pipedrive Marketplace.",
+      "passage": "apps that are private will not be published in the pipedrive marketplace . to be able to publish your app and make it publicly available in our marketplace), you'd need to submit it for the app approval process. when the app is approved and works as expected (e.g., app listing is technically, logically and grammatically correct; all installation flows work flawlessly, etc.), you'll be able to use the \"publish\" button. updated 12 months ago",
+      "label": "contradicts",
+      "why": "passage says private apps are not published"
+    },
+    {
+      "id": "pd-16-alt",
+      "claim": "Developer sandbox data is synced with live production accounts.",
+      "passage": "to the correct scopes. for more information about which scopes to use and when to use them, see scopes and permissions explained. can apps be installed for the whole company or does each user need to install the app for themselves? no, each user must individually install and allow access to the app for their account. can the data in my live/production account be replicated in my developer sandbox account? no, the data in developer sandbox accounts are completely separate and are in no way synced with live/production accounts",
+      "label": "contradicts",
+      "why": "passage says sandbox data is separate"
+    },
+    {
+      "id": "pd-3-alt",
+      "claim": "The OAuth Callback URL must work from the start; a placeholder is not accepted.",
+      "passage": "- you can insert a non-functioning oauth callback url for the time being . after implementing the logic needed for accepting user authorization in your code, you must update the field with a proper url. - keep in mind that we allow only one callback url per app 5. click the green \"save\" button to save the form 6. you'll automatically be brought to the second tab, \"oauth & access scopes\", where you'll get your clientid and clientsecret > 📘 > > take",
+      "label": "contradicts",
+      "why": "passage allows a temporary placeholder"
+    }
+  ]
+}
