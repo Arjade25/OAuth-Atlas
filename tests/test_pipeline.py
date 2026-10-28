@@ -328,9 +328,12 @@ def test_compare_inputs_runs_every_format(capsys):
     items = json.loads(SET.read_text(encoding="utf-8"))["items"]
     yes = type("Y", (), {"name": "yes", "check": lambda s, c, p: verdict_from_probs(
         {"supports": 1.0, "contradicts": 0, "unclear": 0})})()
-    assert compare(yes, items, "test") == 0
-    out = capsys.readouterr().out
-    assert "sentence+source" in out and "JUDGE_INPUT=" in out
+    try:
+        assert compare(yes, items, "test") == 0
+        out = capsys.readouterr().out
+        assert "sentence+source" in out and "JUDGE_INPUT=" in out
+    finally:
+        (SET.parent / "compare-test.json").unlink(missing_ok=True)  # don't leave test output in evals/
 
 
 def test_a_path_blocked_only_by_facts_keeps_them_as_blockers():
