@@ -1,0 +1,161 @@
+{
+  "app": "GitHub",
+  "provider": "GitHub",
+  "slug": "github",
+  "summary": "Self-serve. You register an OAuth app from your own settings and any GitHub user can authorize it. The one gate is organizational: orgs that enable OAuth app access restrictions need an owner to approve your app before it can touch their resources.",
+  "developer_portal": "https://github.com/settings/developers",
+  "scenarios": [
+    {
+      "id": "any-user",
+      "label": "Any GitHub user, personal resources",
+      "audience": "Users authorizing your app for their own account and repositories",
+      "state": "available_now",
+      "dimensions": {"technical": 1, "prerequisites": 0, "approval": 0, "uncertainty": 0, "maintenance": 0},
+      "effort_hours": {"min": 0.25, "max": 0.5},
+      "wait_days": {"min": 0, "max": 0},
+      "claims": ["self-serve-registration", "acts-as-user"]
+    },
+    {
+      "id": "restricted-org",
+      "label": "Organizations with OAuth app access restrictions",
+      "audience": "Members of an org whose owners have enabled OAuth app access restrictions",
+      "state": "production_blocked",
+      "dimensions": {"technical": 1, "prerequisites": 0, "approval": 2, "uncertainty": 2, "maintenance": 0},
+      "effort_hours": {"min": 0.25, "max": 0.5},
+      "wait_days": null,
+      "blocked_by": ["org-owner-approval"],
+      "claims": []
+    }
+  ],
+  "claims": [
+    {
+      "id": "self-serve-registration",
+      "text": "You register an OAuth app yourself from Developer settings; the documented flow has no submission or review step.",
+      "kind": "fact",
+      "applies_to": ["any-user", "restricted-org"],
+      "evidence": {
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app",
+        "quote": "In the left sidebar, click Developer settings.",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "callback-limit",
+      "text": "One OAuth app can register up to 10 callback URLs.",
+      "kind": "limit",
+      "applies_to": ["any-user", "restricted-org"],
+      "evidence": {
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app",
+        "quote": "You can enter up to 10 callback URLs.",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "acts-as-user",
+      "text": "Users authorize an OAuth app, and it then acts as the authenticated user.",
+      "kind": "fact",
+      "applies_to": ["any-user"],
+      "evidence": {
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/differences-between-github-apps-and-oauth-apps",
+        "quote": "users authorize OAuth apps, which gives the app the ability to act as the authenticated user.",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "github-apps-preferred",
+      "text": "GitHub generally recommends GitHub Apps over OAuth apps, because they request narrower permissions.",
+      "kind": "fact",
+      "applies_to": ["any-user", "restricted-org"],
+      "evidence": {
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/differences-between-github-apps-and-oauth-apps",
+        "quote": "In general, GitHub Apps are preferred over OAuth apps.",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "org-owner-approval",
+      "text": "If an organization enables OAuth app access restrictions, members must get an organization owner's approval before your app can access that org's resources.",
+      "kind": "requirement",
+      "applies_to": ["restricted-org"],
+      "evidence": {
+        "url": "https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data/approving-oauth-apps-for-your-organization",
+        "quote": "When OAuth app access restrictions are enabled, organization members and outside collaborators must request approval",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Decide: OAuth app or GitHub App",
+      "owner": "you",
+      "detail": "OAuth apps act as the user with scope-based access; GitHub Apps get fine-grained permissions. This guide covers the OAuth app path, which is what an OAuth2 auth config in Composio expects.",
+      "minutes": 5,
+      "claims": ["github-apps-preferred", "acts-as-user"]
+    },
+    {
+      "n": 2,
+      "title": "Register a new OAuth app",
+      "owner": "you",
+      "detail": "Profile picture, then Settings, then Developer settings, then OAuth apps, then New OAuth App. Enter the app name and homepage URL.",
+      "minutes": 5,
+      "claims": ["self-serve-registration"]
+    },
+    {
+      "n": 3,
+      "title": "Set the callback URL to Composio's",
+      "owner": "you",
+      "detail": "Paste the redirect URI shown when you create a custom auth config in the Composio dashboard. You can add up to 10 callback URLs if you also need local or staging ones.",
+      "minutes": 2,
+      "claims": ["callback-limit"]
+    },
+    {
+      "n": 4,
+      "title": "Generate a client secret and create the Composio auth config",
+      "owner": "you",
+      "detail": "Generate a client secret, then in Composio choose GitHub, OAuth2, 'Use your own developer credentials', and paste the client ID and secret. Keep the secret out of code and chat.",
+      "minutes": 5
+    },
+    {
+      "n": 5,
+      "title": "Write the org-approval note for your users",
+      "owner": "agent",
+      "detail": "Users in restricted orgs will hit an approval request. A short help-page note tells them what to ask their owner for.",
+      "minutes": 5,
+      "scenarios": ["restricted-org"],
+      "claims": ["org-owner-approval"],
+      "agent_prompt": "Write a 120-word help-center note for users whose GitHub organization blocks our OAuth app. Explain that an org owner must approve the app under Settings > Third-party access, what data it reads, and how to request approval from the authorization screen."
+    }
+  ],
+  "blockers": [
+    {
+      "symptom": "A user authorizes the app but can't see their organization's repositories",
+      "fix": "The org has OAuth app access restrictions on. The user requests approval from the authorization screen; an org owner approves it.",
+      "escalate": "Only that organization's owners can approve. There is no GitHub review to escalate to.",
+      "claims": ["org-owner-approval"]
+    }
+  ],
+  "composio": {
+    "managed_auth_available": null,
+    "callback_url": "https://backend.composio.dev/api/v3/toolkits/auth/callback",
+    "notes": "Check the toolkit page for managed auth; it is fine for development. Bring your own OAuth app when users should see your brand on the consent screen, or to get your own rate-limit quota. Confirm the exact redirect URI in the auth config form."
+  },
+  "origin": "curated",
+  "review_status": "approved",
+  "last_verified": "2026-10-28"
+}

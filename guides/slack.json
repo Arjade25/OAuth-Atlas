@@ -1,0 +1,238 @@
+{
+  "app": "Slack",
+  "provider": "Slack (Salesforce)",
+  "slug": "slack",
+  "summary": "Easy to start, slow to list. An app works in its own workspace immediately and can be installed by other workspaces once you turn on public distribution, with no review. Commercial apps are expected to go through Slack Marketplace review, and Slack publishes no timeline for it.",
+  "developer_portal": "https://api.slack.com/apps",
+  "scenarios": [
+    {
+      "id": "own-workspace",
+      "label": "Your own workspace",
+      "audience": "Your team, in the workspace where the app was created",
+      "state": "available_now",
+      "dimensions": {"technical": 1, "prerequisites": 0, "approval": 0, "uncertainty": 0, "maintenance": 0},
+      "effort_hours": {"min": 0.25, "max": 0.5},
+      "wait_days": {"min": 0, "max": 0},
+      "claims": ["one-workspace"]
+    },
+    {
+      "id": "unlisted",
+      "label": "Other workspaces, unlisted (pilots)",
+      "audience": "Workspaces you share the install link with; suited to pilots, not commercial scale",
+      "state": "available_now",
+      "dimensions": {"technical": 2, "prerequisites": 1, "approval": 0, "uncertainty": 1, "maintenance": 0},
+      "effort_hours": {"min": 1, "max": 3},
+      "wait_days": {"min": 0, "max": 0},
+      "claims": ["https-required", "activate-distribution", "unlisted-no-review"]
+    },
+    {
+      "id": "marketplace",
+      "label": "Commercial, listed in the Slack Marketplace",
+      "audience": "Any Slack customer, discoverable in the Marketplace",
+      "state": "production_blocked",
+      "dimensions": {"technical": 2, "prerequisites": 2, "approval": 3, "uncertainty": 3, "maintenance": 2},
+      "effort_hours": {"min": 4, "max": 12},
+      "wait_days": null,
+      "blocked_by": ["marketplace-review"],
+      "claims": ["commercial-needs-marketplace", "review-anecdote"]
+    }
+  ],
+  "claims": [
+    {
+      "id": "one-workspace",
+      "text": "A new Slack app starts out installed in the single workspace it was created in.",
+      "kind": "fact",
+      "applies_to": ["own-workspace"],
+      "evidence": {
+        "url": "https://docs.slack.dev/app-management/distribution/",
+        "quote": "When you create a Slack app, it resides in one workspace.",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "https-required",
+      "text": "Before other workspaces can install the app, its OAuth redirect and other request URLs must use HTTPS.",
+      "kind": "requirement",
+      "applies_to": ["unlisted", "marketplace"],
+      "evidence": {
+        "url": "https://docs.slack.dev/app-management/distribution/",
+        "quote": "Your app must support SSL for all of the following URLs:",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "activate-distribution",
+      "text": "Distribution to other workspaces is switched on in the app settings with Activate Public Distribution.",
+      "kind": "fact",
+      "applies_to": ["unlisted", "marketplace"],
+      "evidence": {
+        "url": "https://docs.slack.dev/app-management/distribution/",
+        "quote": "Click Activate Public Distribution.",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "unlisted-no-review",
+      "text": "Distributing without the Marketplace needs no Slack review for other workspaces to install.",
+      "kind": "requirement",
+      "applies_to": ["unlisted"],
+      "topic": "unlisted-review-required",
+      "value": "no",
+      "evidence": {
+        "url": "https://developer.salesforce.com/docs/platform/salesforce-slack-sdk/guide/packaging_publish.html",
+        "quote": "you don't need to submit your app for a review for other workspaces to install it",
+        "retrieved_at": "2026-10-27",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "commercial-needs-marketplace",
+      "text": "Apps meant for commercial distribution are expected to be submitted and approved for Marketplace listing.",
+      "kind": "requirement",
+      "applies_to": ["marketplace"],
+      "evidence": {
+        "url": "https://docs.slack.dev/app-management/distribution/",
+        "quote": "apps intended for commercial distribution should be submitted and approved for listing in the Slack Marketplace.",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "marketplace-review",
+      "text": "Marketplace-listed apps are reviewed by Slack against its requirements and guidelines.",
+      "kind": "requirement",
+      "applies_to": ["marketplace"],
+      "evidence": {
+        "url": "https://docs.slack.dev/app-management/distribution/",
+        "quote": "apps listed in the Slack Marketplace are reviewed against our requirements & guidelines",
+        "retrieved_at": "2026-10-28",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "queue-reset",
+      "text": "Each resubmission resets your place in the Marketplace review queue.",
+      "kind": "fact",
+      "applies_to": ["marketplace"],
+      "evidence": {
+        "url": "https://docs.slack.dev/slack-marketplace/distributing-your-app-in-the-slack-marketplace",
+        "quote": "Your place in the queue is reset each time you resubmit",
+        "retrieved_at": "2026-10-27",
+        "source_type": "official"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    },
+    {
+      "id": "review-anecdote",
+      "text": "Slack publishes no review timeline; one developer reported a four-month Marketplace review.",
+      "kind": "wait_time",
+      "applies_to": ["marketplace"],
+      "evidence": {
+        "url": "https://levelup.gitconnected.com/how-i-published-my-own-app-in-the-slack-marketplace-and-what-the-docs-didnt-tell-me-776e365d0426",
+        "quote": "from OAuth to a four-month review process",
+        "retrieved_at": "2026-10-27",
+        "source_type": "third_party"
+      },
+      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "status": "verified"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Create the app",
+      "owner": "you",
+      "detail": "At api.slack.com/apps, create an app in your workspace, from scratch or from a manifest.",
+      "minutes": 5,
+      "claims": ["one-workspace"]
+    },
+    {
+      "n": 2,
+      "title": "Add scopes and Composio's redirect URL",
+      "owner": "agent",
+      "detail": "Under OAuth & Permissions, add the bot and user scopes your tools need, plus the redirect URI from your Composio auth config.",
+      "minutes": 10,
+      "agent_prompt": "Given the Composio Slack tools I plan to use, list the minimum Slack bot and user scopes they need, one line each with the reason, and draft an app manifest with those scopes and this redirect URL."
+    },
+    {
+      "n": 3,
+      "title": "Create the Composio auth config",
+      "owner": "you",
+      "detail": "In Composio choose Slack, OAuth2, 'Use your own developer credentials', and paste the client ID and secret from Basic Information.",
+      "minutes": 5
+    },
+    {
+      "n": 4,
+      "title": "Make every URL HTTPS, then activate public distribution",
+      "owner": "you",
+      "detail": "Check the redirect, event, interactivity and slash-command URLs all start with https://, then open Manage Distribution and click Activate Public Distribution. No review is needed for this.",
+      "minutes": 20,
+      "scenarios": ["unlisted", "marketplace"],
+      "claims": ["https-required", "activate-distribution", "unlisted-no-review"]
+    },
+    {
+      "n": 5,
+      "title": "Prepare the Marketplace submission",
+      "owner": "agent",
+      "detail": "Listing copy, privacy policy and support pages, scope justifications and reviewer test notes. Get it right the first time: a resubmission sends you back to the end of the queue.",
+      "minutes": 120,
+      "scenarios": ["marketplace"],
+      "claims": ["queue-reset"],
+      "agent_prompt": "Draft a Slack Marketplace submission for our app: short and long descriptions, a justification for each requested scope, reviewer test instructions with a test workspace, and a checklist of required public URLs (privacy policy, support, landing page)."
+    },
+    {
+      "n": 6,
+      "title": "Submit for review",
+      "owner": "you",
+      "detail": "Submit from Manage Distribution and answer reviewer notes promptly.",
+      "minutes": 15,
+      "scenarios": ["marketplace"],
+      "claims": ["marketplace-review"]
+    },
+    {
+      "n": 7,
+      "title": "Marketplace review",
+      "owner": "provider",
+      "detail": "Slack reviews the app against its requirements and guidelines. No timeline is published.",
+      "scenarios": ["marketplace"],
+      "claims": ["marketplace-review", "review-anecdote"]
+    }
+  ],
+  "blockers": [
+    {
+      "symptom": "The Activate Public Distribution button stays disabled",
+      "fix": "One of the app's URLs is still plain HTTP. Make every listed URL HTTPS.",
+      "claims": ["https-required"]
+    },
+    {
+      "symptom": "Review came back with changes requested",
+      "fix": "Fix everything in the notes in one pass before resubmitting, since each resubmission resets your queue position.",
+      "escalate": "Reply through the review notes in Manage Distribution.",
+      "claims": ["queue-reset"]
+    }
+  ],
+  "composio": {
+    "managed_auth_available": null,
+    "callback_url": "https://backend.composio.dev/api/v3/toolkits/auth/callback",
+    "notes": "Bring your own Slack app when users should see your app name on the consent screen. Confirm the exact redirect URI in the auth config form."
+  },
+  "origin": "curated",
+  "review_status": "approved",
+  "last_verified": "2026-10-28"
+}
