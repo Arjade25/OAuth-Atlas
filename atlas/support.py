@@ -8,7 +8,8 @@ Backends, picked by SUPPORT_BACKEND (default "auto"):
   laya  - Laya, an open-weight decision model run locally (pip install "pydecide[laya]").
           Returns probabilities over the three options. Different model family
           from the extractor, which is the point.
-  llm   - a chat model on OpenRouter (FALLBACK_MODEL), asked the same question.
+  llm   - a free chat model on OpenRouter (SUPPORT_MODELS, else a default list
+          that starts with a different family from the extractor), asked the same question.
           Weaker: its probability is self-reported.
   none  - skip; claims stay unverified.
   auto  - laya if installed, else llm if OPENROUTER_API_KEY is set, else none.
@@ -94,12 +95,15 @@ class LayaSupport:
 
 
 class LLMSupport:
-    def __init__(self, model=None):
-        from .llm import OpenRouterModel
+    def __init__(self, models=None):
+        from .llm import DEFAULT_SUPPORT_CHAIN, OpenRouterModel, model_chain
 
-        name = model or os.getenv("SUPPORT_MODEL") or os.getenv("FALLBACK_MODEL") or "nvidia/nemotron-3-super-120b-a12b:free"
-        self.model = OpenRouterModel(model=name, fallback=None, max_tokens=4000)
-        self.name = f"llm ({name})"
+        chain = models or model_chain("SUPPORT_MODELS", ("SUPPORT_MODEL",), DEFAULT_SUPPORT_CHAIN)
+        self.model = OpenRouterModel(models=chain, max_tokens=4000, reasoning_tokens=1500)
+
+    @property
+    def name(self) -> str:
+        return f"llm ({self.model.name})"
 
     def check(self, claim: str, passage: str) -> Verdict:
         from .llm import parse_json
