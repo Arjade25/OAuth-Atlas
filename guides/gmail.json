@@ -68,7 +68,7 @@
     },
     {
       "id": "testing-expiry",
-      "text": "A test user's authorization expires seven days after consent, so they must reconnect weekly.",
+      "text": "A test user's authorization expires seven days after consent, so pilot users reconnect weekly.",
       "kind": "limit",
       "applies_to": ["testing"],
       "evidence": {

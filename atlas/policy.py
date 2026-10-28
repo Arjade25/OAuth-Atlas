@@ -45,6 +45,15 @@ def _numbers(text: str) -> set[str]:
     return {m.group().replace(",", "") for m in _NUM.finditer(text)}
 
 
+# Words that turn a claim into an obligation or a hard limit, and the words a
+# quote must contain to back one. An instruction ("Insert a link to...") is
+# not evidence that something is required.
+_STRONG_CLAIM = re.compile(r"\b(required|requires|requirement|mandatory|must|only|always|never|cannot)\b")
+_STRONG_QUOTE = re.compile(
+    r"\b(must|required|requires?|requirement|mandatory|need|needs|needed|only|always|never|cannot|can't|"
+    r"not allowed|make sure|have to|has to|limited|at most|up to)\b")
+
+
 def claim_issues(c: Claim, today: date) -> list[Issue]:
     """Rules that judge one claim against its own evidence. Used both by
     check_guide and by the pipeline to set a claim's policy check."""
@@ -63,6 +72,12 @@ def claim_issues(c: Claim, today: date) -> list[Issue]:
     if missing:
         out.append(Issue("number_not_in_quote", "error",
                          f"Claim '{c.id}' states {', '.join(sorted(missing))}, which its quote does not contain", c.id))
+
+    # Obligation: "X is required" needs a quote that says so, not just an instruction.
+    strong = _STRONG_CLAIM.findall(c.text.lower())
+    if strong and not _STRONG_QUOTE.search(ev.quote.lower()):
+        out.append(Issue("obligation_not_in_quote", "error",
+                         f"Claim '{c.id}' says '{strong[0]}', but its quote does not state an obligation or limit", c.id))
 
     if ev.source_type == SourceType.third_party:
         out.append(Issue("third_party_source", "warning",

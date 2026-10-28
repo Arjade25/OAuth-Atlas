@@ -276,3 +276,15 @@ def test_support_thresholds():
 def test_support_window_centres_on_the_quote():
     w = window("security review", "a " * 200 + "must pass a security review before install " + "b " * 200, words=5)
     assert "security review" in w and len(w.split()) <= 13
+
+
+def test_only_requirements_can_block_a_path():
+    class BlocksWithAFact(FakeModel):
+        def complete(self, messages):
+            return super().complete(messages).replace('"blocked_by": ["security-review"]',
+                                                      '"blocked_by": ["security-review", "register"]')
+
+    g, _, events = run_ok(model=BlocksWithAFact())
+    s = g.scenario("marketplace")
+    assert s.blocked_by == ["security-review"] and "register" in s.claims
+    assert any("not a requirement" in e.message for e in events if e.type == "warn")

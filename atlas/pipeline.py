@@ -187,8 +187,9 @@ def _check_claim(dc, cid: str, applies: list[str], ctx: _Ctx, today: date, notes
         checks.supports, checks.supports_p = v.result, v.p_supports
         if v.note:
             checks.notes.append(v.note)
+        judge = ctx.support.name  # read after the call: a fallback may have answered
         ctx.run_support.append({"claim": claim.text, "passage": passage, "result": v.result.value,
-                                "p_supports": v.p_supports, "note": v.note})
+                                "p_supports": v.p_supports, "note": v.note, "judge": judge})
 
     results = (checks.exists, checks.supports, checks.policy)
     if all(r == CheckResult.passed for r in results):
@@ -235,6 +236,12 @@ def assemble(draft: Draft, ctx: _Ctx, query: str, today: date, notes: list[str])
     for ds in draft.scenarios:
         blocked = keep(ds.blocked_by, cid, f"scenario {ds.id}")
         cited = keep(ds.claims, cid, f"scenario {ds.id}")
+        # Only a requirement can block a path; a fact or limit is context.
+        not_req = [c for c in blocked if by_id[c].kind != ClaimKind.requirement]
+        if not_req:
+            notes.append(f"'{', '.join(not_req)}' on '{ds.id}' is not a requirement, so it no longer counts as a blocker")
+            blocked = [c for c in blocked if c not in not_req]
+            cited = list(dict.fromkeys(cited + not_req))
         state = ds.state if ds.state in _STATES else "production_blocked"
         if blocked and state != "production_blocked":
             notes.append(f"scenario '{ds.id}' names blockers, so it is marked blocked")
@@ -341,8 +348,11 @@ def run(query: str, sources: Sources, model: ChatModel, support: SupportChecker,
         yield Event("step", f"Checking each claim against its source (support judge: {support.name})")
         ctx = _Ctx(t=t, passages=passages, fetched=fetched, support=support)
         guide = assemble(draft, ctx, query, today, notes)
-        record["support_backend"] = support.name
+        judges = list(dict.fromkeys(r.get("judge", support.name) for r in ctx.run_support)) or [support.name]
+        record["support_backend"] = ", ".join(judges)
         record["support"] = ctx.run_support
+        if len(judges) > 1:
+            notes.append(f"claims were judged by more than one model ({', '.join(judges)}) after a fallback")
 
         verified = sum(c.status == ClaimStatus.verified for c in guide.claims)
         flagged = sum(c.status == ClaimStatus.flagged for c in guide.claims)
@@ -352,7 +362,7 @@ def run(query: str, sources: Sources, model: ChatModel, support: SupportChecker,
 
         guide.generation = GenerationInfo(
             run_at=datetime.fromisoformat(record["run_at"]), query=query, extraction_model=model.name,
-            support_backend=support.name, searches=[s["query"] for s in record["searches"]],
+            support_backend=record["support_backend"], searches=[s["query"] for s in record["searches"]],
             pages=[p["url"] for p in record["pages"]], replayed=replayed, notes=notes)
 
         errs = [i for i in check_guide(guide, today) if i.is_error]

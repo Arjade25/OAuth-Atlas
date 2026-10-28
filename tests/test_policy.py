@@ -139,3 +139,23 @@ def test_future_dated_evidence(raw):
 def test_long_quote_warning(raw):
     raw["claims"][0]["evidence"]["quote"] = "word " * 50
     assert "quote_too_long" in codes(raw)
+
+
+def test_required_claim_needs_an_obligation_in_its_quote(raw):
+    """'Insert a link to your website' is an instruction, not a requirement."""
+    c = raw["claims"][0]
+    c["text"] = "A website URL is required."
+    c["evidence"]["quote"] = "Insert a link to your app's website."
+    assert "obligation_not_in_quote" in error_codes(raw)
+
+
+def test_obligation_backed_by_its_quote_passes(raw):
+    c = raw["claims"][0]
+    c["text"] = "Public apps must pass a security review."
+    c["evidence"]["quote"] = "Public apps must pass a security review."
+    assert "obligation_not_in_quote" not in error_codes(raw)
+
+
+def test_plain_claim_needs_no_obligation(raw):
+    raw["claims"][0]["text"] = "You register the app in the console."
+    assert "obligation_not_in_quote" not in error_codes(raw)

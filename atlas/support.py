@@ -26,7 +26,10 @@ from .schema import CheckResult
 
 INSTRUCTIONS = (
     "Does the passage support the claim? Choose 'supports' only if the passage states everything the claim says, "
-    "including every number, limit and condition. If the claim adds anything the passage does not say, choose 'unclear'."
+    "including every number, limit and condition. If the claim adds anything the passage does not say, choose 'unclear'. "
+    "In particular: if the claim says something is required, must happen, or is the only option, the passage itself "
+    "must say so. An instruction such as 'Insert a link to your website' does not show that a website is required. "
+    "Ignore differences in quotation marks, capitalisation and formatting."
 )
 OPTIONS = {
     "supports": "the passage states the claim, adding nothing",
@@ -130,12 +133,19 @@ class ReplaySupport:
 
     def __init__(self, recorded: list[dict], name: str = "replay"):
         self._by_key = {(r["claim"], r["passage"]): r for r in recorded}
-        self.name = name
+        self._name = name
+        self.last_judge = None
+
+    @property
+    def name(self) -> str:
+        # Replays report the judge recorded for the last verdict served.
+        return self.last_judge or self._name
 
     def check(self, claim: str, passage: str) -> Verdict:
         r = self._by_key.get((claim, passage))
         if r is None:
             return Verdict(CheckResult.not_run, None, "not in the recorded run")
+        self.last_judge = r.get("judge")
         return Verdict(CheckResult(r["result"]), r.get("p_supports"), r.get("note", ""))
 
 
