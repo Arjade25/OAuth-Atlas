@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="intro">
+  <h1>Which path are you on?</h1>
+  <p>The same app can take fifteen minutes or two months. Each guide splits it by who you're building for, then separates the hours you'll spend from the time you'll wait on the provider.</p>
+</section>
+
+<section class="library" aria-label="Guides">
+  {% for v in guides %}
+  <article class="app-row">
+    <h2><a href="/guides/{{ v.g.slug }}">{{ v.g.app }}</a></h2>
+    <p class="app-summary">{{ v.g.summary }}</p>
+    <ul class="paths">
+      {% for sv in v.scenarios %}{% set v = sv %}
+      <li>
+        {% include "_gate.html" %}
+        <span class="path-label">{{ sv.s.label }}</span>
+        <span class="state-text state-{{ sv.s.state.value }}">{{ sv.state_text }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </article>
+  {% endfor %}
+</section>
+{% endblock %}

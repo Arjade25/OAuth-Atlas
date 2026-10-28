@@ -1,0 +1,181 @@
+/* OAuth Atlas. One idea carries the design: every path is a gate you climb,
+   coloured by whether you can walk through it today. Everything else stays quiet. */
+
+:root {
+  --paper: #edf1f4;
+  --raise: #f8fafb;
+  --ink: #17222d;
+  --muted: #52606d;
+  --line: #c7d1da;
+  --now: #0f7a63;
+  --testing: #a86a12;
+  --blocked: #b4372a;
+  --link: #1f5f99;
+  --off: #d3dbe2;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #121a21;
+    --raise: #19232c;
+    --ink: #e4eaef;
+    --muted: #9aa8b4;
+    --line: #2f3d49;
+    --now: #4cc2a2;
+    --testing: #e0a548;
+    --blocked: #ec7b6b;
+    --link: #8cbcf0;
+    --off: #33424f;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1rem/1.6 "Public Sans", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+a { color: var(--link); text-underline-offset: 0.15em; }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+h1, h2, h3 { line-height: 1.2; margin: 0; }
+h1 { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 1rem; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+p { margin: 0 0 0.75rem; }
+code { font-size: 0.9em; overflow-wrap: anywhere; }
+
+header.site, main, footer.site {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+header.site { padding-top: 1.5rem; padding-bottom: 2rem; }
+.brand { font-weight: 800; font-size: 1.05rem; color: var(--ink); text-decoration: none; }
+.tagline { color: var(--muted); margin: 0.2rem 0 0; font-size: 0.95rem; }
+footer.site { color: var(--muted); font-size: 0.85rem; padding-top: 3rem; padding-bottom: 3rem; }
+main > section { margin-bottom: 3rem; }
+.note { color: var(--muted); font-size: 0.9rem; }
+
+/* --- The gate: five ascending steps, filled to the score ---------------- */
+.gate { display: inline-flex; align-items: flex-end; gap: 3px; height: 22px; vertical-align: middle; }
+.gate .seg { width: 9px; background: var(--off); border-radius: 1px; }
+.gate .seg:nth-child(1) { height: 30%; }
+.gate .seg:nth-child(2) { height: 45%; }
+.gate .seg:nth-child(3) { height: 62%; }
+.gate .seg:nth-child(4) { height: 80%; }
+.gate .seg:nth-child(5) { height: 100%; }
+.gate.state-available_now .seg.on { background: var(--now); }
+.gate.state-available_for_testing .seg.on { background: var(--testing); }
+.gate.state-production_blocked .seg.on { background: var(--blocked); }
+
+.state-text { font-weight: 600; font-size: 0.9rem; }
+.state-text.state-available_now { color: var(--now); }
+.state-text.state-available_for_testing { color: var(--testing); }
+.state-text.state-production_blocked { color: var(--blocked); }
+
+/* --- Library ------------------------------------------------------------ */
+.intro h1 { max-width: 22ch; margin-bottom: 0.75rem; }
+.intro p { max-width: 60ch; color: var(--muted); font-size: 1.1rem; }
+.app-row { padding: 1.5rem 0; border-top: 2px solid var(--ink); }
+.app-row h2 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+.app-row h2 a { color: var(--ink); text-decoration: none; }
+.app-row h2 a:hover { text-decoration: underline; }
+.app-summary { max-width: 65ch; color: var(--muted); }
+.paths { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.paths li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 0.75rem;
+}
+.path-label { font-weight: 600; }
+
+/* --- Guide head --------------------------------------------------------- */
+.crumbs { margin-bottom: 1rem; font-size: 0.9rem; }
+.guide-head h1 { margin-bottom: 0.75rem; }
+.lede { font-size: 1.15rem; max-width: 62ch; }
+.meta { color: var(--muted); font-size: 0.9rem; }
+
+/* --- Scenarios: a stripe on the left says whether you can go today ------- */
+.scenario {
+  background: var(--raise);
+  border-left: 6px solid var(--line);
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.scenario.state-available_now { border-left-color: var(--now); }
+.scenario.state-available_for_testing { border-left-color: var(--testing); }
+.scenario.state-production_blocked { border-left-color: var(--blocked); }
+.audience { color: var(--muted); margin: 0.2rem 0 0.75rem; }
+.verdict { display: flex; flex-wrap: wrap; align-items: end; gap: 0.75rem; margin-bottom: 0.75rem; }
+.score-label { color: var(--muted); font-size: 0.9rem; }
+.time { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 0 0 0.75rem; }
+.time dt { color: var(--muted); font-size: 0.85rem; }
+.time dd { margin: 0; font-size: 1.35rem; font-weight: 800; }
+.blocked p { font-weight: 600; margin-bottom: 0.25rem; }
+.blocked ul { margin: 0 0 0.75rem; padding-left: 1.2rem; }
+.dims summary { cursor: pointer; color: var(--link); font-size: 0.9rem; }
+.dims table { border-collapse: collapse; margin: 0.5rem 0; }
+.dims th { text-align: left; font-weight: 400; padding: 0.15rem 1rem 0.15rem 0; }
+.dims td.num { padding-left: 0.5rem; }
+.dims meter { width: 8rem; }
+
+/* --- Steps -------------------------------------------------------------- */
+.filter { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.filter button, button.copy {
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  cursor: pointer;
+}
+.filter button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.steps ol { margin: 0; padding-left: 1.6rem; }
+.step { padding: 0.25rem 0 1.1rem 0.4rem; }
+.step::marker { font-weight: 800; }
+.step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; margin-bottom: 0.3rem; }
+.owner { font-size: 0.85rem; font-weight: 600; }
+.owner-agent .owner { color: var(--now); }
+.owner-you .owner { color: var(--ink); }
+.owner-provider .owner { color: var(--testing); }
+.mins { color: var(--muted); font-size: 0.85rem; }
+.only { color: var(--muted); font-size: 0.85rem; }
+.prompt summary { cursor: pointer; color: var(--link); font-size: 0.9rem; }
+.prompt-text { background: var(--raise); padding: 0.75rem 1rem; margin: 0.5rem 0; border-left: 3px solid var(--now); }
+.ref { font-size: 0.75rem; vertical-align: super; text-decoration: none; margin-left: 1px; }
+
+/* --- Blockers, Composio ------------------------------------------------- */
+.blocker { padding: 0.9rem 0; border-top: 1px solid var(--line); }
+.blocker h3 { margin-bottom: 0.35rem; }
+.escalate { color: var(--muted); font-size: 0.9rem; }
+
+/* --- Evidence ----------------------------------------------------------- */
+.evidence ol { padding-left: 1.6rem; }
+.claim { padding: 0.75rem 0 0.75rem 0.4rem; border-top: 1px solid var(--line); scroll-margin-top: 1rem; }
+.claim:target { background: var(--raise); }
+.claim-text { font-weight: 600; margin-bottom: 0.4rem; }
+.claim blockquote { margin: 0 0 0.4rem; padding-left: 0.9rem; border-left: 3px solid var(--line); color: var(--muted); font-style: italic; }
+.claim.reported blockquote { border-left-color: var(--testing); }
+.source { font-size: 0.85rem; color: var(--muted); }
+.badge.reported { display: inline-block; margin-left: 0.4rem; color: var(--testing); font-weight: 600; }
+.checks { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.8rem; color: var(--muted); margin: 0; }
+.check-fail, .check-unclear { color: var(--blocked); font-weight: 600; }
+
+@media (max-width: 34rem) {
+  h1 { font-size: 2rem; }
+  .time { grid-template-columns: 1fr; gap: 0.4rem; }
+  .paths li { grid-template-columns: auto 1fr; }
+  .paths li .state-text { grid-column: 2; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
