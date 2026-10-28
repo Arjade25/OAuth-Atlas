@@ -129,10 +129,8 @@ class ReplaySources:
         return list(self._searches.get(query, []))
 
     def fetch(self, urls: list[str]) -> list[Page]:
-        out = []
-        for u in urls:
-            p = self._pages.get(u)
-            if p:
-                out.append(Page(url=u, text="\n\n".join(p["passages"]),
-                                fetched_at=date.fromisoformat(p["fetched_at"]), passages=list(p["passages"])))
-        return out
+        wanted = set(urls)
+        # Recorded order, so passage numbering matches the original run.
+        return [Page(url=p["url"], text="\n\n".join(p["passages"]),
+                     fetched_at=date.fromisoformat(p["fetched_at"]), passages=list(p["passages"]))
+                for p in self.run.get("pages", []) if p["url"] in wanted]
