@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "query": "LinkedIn",
+  "app": "LinkedIn",
+  "run_at": "2026-10-28T18:55:19+00:00",
+  "searches": [
+    {
+      "query": "LinkedIn OAuth app create client ID redirect URI developer documentation",
+      "urls": [
+        "https://techdocs.akamai.com/identity-cloud/docs/the-linkedin-oauth-20-social-login-configuration-guide",
+        "https://cdn.readme.io/og-image/create?type=docs&title=LinkedIn%20OAuth%202.0%20social%20login%20guide&projectTitle=Identity%20Cloud&description=LinkedIn%20is%20a%20business-%20and%20career-oriented%20social%20networking%20site%20with%20over%20500%20million%20registered%20users.%20Before%20you%20begin%20To%20use%20LinkedIn%20for%20social%20login%20you%20must%3A%20Obtain%20a%20LinkedIn%20developer%20account%20from%20https%3A%2F%2Fwww.developer.linkedin.com%20.%20Do%20one%20of%20the%20following%3A%20Open%20a%20previously-created%20Link%E2%80%A6&logoUrl=https%3A%2F%2Ffiles.readme.io%2F788953b-small-techdocs-akamai-logo.png&color=%23017ac6&variant=light",
+        "https://supabase.com/docs/guides/auth/social-sign-in/auth-linkedin",
+        "https://nango.dev/docs/api-integrations/linkedin/how-to-register-your-own-linkedin-api-oauth-app",
+        "https://nango.mintlify.app/_mintlify/api/og/v2?division=Documentation&title=Set+up+LinkedIn+with+Nango&description=Register+an+OAuth+app+with+LinkedIn+and+connect+it+to+Nango&theme=79d4473b17677a097a22660e&signature=12ca15ab56b029db58c7286c38d74875f8fa9cd492d13bce425a9acdb5ff3153",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/client-credentials-flow",
+        "https://learn.microsoft.com/en-us/linkedin/shared/api-guide/best-practices/secure-applications",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow-native",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/sample-applications"
+      ]
+    },
+    {
+      "query": "LinkedIn OAuth app review approval requirements",
+      "urls": [
+        "https://www.linkedin.com/help/linkedin/answer/a1665329",
+        "https://docs.unified.to/skills/linkedin-oauth-app/SKILL.md",
+        "https://learn.microsoft.com/en-us/linkedin/marketing/community-management-app-review?view=li-lms-2026-09",
+        "https://www.linkedin.com/help/linkedin/answer/a1449586",
+        "https://learn.microsoft.com/en-us/linkedin/consumer/integrations/verified-on-linkedin/guides/plus-tier/certification",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/getting-access",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/developer-portal-tools"
+      ]
+    },
+    {
+      "query": "LinkedIn app marketplace listing publish requirements review",
+      "urls": [
+        "https://www.linkedin.com/help/lms/answer/a1665329",
+        "https://learn.microsoft.com/en-us/linkedin/marketing/community-management-app-review?view=li-lms-2026-06",
+        "https://developers.hubspot.com/docs/apps/developer-platform/list-apps/listing-your-app/app-marketplace-listing-requirements",
+        "https://developers.google.com/workspace/marketplace/about-app-review",
+        "https://www.gstatic.com/devrel-devsite/prod/v5a0f9ff8b593048661361a49e11ab98a8b1ac025e19e60e6189f2b56796f8a43/developers/images/opengraph/white.png",
+        "https://docs.stripe.com/stripe-apps/publish-app",
+        "https://d37ugbyn3rpeym.cloudfront.net/docs/og-image/stripe-apps.publish-app.ogimage.png",
+        "https://developers.hubspot.com/docs/apps/developer-platform/list-apps/apply-for-certification/certification-requirements",
+        "https://developer.atlassian.com/platform/marketplace/creating-a-marketplace-listing/",
+        "https://developer.zendesk.com/documentation/marketplace/publishing-to-the-marketplace/submit-your-app/"
+      ]
+    },
+    {
+      "query": "LinkedIn OAuth scopes permissions verification",
+      "urls": [
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/token-introspection",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/developer-portal-tools",
+        "https://docs.unified.to/skills/linkedin-oauth-app/SKILL.md",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/getting-access",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow-native",
+        "https://learn.microsoft.com/en-us/linkedin/shared/authentication/postman-getting-started",
+        "https://learn.microsoft.com/en-us/linkedin/consumer/integrations/verified-on-linkedin/guides/implementation-guide"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://www.linkedin.com/help/linkedin/answer/a1665329",
+      "fetched_at": "2026-10-29",
+      "passages": [
+        "Send an app verification request for a LinkedIn Page | LinkedIn Help\n\n# Send an app verification request for a LinkedIn Page\n\nFor certain functionality and products, you’re required to associate your app with a LinkedIn Page. The company you select will function as the publisher of the app. You must send an app verification request to your Page super admin who is responsible for approving or denying the request to associate an app with a LinkedIn Page.\n\nPrerequisite:\n\n- You already have an existing app associated with a LinkedIn Page. If you don’t, create a new app before proceeding with this procedure.\n\nTo send an app verification request:",
+        "1. Go to developer.linkedin.com. \n2. Click My apps in the upper-right corner of the page.\n3. Select the required app from the list of existing apps.\n4. Click the Settings tab.\n5. Click the Verify button.\n6. In the Verify company dialog, click the Generate URL button.\n7. Click Copy URL and send it to the Page super admin for verification. You can send the URL using email or LinkedIn Messaging.\n8. Click the I’m done button to complete and close the Verify company dialog.\n\nResults",
+        "- The Page super admin will approve or deny your request when they click on the unique URL sent to them.\n- Your name, profile image, current title, and company is visible to the Page super admin during the approval process. If you’re a 1st-degree connection with the Page super admin, they’ll see a notice indicating your connection.\n- Your Page super admin has 30 days to verify the app with the unique URL. Once the Page super admin approves the request, the app is verified in your app settings. The unique URL will only expire earlier than 30 days if a Page super admin denies the request. This will invalidate all generated links by any developer on that app."
+      ]
+    },
+    {
+      "url": "https://www.linkedin.com/help/linkedin/answer/a1449586",
+      "fetched_at": "2026-10-29",
+      "passages": [
+        "Developer application review status definitions | LinkedIn Help\n\n# Developer application review status definitions\n\nRequests related to Developer Product management undergo an approval review process.\n\nIf your product request is currently under review, you may see one of the following status messages listed below in the API Developer Portal, depending on the product and tier you are requesting. You can access the status of your review by selecting Review in progress in the developer portal.",
+        "| Status Message | Definition |\n| --- | --- |\n| Access Form Review | We are reviewing your access request form responses. |\n| Identity Vetting | We are verifying whether your organization meets our access requirements. |\n| App Review | We are reviewing your developer application and screencast. |",
+        "| Rejection Message | Definition |\n| --- | --- |\n| Incomplete Access Request Form | Your access request form provided insufficient details to approve your request. |\n| Unapproved Use Case | The use case you specified is not an approved use case for the API. |\n| Fail Email Verification | We were unable to verify the email address you provided. |\n| Fail Organization Verification | We were unable to verify that your organization is a legally registered, active entity. |\n| Invalid Company Website | We were unable to verify your organization’s website. |\n| Invalid Company Page | The LinkedIn page you associated with your app belongs to a different organization. |\n| Organization doesn’t meet our access requirements. | We were unable to verify that your organization meets our access requirements. |\n| Invalid Privacy Policy | We were unable to verify your organization’s privacy policy.",
+        "|\n| Invalid Screencast | The screen recording/screencast you provided does not meet our requirements. |\n| Invalid App Name | Your application name includes portions of the LinkedIn or Microsoft names or logos. |\n| Not in Compliance with Data Restrictions | Your application is not in compliance with the relevant LinkedIn API terms. |\n\nFor any questions about the status of your application, please contact our developer support team."
+      ]
+    },
+    {
+      "url": "https://www.linkedin.com/help/lms/answer/a1665329",
+      "fetched_at": "2026-10-29",
+      "passages": [
+        "Send an app verification request for a LinkedIn Page | Marketing Solutions Help\n\n# Send an app verification request for a LinkedIn Page\n\nLast updated: 3 years ago\n\nFor certain functionality and products, you’re required to associate your app with a LinkedIn Page. The company you select will function as the publisher of the app. You must send an app verification request to your Page super admin who is responsible for approving or denying the request to associate an app with a LinkedIn Page.\n\nPrerequisite:\n\n- You already have an existing app associated with a LinkedIn Page. If you don’t, create a new app before proceeding with this procedure.\n\nTo send an app verification request:",
+        "1. Go to developer.linkedin.com. \n2. Click My apps in the upper-right corner of the page.\n3. Select the required app from the list of existing apps.\n4. Click the Settings tab.\n5. Click the Verify button.\n6. In the Verify company dialog, click the Generate URL button.\n7. Click Copy URL and send it to the Page super admin for verification. You can send the URL using email or LinkedIn Messaging.\n8. Click the I’m done button to complete and close the Verify company dialog.\n\nResults",
+        "- The Page super admin will approve or deny your request when they click on the unique URL sent to them.\n- Your name, profile image, current title, and company is visible to the Page super admin during the approval process. If you’re a 1st-degree connection with the Page super admin, they’ll see a notice indicating your connection.\n- Your Page super admin has 30 days to verify the app with the unique URL. Once the Page super admin approves the request, the app is verified in your app settings. The unique URL will only expire earlier than 30 days if a Page super admin denies the request. This will invalidate all generated links by any developer on that app."
+      ]
+    },
+    {
+      "url": "https://techdocs.akamai.com/identity-cloud/docs/the-linkedin-oauth-20-social-login-configuration-guide",
+      "fetched_at": "2026-10-29",
+      "passages": [
+        "LinkedIn OAuth 2.0 social login guide\n\n# LinkedIn OAuth 2.0 social login guide\n\nLinkedIn is a business- and career-oriented social networking site with over 500 million registered users.\n\nBefore you begin\n\nTo use LinkedIn for social login you must:\n\n1. Obtain a LinkedIn developer account from https://www.developer.linkedin.com.\n2. Do one of the following:\n\n- Open a previously-created LinkedIn application, and copy the client ID and client secret.\n- Create a new LinkedIn application and copy the client ID and client secret.\n3. Use the Social Login Dashboard and the LinkedIn client ID and client secret to configure LinkedIn as a social login provider.\n\nCreate a LinkedIn OAuth 2.0 app",
+        "All apps must be associated with a LinkedIn page, and the owner of that page must give permission to associate the page with your app. If you don’t have a LinkedIn page to associate with an app, you can create your own page by clicking Create a new LinkedIn page. 5. Enter the URL of your privacy policy in the Privacy policy URL field:\n6. Click Upload a logo and select an image file to server as the logo for your application: The logo is displayed as part of the social login process and can be either a .PNG or a .JPG file. In addition, the file must be stored locally: you cannot upload a logo from a URL. Your logo should be relatively small (for example, 100 pixels by 100 pixels); however, LinkedIn will shrink your logo as best it can to fit the available space.",
+        "This URL must be sent to the owner of the LinkedIn page; the page owner can then give permission to associate the page with your app. If you’re the owner of the LinkedIn page you can paste this URL into the address bar of your web press, press ENTER, and then complete the verification process yourself. After the page has been verified, your App settings page will look something like this:\n10. While you wait for the verification process to complete, click the Products tab and then click the Select button located next to Sign In with LinkedIn:\n11. In the Add Sign In with LinkedIn dialog, select I have read and agree to these terms and then click Add product:\n12. Click the Auth tab and then, near the bottom of the screen, click Add redirect URL:\n13. Enter your redirect URI in the authorized redirect URLs for your app field and then click Update:\n14.",
+        "Copy your app’s Client ID, then click the Reveal client secret icon (the icon that looks like a little eyeball) to show the client secret:\n\nCopy the client secret. Both the client ID and the client secret are needed in order to configure LinkedIn for social login.\n15. Log off from the LinkedIn developers center.\n\nUse an existing LinkedIn OAuth 2.0 app for social login\n\nIf you already have a LinkedIn OAuth 2.0 application that can be used for social login, complete the following steps to retrieve the application’s client ID and client secret:",
+        "> 📘\n> \n> You must always have at least one social login provider in the widget. If you delete all the providers and then click Publish, you’ll see the error message Couldn’t save configuration: No providers.\n\nUpdated 6 months ago"
+      ]
+    },
+    {
+      "url": "https://supabase.com/docs/guides/auth/social-sign-in/auth-linkedin",
+      "fetched_at": "2026-10-29",
+      "passages": [
+        "# Sign in with LinkedIn\n\nAdd LinkedIn OAuth to your Supabase project\n\nTo enable LinkedIn Auth for your project, you need to set up a LinkedIn OAuth application and add the application credentials to your Supabase Dashboard.\n\n## Overview\n\nSetting up LinkedIn sign-in for your application consists of 3 parts:\n\n- Create and configure a LinkedIn Project and App on the LinkedIn Developer Dashboard.\n- Add your LinkedIn (OIDC) `client_id` and `client_secret` to your Supabase Project.\n- Add the sign-in code to your Supabase JS Client App.\n\n## Access your LinkedIn Developer account\n\n- Go to LinkedIn Developer Dashboard.\n- Sign in (if necessary.)\n\n## Find your callback URL",
+        "The next step requires a callback URL, which looks like this: `https://.supabase.co/auth/v1/callback`\n\n- Go to your Supabase Project Dashboard\n- Click on the `Authentication` icon in the left sidebar\n- Click on `Sign In / Providers` under the Configuration section\n- Click on LinkedIn from the accordion list to expand and you'll find your Callback URL, you can click `Copy` to copy it to the clipboard\n\n### Local development\n\nWhen testing OAuth locally with the Supabase CLI, ensure your OAuth provider\nis configured with the local Supabase Auth callback URL:\n\nhttp://localhost:54321/auth/v1/callback\n\nIf this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.\n\nSee the local development docs for more details.",
+        "For testing OAuth locally with the Supabase CLI see the local development docs.\n\n## Create a LinkedIn OAuth app\n\n- Go to LinkedIn Developer Dashboard.\n- Click on `Create App` at the top right\n- Enter your `LinkedIn Page` and `App Logo`\n- Save your app\n- Click `Products` from the top menu\n- Look for `Sign In with LinkedIn using OpenID Connect` and click on Request Access\n- Click `Auth` from the top menu\n- Add your `Redirect URL` to the `Authorized Redirect URLs for your app` section\n- Copy and save your newly-generated `Client ID`\n- Copy and save your newly-generated `Client Secret`",
+        "if (code) {\n    const supabase = createServerClient(\n      import.meta.env.PUBLIC_SUPABASE_URL,\n      import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY,\n      {\n        cookies: {\n          getAll() {\n            return parseCookieHeader(Astro.request.headers.get('Cookie') ?? '')\n          },\n          setAll(cookiesToSet, _headers) {\n            cookiesToSet.forEach(({ name, value, options }) =>\n              Astro.cookies.set(name, value, options)\n            )\n          },\n        },\n      }\n    )\n\nconst { error } = await supabase.auth.exchangeCodeForSession(code)\n\nif (!error) {\n      return redirect(next)\n    }\n  }\n\n// return the user to an error page with instructions\n  return redirect('/auth/auth-code-error')\n}\n\n```\n\nRemix\n\nCreate a new file at `app/routes/auth.callback.tsx` and populate with the following:\n\n```ts\nimport { redirect, type LoaderFunctionArgs } from '@remix-run/node'\nimport { createServerClient, parseCookieHeader, serializeCookieHeader } from '@supabase/ssr'",
+        "Developers using the Supabase CLI to test their LinkedIn OAuth application should also update their `config.toml` to make use of the new provider:\n\n```\n[auth.external.linkedin_oidc]\nenabled = true\nclient_id = ...\nsecret = ...\n\n```\n\nDo reach out to support if you have any concerns around this change.\n\n## Resources\n\n- Supabase - Get started for free\n- Supabase JS Client\n- LinkedIn Developer Dashboard"
+      ]
+    }
+  ],
+  "replies": [
+    "{\"app\":\"LinkedIn\",\"provider\":\"LinkedIn\",\"summary\":\"Create a LinkedIn app, associate it with a LinkedIn Page, and complete page verification. If you own the page you can verify immediately; otherwise a Page super admin has up to 30 days to approve. Public or restricted product access additionally requires LinkedIn developer review with no published timeline.\",\"developer_portal\":\"https://developer.linkedin.com\",\"scenarios\":[{\"id\":\"own-page-testing\",\"label\":\"Test with your own LinkedIn Page\",\"audience\":\"Developer who owns a LinkedIn Page\",\"state\":\"available_now\",\"dimensions\":{\"technical\":2,\"prerequisites\":2,\"approval\":1,\"uncertainty\":1,\"maintenance\":1},\"effort_hours\":{\"min\":1,\"max\":3},\"wait_days\":null,\"claims\":[\"c1\",\"c3\",\"c5\"],\"blocked_by\":[]},{\"id\":\"page-super-admin-approval\",\"label\":\"App tied to a Page managed by another super admin\",\"audience\":\"Developer whose organization uses a LinkedIn Page owned by a super admin\",\"state\":\"production_blocked\",\"dimensions\":{\"technical\":2,\"prerequisites\":2,\"approval\":3,\"uncertainty\":2,\"maintenance\":1},\"effort_hours\":{\"min\":1,\"max\":4},\"wait_days\":{\"min\":0,\"max\":30},\"claims\":[\"c1\",\"c2\",\"c4\",\"c5\"],\"blocked_by\":[\"c2\",\"c4\"]},{\"id\":\"product-review-public\",\"label\":\"Request public or restricted product access\",\"audience\":\"Developer seeking Sign In with LinkedIn using OpenID Connect or other Developer Product access\",\"state\":\"production_blocked\",\"dimensions\":{\"technical\":3,\"prerequisites\":3,\"approval\":4,\"uncertainty\":4,\"maintenance\":2},\"effort_hours\":{\"min\":5,\"max\":20},\"wait_days\":null,\"claims\":[\"c1\",\"c6\",\"c7\",\"c8\"],\"blocked_by\":[\"c6\",\"c7\",\"c8\"]}],\"claims\":[{\"id\":\"c1\",\"text\":\"Every LinkedIn app must be associated with a LinkedIn Page, and the page owner must grant permission to associate it.\",\"kind\":\"requirement\",\"applies_to\":[\"own-page-testing\",\"page-super-admin-approval\",\"product-review-public\"],\"wait_days\":null,\"passage\":\"P12\",\"quote\":\"All apps must be associated with a LinkedIn page, and the owner of that page must give permission to associate the page with your app.\"},{\"id\":\"c2\",\"text\":\"You must send an app verification request to your Page super admin, who approves or denies associating the app with the LinkedIn Page.\",\"kind\":\"requirement\",\"applies_to\":[\"page-super-admin-approval\",\"product-review-public\"],\"wait_days\":null,\"passage\":\"P1\",\"quote\":\"You must send an app verification request to your Page super admin who is responsible for approving or denying the request to associate an app with a LinkedIn Page.\"},{\"id\":\"c3\",\"text\":\"If you own the LinkedIn Page, you can paste the verification URL into your browser and complete verification yourself.\",\"kind\":\"fact\",\"applies_to\":[\"own-page-testing\"],\"wait_days\":null,\"passage\":\"P13\",\"quote\":\"If you’re the owner of the LinkedIn page you can paste this URL into the address bar of your web press, press ENTER, and then complete the verification process yourself.\"},{\"id\":\"c4\",\"text\":\"The Page super admin has 30 days to verify the app using the unique URL.\",\"kind\":\"wait_time\",\"applies_to\":[\"page-super-admin-approval\"],\"wait_days\":{\"min\":0,\"max\":30},\"passage\":\"P3\",\"quote\":\"Your Page super admin has 30 days to verify the app with the unique URL.\"},{\"id\":\"c5\",\"text\":\"Once the Page super admin approves the request, the app is verified in your app settings.\",\"kind\":\"fact\",\"applies_to\":[\"own-page-testing\",\"page-super-admin-approval\"],\"wait_days\":null,\"passage\":\"P3\",\"quote\":\"Once the Page super admin approves the request, the app is verified in your app settings.\"},{\"id\":\"c6\",\"text\":\"Developer product requests go through an approval review process.\",\"kind\":\"fact\",\"applies_to\":[\"product-review-public\"],\"wait_days\":null,\"passage\":\"P4\",\"quote\":\"Requests related to Developer Product management undergo an approval review process.\"},{\"id\":\"c7\",\"text\":\"App Review means LinkedIn is reviewing your developer application and screencast.\",\"kind\":\"fact\",\"applies_to\":[\"product-review-public\"],\"wait_days\":null,\"passage\":\"P5\",\"quote\":\"App Review: We are reviewing your developer application and screencast.\"},{\"id\":\"c8\",\"text\":\"Organization verification can fail if LinkedIn cannot verify that your organization is a legally registered, active entity.\",\"kind\":\"limit\",\"applies_to\":[\"product-review-public\"],\"wait_days\":null,\"passage\":\"P6\",\"quote\":\"Fail Organization Verification: We were unable to verify that your organization is a legally registered, active entity.\"}],\"steps\":[{\"title\":\"Create a LinkedIn app and associate it with a LinkedIn Page\",\"owner\":\"you\",\"detail\":\"Go to developer.linkedin.com, sign in, click Create App, enter your LinkedIn Page and App Logo, then save the app.\",\"scenarios\":[\"own-page-testing\",\"page-super-admin-approval\",\"product-review-public\"],\"minutes\":15,\"claims\":[\"c1\"],\"agent_prompt\":null},{\"title\":\"Generate the verification URL and send it to the Page super admin\",\"owner\":\"you\",\"detail\":\"In the app Settings tab, click Verify, then Generate URL. Copy the URL and send it to the Page super admin. If you own the page, paste the URL into your browser and complete verification yourself.\",\"scenarios\":[\"own-page-testing\",\"page-super-admin-approval\"],\"minutes\":10,\"claims\":[\"c2\",\"c3\"],\"agent_prompt\":\"Draft an email or LinkedIn Message to the Page super admin containing the copied verification URL from LinkedIn app Settings > Verify > Generate URL, and ask them to approve the app association.\"},{\"title\":\"Wait for Page super admin approval\",\"owner\":\"provider\",\"detail\":\"The Page super admin approves or denies the request using the unique URL. The app is verified once approved; the admin has up to 30 days.\",\"scenarios\":[\"page-super-admin-approval\"],\"minutes\":null,\"claims\":[\"c4\",\"c5\"],\"agent_prompt\":null},{\"title\":\"Request access to Sign In with LinkedIn using OpenID Connect\",\"owner\":\"you\",\"detail\":\"Click Products, request access for Sign In with LinkedIn using OpenID Connect, then go to Auth and add your redirect URL to Authorized Redirect URLs.\",\"scenarios\":[\"product-review-public\"],\"minutes\":20,\"claims\":[\"c6\",\"c7\"],\"agent_prompt\":null},{\"title\":\"Complete LinkedIn developer application review\",\"owner\":\"provider\",\"detail\":\"LinkedIn reviews your access request form, organization identity, and developer application/screencast. Avoid rejection causes such as unapproved use case, unverified organization, invalid privacy policy, invalid screencast, or data-restriction non-compliance.\",\"scenarios\":[\"product-review-public\"],\"minutes\":null,\"claims\":[\"c6\",\"c7\",\"c8\"],\"agent_prompt\":\"Create a pre-submission checklist covering LinkedIn rejection reasons: unapproved use case, organization verification, email verification, company website, company page, privacy policy, screencast, app name, and data restrictions.\"},{\"title\":\"Copy Client ID and Client Secret for your application\",\"owner\":\"you\",\"detail\":\"In the LinkedIn app Auth tab, copy the Client ID and reveal/copy the Client Secret to configure your app or identity provider.\",\"scenarios\":[\"own-page-testing\",\"page-super-admin-approval\",\"product-review-public\"],\"minutes\":5,\"claims\":[],\"agent_prompt\":null}],\"blockers\":[{\"symptom\":\"Page super admin does not act within 30 days or denies the verification request.\",\"fix\":\"Have the Page super admin click the unique verification URL; if denied, all generated links are invalidated and a new URL must be generated.\",\"escalate\":\"Contact LinkedIn developer support if the Page super admin cannot approve or the URL will not work.\",\"claims\":[\"c4\",\"c5\"]},{\"symptom\":\"Developer product request is rejected during review.\",\"fix\":\"Correct the access request form, confirm the organization is legally registered and active, update the privacy policy, or replace the screencast per LinkedIn requirements.\",\"escalate\":\"Contact LinkedIn developer support for questions about application review status.\",\"claims\":[\"c6\",\"c7\",\"c8\"]}]}"
+  ],
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "support_backend": "nli (cross-encoder/nli-deberta-v3-base)",
+  "support": [
+    {
+      "claim": "Every LinkedIn app must be associated with a LinkedIn Page, and the page owner must grant permission to associate it.",
+      "passage": "all apps must be associated with a linkedin page, and the owner of that page must give permission to associate the page with your app . if you don't have a linkedin page to associate with an app, you can create your own page by clicking create a new linkedin page. 5. enter the url of your privacy policy in the privacy policy url field: 6. click upload a logo and select an image file to server as the logo for your application: the logo is displayed as part of the social login process and",
+      "result": "pass",
+      "p_supports": 0.9978322438160474,
+      "note": "",
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)"
+    },
+    {
+      "claim": "You must send an app verification request to your Page super admin, who approves or denies associating the app with the LinkedIn Page.",
+      "passage": "send an app verification request for a linkedin page | linkedin help # send an app verification request for a linkedin page for certain functionality and products, you're required to associate your app with a linkedin page. the company you select will function as the publisher of the app. you must send an app verification request to your page super admin who is responsible for approving or denying the request to associate an app with a linkedin page . prerequisite: - you already have an existing app associated with a linkedin page. if you don't, create a new app before proceeding with this procedure. to send an app verification request",
+      "result": "pass",
+      "p_supports": 0.9978338415619893,
+      "note": "",
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)"
+    },
+    {
+      "claim": "If you own the LinkedIn Page, you can paste the verification URL into your browser and complete verification yourself.",
+      "passage": "this url must be sent to the owner of the linkedin page; the page owner can then give permission to associate the page with your app. if you're the owner of the linkedin page you can paste this url into the address bar of your web press, press enter, and then complete the verification process yourself . after the page has been verified, your app settings page will look something like this: 10. while you wait for the verification process to complete, click the products tab and then click the select button located next to sign in with linkedin: 11. in the add sign in with linkedin dialog, select i have read and agree to these terms and then click add product: 12. click the auth",
+      "result": "pass",
+      "p_supports": 0.9944009511949953,
+      "note": "",
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)"
+    },
+    {
+      "claim": "The Page super admin has 30 days to verify the app using the unique URL.",
+      "passage": "- the page super admin will approve or deny your request when they click on the unique url sent to them. - your name, profile image, current title, and company is visible to the page super admin during the approval process. if you're a 1st-degree connection with the page super admin, they'll see a notice indicating your connection. - your page super admin has 30 days to verify the app with the unique url . once the page super admin approves the request, the app is verified in your app settings. the unique url will only expire earlier than 30 days if a page super admin denies the request. this will invalidate all generated links by any developer on that app",
+      "result": "pass",
+      "p_supports": 0.9960191653873205,
+      "note": "",
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)"
+    },
+    {
+      "claim": "Once the Page super admin approves the request, the app is verified in your app settings.",
+      "passage": "admin will approve or deny your request when they click on the unique url sent to them. - your name, profile image, current title, and company is visible to the page super admin during the approval process. if you're a 1st-degree connection with the page super admin, they'll see a notice indicating your connection. - your page super admin has 30 days to verify the app with the unique url. once the page super admin approves the request, the app is verified in your app settings . the unique url will only expire earlier than 30 days if a page super admin denies the request. this will invalidate all generated links by any developer on that app",
+      "result": "pass",
+      "p_supports": 0.9843646408593101,
+      "note": "",
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)"
+    },
+    {
+      "claim": "Developer product requests go through an approval review process.",
+      "passage": "developer application review status definitions | linkedin help # developer application review status definitions requests related to developer product management undergo an approval review process . if your product request is currently under review, you may see one of the following status messages listed below in the api developer portal, depending on the product and tier you are requesting. you can access the status of your review by selecting review in progress in the developer portal",
+      "result": "pass",
+      "p_supports": 0.9979814221103639,
+      "note": "",
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)"
+    }
+  ]
+}
