@@ -55,7 +55,8 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         query = args.app
 
-    for ev in pipeline.run(query, sources, model, support, replayed=args.replay):
+    today = pipeline.run_date(record) if args.replay else None
+    for ev in pipeline.run(query, sources, model, support, today=today, replayed=args.replay):
         print(f"{ICONS.get(ev.type, ' ')} {ev.message}", flush=True)
         if ev.type == "error":
             return 1

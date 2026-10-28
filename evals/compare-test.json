@@ -319,7 +319,7 @@
           "label": "supports",
           "result": "pass",
           "p_supports": 1.0,
-          "ms": 0,
+          "ms": 1,
           "note": "",
           "policy": true
         },
@@ -337,7 +337,7 @@
           "label": "supports",
           "result": "pass",
           "p_supports": 1.0,
-          "ms": 0,
+          "ms": 1,
           "note": "",
           "policy": true
         },
@@ -373,7 +373,7 @@
           "label": "supports",
           "result": "pass",
           "p_supports": 1.0,
-          "ms": 0,
+          "ms": 1,
           "note": "",
           "policy": true
         },
@@ -418,7 +418,7 @@
           "label": "unclear",
           "result": "pass",
           "p_supports": 1.0,
-          "ms": 0,
+          "ms": 1,
           "note": "",
           "policy": false
         },

@@ -176,3 +176,31 @@ def test_claim_that_repeats_its_quote_is_a_warning(raw):
     c = raw["claims"][1]
     c["text"] = c["evidence"]["quote"]
     assert "claim_repeats_quote" in codes(raw) and "claim_repeats_quote" not in error_codes(raw)
+
+
+def test_curly_apostrophe_counts_as_a_limit(raw):
+    c = raw["claims"][0]
+    c["text"] = "The installation scope cannot be changed afterward."
+    c["evidence"]["quote"] = "Installation scope is set once, at creation time, and can’t be changed afterward."
+    assert "obligation_not_in_quote" not in error_codes(raw)
+
+
+def test_not_required_is_not_an_obligation(raw):
+    c = raw["claims"][0]
+    c["text"] = "Listing on the Marketplace is optional and not required to use the OAuth flow."
+    c["evidence"]["quote"] = "Listing on the Marketplace is optional and helps your connection reach a wider audience"
+    assert "obligation_not_in_quote" not in error_codes(raw)
+
+
+def test_every_states_a_gate_for_a_requirement(raw):
+    c = raw["claims"][1]
+    c["text"] = "The Notion team reviews every Marketplace listing submission."
+    c["evidence"]["quote"] = "The Notion team reviews every listing submission."
+    assert "requirement_not_in_quote" not in error_codes(raw)
+
+
+def test_evidence_one_day_ahead_is_a_time_zone_not_the_future(raw):
+    raw["claims"][0]["evidence"]["retrieved_at"] = "2026-10-29"
+    assert "future_evidence" not in error_codes(raw)          # TODAY is 2026-10-28
+    raw["claims"][0]["evidence"]["retrieved_at"] = "2026-10-31"
+    assert "future_evidence" in error_codes(raw)

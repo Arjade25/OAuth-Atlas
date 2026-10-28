@@ -173,7 +173,8 @@ def _events(query: str, replay: bool):
         yield send({"type": "error", "message": f"Setup failed: {e}"})
         return
 
-    for ev in pipeline.run(query, sources, model, support, replayed=replay):
+    today = pipeline.run_date(record) if replay else None
+    for ev in pipeline.run(query, sources, model, support, today=today, replayed=replay):
         if ev.type == "done":
             pipeline.save(ev.guide, None if replay else ev.run)
         yield send(ev.public())

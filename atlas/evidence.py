@@ -24,8 +24,35 @@ def normalize(text: str) -> str:
     return text.strip().strip(".,;:").lower()
 
 
+def _words(text: str) -> list[str]:
+    return re.findall(r"[a-z0-9]+", normalize(text))
+
+
+def _contains_words(haystack: list[str], needle: list[str], start: int = 0) -> int:
+    """Index just past the first run of `needle` in `haystack` at or after
+    `start`, or -1. Words must match exactly and in order; punctuation,
+    formatting and table or list markup between them are ignored."""
+    n = len(needle)
+    for i in range(start, len(haystack) - n + 1):
+        if haystack[i:i + n] == needle:
+            return i + n
+    return -1
+
+
 def quote_in_page(quote: str, page_text: str) -> CheckResult:
-    q = normalize(quote)
-    if not q:
+    """The quote's words appear in the page, in order. A quote that joins
+    fragments with '...' passes only if every fragment appears, in that order,
+    in the same page; a changed or added word still fails."""
+    fragments = [f for f in re.split(r"\.\.\.|\u2026", quote)]
+    fragments = [_words(f) for f in fragments]
+    fragments = [f for f in fragments if f]
+    # Each fragment must be long enough to identify its place on the page.
+    if not fragments or any(len(f) < (3 if len(fragments) == 1 else 4) for f in fragments):
         return CheckResult.failed
-    return CheckResult.passed if q in normalize(page_text) else CheckResult.failed
+    page = _words(page_text)
+    pos = 0
+    for f in fragments:
+        pos = _contains_words(page, f, pos)
+        if pos == -1:
+            return CheckResult.failed
+    return CheckResult.passed

@@ -331,3 +331,13 @@ def test_compare_inputs_runs_every_format(capsys):
     assert compare(yes, items, "test") == 0
     out = capsys.readouterr().out
     assert "sentence+source" in out and "JUDGE_INPUT=" in out
+
+
+def test_a_path_blocked_only_by_facts_keeps_them_as_blockers():
+    class OnlyFactBlocks(FakeModel):
+        def complete(self, messages):
+            return super().complete(messages).replace('"blocked_by": ["security-review"]', '"blocked_by": ["register"]')
+
+    g, _, _ = run_ok(model=OnlyFactBlocks())
+    s = g.scenario("marketplace")
+    assert s.state.value == "production_blocked" and s.blocked_by == ["register"]

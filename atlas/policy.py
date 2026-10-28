@@ -52,7 +52,12 @@ def _numbers(text: str) -> set[str]:
 _STRONG_CLAIM = re.compile(r"\b(required|requires|requirement|mandatory|must|only|always|never|cannot)\b")
 _STRONG_QUOTE = re.compile(
     r"\b(must|required|requires?|requirements?|mandatory|need|needs|needed|only|always|never|cannot|can't|"
-    r"not allowed|make sure|have to|has to|limited|at most|up to)\b")
+    r"not allowed|make sure|have to|has to|limited|at most|up to|every)\b")
+
+
+def _without_negated(text: str) -> str:
+    """Drop negated obligations: 'not required' and 'optional' state the absence of one."""
+    return re.sub(r"\b(not|isn't|aren't|no longer|never)\s+(required|mandatory)\b", " ", text)
 
 
 def claim_issues(c: Claim, today: date) -> list[Issue]:
@@ -75,15 +80,15 @@ def claim_issues(c: Claim, today: date) -> list[Issue]:
                          f"Claim '{c.id}' states {', '.join(sorted(missing))}, which its quote does not contain", c.id))
 
     # Obligation: "X is required" needs a quote that says so, not just an instruction.
-    strong = _STRONG_CLAIM.findall(c.text.lower())
-    if strong and not _STRONG_QUOTE.search(ev.quote.lower()):
+    strong = _STRONG_CLAIM.findall(_without_negated(normalize(c.text)))
+    if strong and not _STRONG_QUOTE.search(normalize(ev.quote)):
         out.append(Issue("obligation_not_in_quote", "error",
                          f"Claim '{c.id}' says '{strong[0]}', but its quote does not state an obligation or limit", c.id))
 
     # The same test for a claim *filed* as a requirement, whatever its wording:
     # copying "Sign up for a sandbox account" and labelling it a requirement is
     # the same overstatement, moved into the claim's type.
-    if c.kind == ClaimKind.requirement and not strong and not _STRONG_QUOTE.search(ev.quote.lower()):
+    if c.kind == ClaimKind.requirement and not strong and not _STRONG_QUOTE.search(normalize(ev.quote)):
         out.append(Issue("requirement_not_in_quote", "error",
                          f"Claim '{c.id}' is filed as a requirement, but its quote does not state an obligation", c.id))
 
@@ -98,7 +103,7 @@ def claim_issues(c: Claim, today: date) -> list[Issue]:
     if len(ev.quote.split()) > MAX_QUOTE_WORDS:
         out.append(Issue("quote_too_long", "warning",
                          f"Claim '{c.id}' quote exceeds {MAX_QUOTE_WORDS} words; keep evidence to the passage", c.id))
-    if ev.retrieved_at > today:
+    if (ev.retrieved_at - today).days > 1:  # a day of leeway: fetch and check may be in different time zones
         out.append(Issue("future_evidence", "error", f"Claim '{c.id}' evidence is dated in the future", c.id))
     return out
 

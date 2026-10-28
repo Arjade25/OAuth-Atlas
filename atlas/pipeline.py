@@ -240,7 +240,8 @@ def assemble(draft: Draft, ctx: _Ctx, query: str, today: date, notes: list[str])
         cited = keep(ds.claims, cid, f"scenario {ds.id}")
         # Only a requirement can block a path; a fact or limit is context.
         not_req = [c for c in blocked if by_id[c].kind != ClaimKind.requirement]
-        if not_req:
+        # ...but only while a stated requirement remains to explain the block.
+        if not_req and len(not_req) < len(blocked):
             notes.append(f"'{', '.join(not_req)}' on '{ds.id}' is not a requirement, so it no longer counts as a blocker")
             blocked = [c for c in blocked if c not in not_req]
             cited = list(dict.fromkeys(cited + not_req))
@@ -383,6 +384,12 @@ def save(guide: Guide, record: Optional[dict]) -> Path:
         RUNS_DIR.mkdir(exist_ok=True)
         (RUNS_DIR / f"{guide.slug}.json").write_text(json.dumps(record, indent=2, ensure_ascii=False), encoding="utf-8")
     return path
+
+
+def run_date(record: dict) -> date:
+    """The day a recorded run fetched its pages, so a replay judges evidence as of then."""
+    days = [date.fromisoformat(p["fetched_at"]) for p in record.get("pages", [])]
+    return max(days) if days else date.today()
 
 
 def replay_parts(record: dict):

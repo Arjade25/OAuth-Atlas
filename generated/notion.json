@@ -138,13 +138,11 @@
       "checks": {
         "exists": "pass",
         "supports": "pass",
-        "policy": "fail",
+        "policy": "pass",
         "supports_p": 0.9963933936990857,
-        "notes": [
-          "Claim 'installation-scope-set-at-creation' says 'cannot', but its quote does not state an obligation or limit"
-        ]
+        "notes": []
       },
-      "status": "flagged"
+      "status": "verified"
     },
     {
       "id": "selected-workspaces-not-marketplace-eligible",
@@ -242,15 +240,15 @@
         "source_type": "official"
       },
       "checks": {
-        "exists": "fail",
+        "exists": "pass",
         "supports": "not_run",
         "policy": "pass",
         "supports_p": null,
         "notes": [
-          "quote not found in any passage the model was given"
+          "not in the recorded run"
         ]
       },
-      "status": "flagged"
+      "status": "unverified"
     },
     {
       "id": "listing-submitted-for-review",
@@ -298,13 +296,11 @@
       "checks": {
         "exists": "pass",
         "supports": "pass",
-        "policy": "fail",
+        "policy": "pass",
         "supports_p": 0.9856515326405072,
-        "notes": [
-          "Claim 'notion-team-reviews-every-listing' is filed as a requirement, but its quote does not state an obligation"
-        ]
+        "notes": []
       },
-      "status": "flagged"
+      "status": "verified"
     },
     {
       "id": "review-timeline-5-10-business-days",
@@ -355,13 +351,11 @@
       "checks": {
         "exists": "pass",
         "supports": "pass",
-        "policy": "fail",
+        "policy": "pass",
         "supports_p": 0.9441664524153593,
-        "notes": [
-          "Claim 'listing-is-optional' says 'required', but its quote does not state an obligation or limit"
-        ]
+        "notes": []
       },
-      "status": "flagged"
+      "status": "verified"
     },
     {
       "id": "pat-for-own-use-only",
@@ -405,15 +399,15 @@
         "source_type": "official"
       },
       "checks": {
-        "exists": "fail",
+        "exists": "pass",
         "supports": "not_run",
         "policy": "pass",
         "supports_p": null,
         "notes": [
-          "quote not found in any passage the model was given"
+          "not in the recorded run"
         ]
       },
-      "status": "flagged"
+      "status": "unverified"
     },
     {
       "id": "authorization-url-flow",
@@ -587,7 +581,7 @@
   "review_status": "pending",
   "last_verified": "2026-10-29",
   "generation": {
-    "run_at": "2026-10-28T18:56:45Z",
+    "run_at": "2026-10-28T19:01:51Z",
     "query": "Notion",
     "extraction_model": "nvidia/nemotron-3.5-super-vl:free",
     "support_backend": "nli (cross-encoder/nli-deberta-v3-base)",
@@ -606,7 +600,7 @@
       "https://developers.notion.com/guides/get-started/marketplace-listing",
       "https://developers.notion.com/guides/get-started/handling-api-keys"
     ],
-    "replayed": false,
+    "replayed": true,
     "notes": [
       "dropped unknown reference 'only-any-workspace-eligible-for-marketplace' in scenario marketplace-listing",
       "dropped unknown reference 'only-any-workspace-eligible-for-marketplace' in step 3",
