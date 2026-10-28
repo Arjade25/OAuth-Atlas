@@ -65,28 +65,66 @@ def verdict_from_probs(probs: dict[str, float], cutoff: Optional[float] = None) 
     return Verdict(CheckResult.unclear, p, f"support probability {p:.2f} is below {cutoff:.2f}")
 
 
-def window(quote: str, passage: str, words: int = 70) -> str:
-    """The quote with some context on each side, in the page's own wording and
-    capitals (a cased model reads lowercased text worse). Short enough for
-    small judges' 512-token limit."""
+def _span(quote: str, passage: str):
+    """Where the quote sits in the passage, tolerating punctuation and formatting."""
     import re
 
     toks = re.findall(r"\w+", quote)
-    if toks:
-        # Match the quote's words in order, tolerating punctuation and formatting between them.
-        pat = r"\W+".join(re.escape(t) for t in toks)
-        m = re.search(pat, passage, flags=re.I)
-        if m:
-            before = passage[:m.start()].split()[-words:]
-            after = passage[m.end():].split()[:words]
-            return " ".join(before + [passage[m.start():m.end()]] + after)
-    return " ".join(passage.split()[: words * 2])
+    if not toks:
+        return None
+    return re.search(r"\W+".join(re.escape(t) for t in toks), passage, flags=re.I)
 
 
-def judge_input(quote: str, passage: str, source: str) -> str:
-    """What the judge reads: who is speaking, then the passage around the quote.
-    Naming the source lets 'we allow only one callback URL' count as the provider speaking."""
-    return f"{source}: {window(quote, passage)}"
+def window(quote: str, passage: str, words: int = 70) -> str:
+    """The quote with up to `words` words of context each side, original wording."""
+    m = _span(quote, passage)
+    if not m:
+        return " ".join(passage.split()[: words * 2])
+    before = passage[:m.start()].split()[-words:]
+    after = passage[m.end():].split()[:words]
+    return " ".join(before + [passage[m.start():m.end()]] + after)
+
+
+def window_lower(quote: str, passage: str, words: int = 70) -> str:
+    """The first format tried: the same window, lowercased with markdown stripped."""
+    norm, q = normalize(passage), normalize(quote)
+    i = norm.find(q)
+    if i == -1:
+        return " ".join(norm.split()[: words * 2])
+    return " ".join(norm[:i].split()[-words:] + [q] + norm[i + len(q):].split()[:words])
+
+
+def sentence(quote: str, passage: str) -> str:
+    """Just the sentence(s) containing the quote, cleaned of markdown and list markers."""
+    import re
+
+    m = _span(quote, passage)
+    if not m:
+        return quote
+    starts = [x.end() for x in re.finditer(r"[.!?](?=\s)|\n|\?\s", passage[:m.start()])]
+    start = starts[-1] if starts else 0
+    end_m = re.search(r"[.!?](?=\s|$)|\n", passage[m.end():])
+    end = m.end() + (end_m.end() if end_m else len(passage) - m.end())
+    text = passage[start:end]
+    text = re.sub(r"[`*_>#]|📘|^\s*[-•]\s*|^\s*\d+\.\s+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+# How the judge's input is built. Chosen by measurement: python -m atlas.judge_eval --compare-inputs
+JUDGE_INPUTS = {
+    "window-lower": lambda q, p, src: window_lower(q, p),
+    "window": lambda q, p, src: window(q, p),
+    "window+source": lambda q, p, src: f"From {src}: {window(q, p)}",
+    "sentence": lambda q, p, src: sentence(q, p),
+    "sentence+source": lambda q, p, src: f"According to {src}, {sentence(q, p)}",
+}
+DEFAULT_JUDGE_INPUT = "window-lower"  # 17/22 in the first measured run; replace only on evidence
+
+
+def judge_input(quote: str, passage: str, source: str, fmt: Optional[str] = None) -> str:
+    """What the judge reads. `source` names the speaker, e.g. "Pipedrive's documentation"."""
+    fmt = fmt or os.getenv("JUDGE_INPUT", DEFAULT_JUDGE_INPUT)
+    return JUDGE_INPUTS.get(fmt, JUDGE_INPUTS[DEFAULT_JUDGE_INPUT])(quote, passage, source)
 
 
 class SupportChecker(Protocol):

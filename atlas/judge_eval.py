@@ -23,7 +23,7 @@ from datetime import date
 
 from .policy import claim_issues
 from .schema import CheckResult, Claim, ClaimKind, Evidence
-from .support import make_support, threshold
+from .support import DEFAULT_JUDGE_INPUT, JUDGE_INPUTS, judge_input, make_support, threshold
 
 ROOT = Path(__file__).resolve().parent.parent
 SET = ROOT / "evals" / "judge_set.json"
@@ -38,11 +38,11 @@ def policy_passes(it: dict) -> bool:
     return not any(i.is_error for i in claim_issues(c, date(2026, 1, 1)))
 
 
-def score(judge, items: list[dict]) -> dict:
+def score(judge, items: list[dict], fmt: str = DEFAULT_JUDGE_INPUT) -> dict:
     rows = []
     for it in items:
         t0 = time.perf_counter()
-        v = judge.check(it["claim"], it["passage"])
+        v = judge.check(it["claim"], judge_input(it["quote"], it["chunk"], it["source"], fmt))
         rows.append({"id": it["id"], "label": it["label"], "result": v.result.value, "p_supports": v.p_supports,
                      "ms": round((time.perf_counter() - t0) * 1000), "note": v.note,
                      "policy": policy_passes(it)})
@@ -57,6 +57,7 @@ def score(judge, items: list[dict]) -> dict:
     system = {"false_passes": [r["id"] for r in should_hold if sys_pass(r)],
               "false_flags": [r["id"] for r in should_pass if not sys_pass(r)]}
     return {
+        "input_format": fmt,
         "system": system,
         "judge": judge.name, "threshold": threshold(), "items": len(rows),
         "correct_pass_or_hold": len(rows) - len(false_passes) - len(false_flags),
@@ -71,6 +72,9 @@ def score(judge, items: list[dict]) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="python -m atlas.judge_eval")
     ap.add_argument("--judge", choices=["nli", "laya", "llm", "auto"], default="auto")
+    ap.add_argument("--input", choices=sorted(JUDGE_INPUTS), default=None,
+                    help=f"How the judge's input is built (default {DEFAULT_JUDGE_INPUT} or JUDGE_INPUT)")
+    ap.add_argument("--compare-inputs", action="store_true", help="Score every input format with one loaded model")
     args = ap.parse_args(argv)
     from dotenv import load_dotenv
 
@@ -81,8 +85,13 @@ def main(argv=None) -> int:
         print(f"x Could not load the {args.judge} judge: {e}", file=sys.stderr)
         return 2
     items = json.loads(SET.read_text(encoding="utf-8"))["items"]
-    print(f"Scoring {judge.name} on {len(items)} labelled claims (threshold {threshold():.2f})...")
-    res = score(judge, items)
+    if args.compare_inputs:
+        return compare(judge, items, args.judge)
+    import os
+
+    fmt = args.input or os.getenv("JUDGE_INPUT", DEFAULT_JUDGE_INPUT)
+    print(f"Scoring {judge.name} on {len(items)} labelled claims (input {fmt}, threshold {threshold():.2f})...")
+    res = score(judge, items, fmt)
     for r in res["rows"]:
         mark = "ok " if (r["result"] == "pass") == (r["label"] == "supports") else "XX "
         p = "" if r["p_supports"] is None else f" p={r['p_supports']:.2f}"
@@ -99,6 +108,30 @@ def main(argv=None) -> int:
     print(f"  False flags:  {len(sy['false_flags'])} {sy['false_flags']}")
     out = ROOT / "evals" / f"results-{args.judge}.json"
     out.write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(f"Saved {out.relative_to(ROOT)}")
+    return 0
+
+
+def compare(judge, items, judge_kind) -> int:
+    print(f"Comparing input formats for {judge.name} on {len(items)} labelled claims "
+          f"(threshold {threshold():.2f}). Lower is better.\n")
+    print(f"  {'input format':<17} {'judge alone':>23}   {'with fixed rules':>23}")
+    print(f"  {'':<17} {'false pass':>11} {'false flag':>11}   {'false pass':>11} {'false flag':>11}")
+    results = {}
+    for fmt in JUDGE_INPUTS:
+        r = score(judge, items, fmt)
+        results[fmt] = r
+        sy = r["system"]
+        print(f"  {fmt:<17} {len(r['false_passes']):>11} {len(r['false_flags']):>11}   "
+              f"{len(sy['false_passes']):>11} {len(sy['false_flags']):>11}")
+    best = min(results, key=lambda f: (len(results[f]["system"]["false_passes"]) * 2
+                                       + len(results[f]["system"]["false_flags"]), f != DEFAULT_JUDGE_INPUT))
+    sy = results[best]["system"]
+    print(f"\nBest with rules (a false pass counts double): {best}")
+    print(f"  still let through: {sy['false_passes']}   held back: {sy['false_flags']}")
+    print(f"To use it, add to .env:  JUDGE_INPUT={best}")
+    out = ROOT / "evals" / f"compare-{judge_kind}.json"
+    out.write_text(json.dumps({"best": best, "results": results}, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Saved {out.relative_to(ROOT)}")
     return 0
 

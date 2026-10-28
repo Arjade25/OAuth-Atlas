@@ -307,3 +307,27 @@ def test_judge_eval_counts_false_passes_and_flags():
                              "check": lambda self, c, p: verdict_from_probs({"supports": 1.0, "contradicts": 0, "unclear": 0})})()
     res = score(yes_man, items)
     assert res["false_flags"] == [] and len(res["false_passes"]) == 10   # every bad claim gets through
+
+
+def test_judge_input_formats():
+    from atlas.support import JUDGE_INPUTS, judge_input
+    chunk = "Intro text. - Keep in mind that we allow only one callback URL per app 5. Click **Save** now."
+    q = "we allow only one callback URL per app"
+    assert judge_input(q, chunk, "Pipedrive's documentation", "sentence") == \
+        "Keep in mind that we allow only one callback URL per app 5."
+    assert judge_input(q, chunk, "Pipedrive's documentation", "sentence+source").startswith(
+        "According to Pipedrive's documentation, Keep in mind")
+    lower = judge_input(q, chunk, "x", "window-lower")
+    assert lower == lower.lower() and "**" not in lower and "only one callback url" in lower
+    assert set(JUDGE_INPUTS) >= {"window-lower", "window", "window+source", "sentence", "sentence+source"}
+
+
+def test_compare_inputs_runs_every_format(capsys):
+    import json
+    from atlas.judge_eval import SET, compare
+    items = json.loads(SET.read_text(encoding="utf-8"))["items"]
+    yes = type("Y", (), {"name": "yes", "check": lambda s, c, p: verdict_from_probs(
+        {"supports": 1.0, "contradicts": 0, "unclear": 0})})()
+    assert compare(yes, items, "test") == 0
+    out = capsys.readouterr().out
+    assert "sentence+source" in out and "JUDGE_INPUT=" in out

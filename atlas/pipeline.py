@@ -183,8 +183,7 @@ def _check_claim(dc, cid: str, applies: list[str], ctx: _Ctx, today: date, notes
     # Check 2, only for claims whose quote is real.
     if found:
         official = is_official(found.url, ctx.t)
-        source = f"From {ctx.t.app}'s own documentation ({host(found.url)})" if official \
-            else f"From a third-party page ({host(found.url)})"
+        source = f"{ctx.t.app}'s documentation" if official else f"a third-party page on {host(found.url)}"
         passage = judge_input(quote, found.text, source)
         v = ctx.support.check(claim.text, passage)
         checks.supports, checks.supports_p = v.result, v.p_supports
