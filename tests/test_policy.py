@@ -282,3 +282,25 @@ def test_not_possible_states_a_limit(raw):
     c["evidence"]["quote"] = "It's not possible to register webhooks with a non public URL."
     c["kind"] = "limit"
     assert "obligation_not_in_quote" not in error_codes(raw)
+
+
+def test_listing_paths_are_recognised():
+    from atlas.policy import is_listing_path
+    for label, sid in (("Publish to the Miro Marketplace", "public-marketplace"),
+                       ("Commercial, listed in the Slack Marketplace", "marketplace"),
+                       ("Listed on the Notion Marketplace", "marketplace-listing")):
+        assert is_listing_path(label, sid), label
+    for label, sid in (("Other workspaces, unlisted (pilots)", "unlisted"),
+                       ("Any workspace, not listed on Marketplace", "any-workspace-unlisted"),
+                       ("Test with your own Developer team", "developer-team-testing")):
+        assert not is_listing_path(label, sid), label
+
+
+def test_open_listing_needs_a_no_review_claim(raw):
+    """'Available now' on a Marketplace path says there is no review; a source must say so."""
+    s = raw["scenarios"][1]
+    s.update(label="Listed in the Acme Marketplace", state="available_now", blocked_by=[], wait_days=None,
+             claims=["review-wait"])
+    assert "open_listing_unsourced" in error_codes(raw)
+    s["claims"] = ["no-review"]  # "Apps for your own account need no review."
+    assert "open_listing_unsourced" not in error_codes(raw)

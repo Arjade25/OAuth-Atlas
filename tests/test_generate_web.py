@@ -81,3 +81,16 @@ def test_live_runs_are_capped_per_hour(recorded, monkeypatch):
 def test_replay_is_never_capped(recorded, monkeypatch):
     monkeypatch.setenv("LIVE_RUNS_PER_HOUR", "0")
     assert events(recorded, "/generate/stream?app=Acme&replay=1")[-1]["type"] == "done"
+
+
+def test_unconfirmed_path_renders_with_its_explanation(recorded):
+    g = library.load_library()["acme"] if "acme" in library.load_library() else None
+    if g is None:
+        events(recorded, "/generate/stream?app=Acme&replay=1")
+        g = library.load_library()["acme"]
+    g.scenarios[1].state = g.scenarios[1].state.__class__("unconfirmed")
+    g.scenarios[1].blocked_by = []
+    pipeline.save(g, None)
+    r = recorded.get("/guides/acme")
+    assert r.status_code == 200
+    assert "Not confirmed open" in r.text and "never say whether" in r.text

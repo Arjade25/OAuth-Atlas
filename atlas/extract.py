@@ -116,7 +116,7 @@ Hard rules:
 5. If the passages do not cover something, leave it out. Missing is better than invented.
 
 Scenarios are the distinct paths a developer can take (examples: testing with your own account, internal to your organization, unlisted distribution to other customers, public listing or marketplace, access to sensitive or restricted scopes). Give 2 to 4.
-- "state": "available_now" (usable today for that audience), "available_for_testing" (works only within testing limits), or "production_blocked" (a named requirement must be met first). A blocked scenario lists the claim ids that block it in "blocked_by".
+- "state": "available_now" (usable today for that audience), "available_for_testing" (works only within testing limits), or "production_blocked" (a named requirement must be met first). A blocked scenario lists the claim ids that block it in "blocked_by". Mark a path that lists or publishes the app (a Marketplace, directory or store) "available_now" only if a claim you cite says it needs no review.
 - "dimensions", each 0 to 5: technical (configuring credentials and scopes), prerequisites (domain, business documents, paid plan), approval (reviews, audits, partner approval), uncertainty (unpublished timelines, variable queues), maintenance (recurring assessments, ongoing compliance).
 - "effort_hours": hands-on hours for the developer, as a min-max range. This is your estimate.
 - "wait_days": only when a claim with a number backs it; otherwise null. Use {"min":0,"max":0} only when a claim you cite says there is no review or approval; if the passages never mention review, use null.

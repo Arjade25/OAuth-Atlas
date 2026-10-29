@@ -75,11 +75,13 @@ main > section { margin-bottom: 3rem; }
 .gate.state-available_now .seg.on { background: var(--now); }
 .gate.state-available_for_testing .seg.on { background: var(--testing); }
 .gate.state-production_blocked .seg.on { background: var(--blocked); }
+.gate.state-unconfirmed .seg.on { background: var(--muted); }
 
 .state-text { font-weight: 600; font-size: 0.9rem; }
 .state-text.state-available_now { color: var(--now); }
 .state-text.state-available_for_testing { color: var(--testing); }
 .state-text.state-production_blocked { color: var(--blocked); }
+.state-text.state-unconfirmed { color: var(--muted); }
 
 /* --- Library ------------------------------------------------------------ */
 .intro h1 { max-width: 22ch; margin-bottom: 0.75rem; }
@@ -114,6 +116,7 @@ main > section { margin-bottom: 3rem; }
 .scenario.state-available_now { border-left-color: var(--now); }
 .scenario.state-available_for_testing { border-left-color: var(--testing); }
 .scenario.state-production_blocked { border-left-color: var(--blocked); }
+.scenario.state-unconfirmed { border-left-color: var(--muted); border-left-style: dashed; }
 .audience { color: var(--muted); margin: 0.2rem 0 0.75rem; }
 .verdict { display: flex; flex-wrap: wrap; align-items: end; gap: 0.75rem; margin-bottom: 0.75rem; }
 .score-label { color: var(--muted); font-size: 0.9rem; }

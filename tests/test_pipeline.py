@@ -374,3 +374,13 @@ def test_zero_wait_backed_by_a_no_review_claim_is_kept():
     g, _, _ = run_ok()
     w = g.scenario("unlisted-pilots").wait_days
     assert w is not None and w.max == 0
+
+
+def test_open_listing_without_a_no_review_claim_is_unconfirmed():
+    class OpenMarketplace(FakeModel):
+        def complete(self, messages):
+            return super().complete(messages).replace('"blocked_by": ["security-review"]', '"blocked_by": []')
+
+    g, _, events = run_ok(model=OpenMarketplace())
+    assert g.scenario("marketplace").state.value == "unconfirmed"
+    assert any("not confirmed open" in e.message for e in events if e.type == "warn")

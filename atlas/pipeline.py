@@ -25,7 +25,7 @@ from .evidence import normalize, quote_in_page
 from .extract import Draft, extract, slugify
 from .llm import ChatModel, ReplayModel
 from .passages import Passage, select
-from .policy import check_guide, claim_issues, is_gate, states_no_review
+from .policy import check_guide, claim_issues, is_gate, is_listing_path, states_no_review
 from .schema import (Blocker, CheckResult, Checks, Claim, ClaimKind, ClaimStatus, ComposioInfo, Dimensions,
                      Evidence, GenerationInfo, Guide, Origin, Owner, Range, ReviewStatus, Scenario, ScenarioState,
                      SourceType, Step)
@@ -257,6 +257,12 @@ def assemble(draft: Draft, ctx: _Ctx, query: str, today: date, notes: list[str])
         if blocked and state != "production_blocked":
             notes.append(f"scenario '{ds.id}' names blockers, so it is marked blocked")
             state = "production_blocked"
+
+        # A listing path is open only if a source says it is not reviewed.
+        if (state == "available_now" and is_listing_path(ds.label, sid[ds.id])
+                and not any(states_no_review(by_id[c]) for c in cited)):
+            notes.append(f"'{ds.id}' lists the app but no claim says it needs no review, so it is not confirmed open")
+            state = "unconfirmed"
 
         # A wait time survives only if a verified wait claim with a number backs it.
         wait = _range(ds.wait_days)

@@ -83,6 +83,18 @@ def states_no_review(c: Claim) -> bool:
     return any(_NO_REVIEW.search(normalize(t)) for t in texts)
 
 
+# Paths that put an app in a provider's listing usually pass a review. Calling
+# one open needs a source that says it is not reviewed.
+_LISTING = re.compile(r"\b(?:marketplace|app directory|app store|listed|listing|publish\w*)\b")
+_NOT_LISTING = re.compile(r"\b(?:unlisted|not listed|without (?:being )?list\w*|non-listed)\b")
+
+
+def is_listing_path(label: str, scenario_id: str) -> bool:
+    """True for a path that lists or publishes the app in the provider's directory."""
+    text = normalize(f"{label} {scenario_id.replace('-', ' ')}")
+    return bool(_LISTING.search(text)) and not _NOT_LISTING.search(text)
+
+
 def is_gate(c: Claim) -> bool:
     """True when a claim describes a review, approval or check that someone else decides."""
     return bool(_GATE.search(_SENT_TO_GATE.sub(" ", normalize(c.text))))
@@ -228,6 +240,10 @@ def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
 
         if s.wait_days is not None and s.wait_days.max > 0 and not any(c.kind == ClaimKind.wait_time for c in cited):
             add("unsourced_wait", "error", f"Scenario '{s.id}' gives a wait time but cites no wait_time claim", s.id)
+        if (s.state == ScenarioState.available_now and is_listing_path(s.label, s.id)
+                and not any(states_no_review(c) for c in cited)):
+            add("open_listing_unsourced", "error",
+                f"Scenario '{s.id}' is a listing path marked available_now, but cites no claim that it needs no review", s.id)
         if s.wait_days is not None and s.wait_days.max == 0 and not any(states_no_review(c) for c in cited):
             add("unsourced_no_wait", "error",
                 f"Scenario '{s.id}' says there is no wait but cites no claim that there is no review", s.id)

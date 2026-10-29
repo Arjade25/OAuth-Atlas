@@ -34,6 +34,7 @@ STATE_TEXT = {
     "available_now": "Available now",
     "available_for_testing": "Testing only",
     "production_blocked": "Blocked until approved",
+    "unconfirmed": "Not confirmed open",
 }
 OWNER_TEXT = {"agent": "Agent can do this", "you": "You do this", "provider": "Provider does this"}
 

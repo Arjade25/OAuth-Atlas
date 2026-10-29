@@ -44,6 +44,7 @@ A claim is verified only if all three checks pass. Generated guides are shown wi
 **What the numbers on a guide mean**
 - **Waiting on the provider** is shown only when a verified claim gives a duration. A deadline for someone else ("your admin has 30 days to verify") or an expiry is not a wait, and is flagged if filed as one. "None" (no wait) needs a cited claim that there is no review or approval; a source that simply never mentions review does not count. Where a number exists but is not a verified wait, the page says "No verified duration"; where the provider gives none, "Not published".
 - **Your work** (hours) is always an estimate, never measured. Curated guides carry the author's estimate and generated guides the model's; the page and the API (`effort_basis`) say which.
+- **Not confirmed open** marks a listing path (a Marketplace, directory or store) that the sources describe but never say is unreviewed. "Available now" on a listing path is a claim that there is no review, so it needs a source like any other.
 - **Blocked until approved** names the review or approval that blocks the path. A conditional requirement, such as Gmail's security assessment (needed only if restricted data touches your servers), is listed on the path but does not block it on its own.
 
 Every live run is recorded in `runs/<app>.json` (searches, the passages the model saw, its replies, the judge's verdicts), so it can be replayed with no keys.
@@ -55,7 +56,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\Activate.ps1    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 
-pytest                         # 118 tests, no network
+pytest                         # 122 tests, no network
 python -m atlas.library        # validate the curated guides
 uvicorn atlas.app:app --reload # then open http://127.0.0.1:8000
 ```

@@ -57,6 +57,9 @@
       <div><dt>Your work</dt><dd>{{ v.hours }} <span class="basis">{{ v.hours_basis }}</span></dd></div>
       <div><dt>Waiting on {{ g.provider }}</dt><dd>{{ v.wait }}</dd></div>
     </dl>
+    {% if v.s.state.value == "unconfirmed" %}
+    <p class="note">The sources found describe this path but never say whether {{ g.provider }} reviews it, so it is not shown as open. Check the provider's listing or publishing docs before relying on it.</p>
+    {% endif %}
     {% if v.blocked_by %}
     <div class="blocked">
       <p>What stands in the way</p>

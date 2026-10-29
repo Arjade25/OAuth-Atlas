@@ -43,6 +43,7 @@ class ScenarioState(str, Enum):
     available_now = "available_now"
     available_for_testing = "available_for_testing"
     production_blocked = "production_blocked"
+    unconfirmed = "unconfirmed"  # a listing path whose sources never say it is open
 
 
 class Owner(str, Enum):
