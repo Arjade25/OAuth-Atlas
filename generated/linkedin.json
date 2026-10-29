@@ -530,9 +530,17 @@
     }
   ],
   "composio": {
-    "managed_auth_available": null,
+    "managed_auth_available": true,
+    "toolkit": "linkedin",
+    "auth_modes": [
+      "OAUTH2"
+    ],
+    "managed_auth_schemes": [
+      "OAUTH2"
+    ],
+    "checked_on": "2026-10-29",
     "callback_url": null,
-    "notes": "Check the toolkit page for managed auth. To bring your own app, register the redirect URI shown when you create a custom auth config."
+    "notes": "Composio manages an OAuth app for LinkedIn (OAUTH2), so your users can connect through Composio today without you registering one. You need your own app, and the paths below, to show your brand on the consent screen, request custom scopes or get your own rate-limit quota, as Composio recommends for production. To bring your own app, register the redirect URI shown when you create a custom auth config in Composio, then enter the app's client ID and secret there."
   },
   "origin": "generated",
   "review_status": "pending",

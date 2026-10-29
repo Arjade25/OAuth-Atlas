@@ -148,7 +148,11 @@ class Blocker(BaseModel):
 
 
 class ComposioInfo(BaseModel):
-    managed_auth_available: Optional[bool] = None
+    managed_auth_available: Optional[bool] = None  # None = not checked, or no Composio toolkit
+    toolkit: Optional[str] = Field(None, description="Composio toolkit slug, when one was found")
+    auth_modes: list[str] = Field(default_factory=list, description="Auth methods the toolkit supports")
+    managed_auth_schemes: list[str] = Field(default_factory=list, description="Methods Composio manages for you")
+    checked_on: Optional[date] = Field(None, description="When the agent checked Composio's toolkits API")
     callback_url: Optional[str] = None
     notes: Optional[str] = None
 

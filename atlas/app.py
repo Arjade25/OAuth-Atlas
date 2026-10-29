@@ -21,6 +21,7 @@ from fastapi.templating import Jinja2Templates
 from . import pipeline
 from .extract import slugify
 from .library import load_library
+from .managed import DOCS as MANAGED_DOCS
 from .policy import check_guide
 from .schema import Guide, Range, Scenario
 from .scoring import DIMENSION_LABELS, driver, label, scenario_score
@@ -82,6 +83,22 @@ def scenario_view(s: Scenario, g: Guide) -> dict:
     }
 
 
+def managed_view(g: Guide) -> dict:
+    """The first question on every guide: do I need my own OAuth app at all?"""
+    c = g.composio
+    if c.managed_auth_available:
+        answer, kind = (f"Not to start. Composio manages an OAuth app for {g.app} "
+                        f"({', '.join(c.managed_auth_schemes)}), so your users can connect today. You need your "
+                        "own for your brand on the consent screen, custom scopes or your own rate limits."), "no"
+    elif c.managed_auth_available is False:
+        answer, kind = f"Yes. Composio has a {g.app} toolkit but doesn't manage an OAuth app for it.", "yes"
+    elif c.checked_on:
+        answer, kind = f"Probably. Composio's toolkits API has no toolkit for {g.app}.", "yes"
+    else:
+        answer, kind = "Not checked yet against Composio's managed OAuth directory.", "unknown"
+    return {"answer": answer, "kind": kind, "checked_on": c.checked_on, "docs": MANAGED_DOCS}
+
+
 def guide_view(g: Guide) -> dict:
     numbering = {c.id: i + 1 for i, c in enumerate(g.claims)}
     issues = check_guide(g)
@@ -92,6 +109,7 @@ def guide_view(g: Guide) -> dict:
                    "flagged": statuses.count("flagged"), "unverified": statuses.count("unverified")},
         "errors": [i for i in issues if i.is_error],
         "scenarios": [scenario_view(s, g) for s in g.scenarios],
+        "managed": managed_view(g),
         "numbering": numbering,
         "issues": issues,
         "warnings": {i.ref for i in issues if not i.is_error and i.ref},

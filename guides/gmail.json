@@ -10,31 +10,79 @@
       "label": "Testing: up to 100 named users",
       "audience": "Test users you list on the OAuth consent screen",
       "state": "available_for_testing",
-      "dimensions": {"technical": 2, "prerequisites": 1, "approval": 0, "uncertainty": 0, "maintenance": 2},
-      "effort_hours": {"min": 0.5, "max": 1.5},
-      "wait_days": {"min": 0, "max": 0},
-      "claims": ["testing-no-verification", "test-user-cap", "testing-expiry"]
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 1,
+        "approval": 0,
+        "uncertainty": 0,
+        "maintenance": 2
+      },
+      "effort_hours": {
+        "min": 0.5,
+        "max": 1.5
+      },
+      "wait_days": {
+        "min": 0,
+        "max": 0
+      },
+      "claims": [
+        "testing-no-verification",
+        "test-user-cap",
+        "testing-expiry"
+      ]
     },
     {
       "id": "internal",
       "label": "Your own Google Workspace organization",
       "audience": "People in your Workspace or Cloud Identity organization only",
       "state": "available_now",
-      "dimensions": {"technical": 2, "prerequisites": 2, "approval": 0, "uncertainty": 1, "maintenance": 0},
-      "effort_hours": {"min": 0.5, "max": 1.5},
-      "wait_days": {"min": 0, "max": 0},
-      "claims": ["internal-user-type", "internal-exception"]
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 2,
+        "approval": 0,
+        "uncertainty": 1,
+        "maintenance": 0
+      },
+      "effort_hours": {
+        "min": 0.5,
+        "max": 1.5
+      },
+      "wait_days": {
+        "min": 0,
+        "max": 0
+      },
+      "claims": [
+        "internal-user-type",
+        "internal-exception"
+      ]
     },
     {
       "id": "public-restricted",
       "label": "Public launch with read or modify access to mail",
       "audience": "Any Google user, with restricted Gmail scopes such as gmail.readonly or gmail.modify",
       "state": "production_blocked",
-      "dimensions": {"technical": 2, "prerequisites": 3, "approval": 5, "uncertainty": 4, "maintenance": 4},
-      "effort_hours": {"min": 8, "max": 40},
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 3,
+        "approval": 5,
+        "uncertainty": 4,
+        "maintenance": 4
+      },
+      "effort_hours": {
+        "min": 8,
+        "max": 40
+      },
       "wait_days": null,
-      "blocked_by": ["restricted-verification"],
-      "claims": ["restricted-scopes-list", "casa-assessment", "several-weeks", "annual-reassessment", "casa-price-reported"]
+      "blocked_by": [
+        "restricted-verification"
+      ],
+      "claims": [
+        "restricted-scopes-list",
+        "casa-assessment",
+        "several-weeks",
+        "annual-reassessment",
+        "casa-price-reported"
+      ]
     }
   ],
   "claims": [
@@ -42,154 +90,220 @@
       "id": "testing-no-verification",
       "text": "Apps still in development, testing or staging do not need verification.",
       "kind": "requirement",
-      "applies_to": ["testing"],
+      "applies_to": [
+        "testing"
+      ],
       "evidence": {
         "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
         "quote": "if your app is in the development, testing, or staging phases, verification isn't required.",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "test-user-cap",
       "text": "In Testing status the app is limited to at most 100 test users listed on the consent screen.",
       "kind": "limit",
-      "applies_to": ["testing"],
+      "applies_to": [
+        "testing"
+      ],
       "evidence": {
         "url": "https://support.google.com/cloud/answer/15549945",
         "quote": "are limited to up to 100 test users listed in the OAuth consent screen.",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "testing-expiry",
       "text": "A test user's authorization expires seven days after consent, so pilot users reconnect weekly.",
       "kind": "limit",
-      "applies_to": ["testing"],
+      "applies_to": [
+        "testing"
+      ],
       "evidence": {
         "url": "https://support.google.com/cloud/answer/15549945",
         "quote": "Authorizations by a test user will expire seven days from the time of consent.",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "internal-user-type",
       "text": "Projects in a Google Cloud organization can restrict the app to members of that organization (Internal user type).",
       "kind": "fact",
-      "applies_to": ["internal"],
+      "applies_to": [
+        "internal"
+      ],
       "evidence": {
         "url": "https://support.google.com/cloud/answer/15549945",
         "quote": "can configure Internal users to limit authorization requests to members of the organization.",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "internal-exception",
       "text": "Internal-only use, within your Workspace or Cloud Identity organization, is listed as an exception to restricted-scope verification.",
       "kind": "requirement",
-      "applies_to": ["internal"],
+      "applies_to": [
+        "internal"
+      ],
       "evidence": {
         "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
         "quote": "This means the app is used only by people in your Google Workspace or Cloud Identity organization.",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "restricted-scopes-list",
       "text": "Google categorizes some Gmail scopes as restricted; the linked page lists which ones.",
       "kind": "fact",
-      "applies_to": ["public-restricted"],
+      "applies_to": [
+        "public-restricted"
+      ],
       "evidence": {
         "url": "https://support.google.com/cloud/answer/13464325",
         "quote": "The following scopes are categorized as \"restricted\"",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "restricted-verification",
       "text": "Public apps using restricted scopes must complete Google's restricted-scope verification.",
       "kind": "requirement",
-      "applies_to": ["public-restricted"],
+      "applies_to": [
+        "public-restricted"
+      ],
       "evidence": {
         "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
         "quote": "If your app requests sensitive or restricted scopes, you need to complete the verification process unless your app's use qualifies for an exception.",
         "retrieved_at": "2026-10-27",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "casa-assessment",
       "text": "If restricted Gmail data is stored on or passes through your servers, you also need a security assessment by a Google-approved third-party assessor.",
       "kind": "requirement",
-      "applies_to": ["public-restricted"],
+      "applies_to": [
+        "public-restricted"
+      ],
       "evidence": {
         "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
         "quote": "If you store or transmit restricted scope data on servers, then you need to complete a security assessment.",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "several-weeks",
       "text": "Google says restricted-scope verification can take several weeks. It publishes no exact range.",
       "kind": "wait_time",
-      "applies_to": ["public-restricted"],
+      "applies_to": [
+        "public-restricted"
+      ],
       "evidence": {
         "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
         "quote": "the restricted scopes verification process can potentially take several weeks to complete.",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "annual-reassessment",
       "text": "To keep restricted access, the app must be reverified and reassessed at least every 12 months.",
       "kind": "requirement",
-      "applies_to": ["public-restricted"],
+      "applies_to": [
+        "public-restricted"
+      ],
       "evidence": {
         "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
         "quote": "apps must be reverified for compliance and complete a security assessment at least every 12 months",
         "retrieved_at": "2026-10-28",
         "source_type": "official"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     },
     {
       "id": "casa-price-reported",
       "text": "One Google-approved assessor lists $3,000 for its no-rush AL1 assessment. This is that vendor's price, not Google's.",
       "kind": "fact",
-      "applies_to": ["public-restricted"],
+      "applies_to": [
+        "public-restricted"
+      ],
       "evidence": {
         "url": "https://www.leviathansecurity.com/programs/google-casa-cloud-application-security-assessment",
         "quote": "No Rush (AL1) $3,000",
         "retrieved_at": "2026-10-27",
         "source_type": "third_party"
       },
-      "checks": {"exists": "pass", "supports": "pass", "policy": "pass"},
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass"
+      },
       "status": "verified"
     }
   ],
@@ -200,7 +314,9 @@
       "owner": "agent",
       "detail": "This decides everything else. Sending only? gmail.send is not restricted. Reading or modifying mail puts you on the audited path.",
       "minutes": 10,
-      "claims": ["restricted-scopes-list"],
+      "claims": [
+        "restricted-scopes-list"
+      ],
       "agent_prompt": "For each Gmail feature our product needs, list the narrowest Google OAuth scope that covers it and mark whether it is restricted. Flag any feature we could redesign to avoid a restricted scope."
     },
     {
@@ -209,7 +325,9 @@
       "owner": "you",
       "detail": "Choose Internal if every user is in your Workspace organization; otherwise External, which starts in Testing.",
       "minutes": 20,
-      "claims": ["internal-user-type"]
+      "claims": [
+        "internal-user-type"
+      ]
     },
     {
       "n": 3,
@@ -224,8 +342,13 @@
       "owner": "you",
       "detail": "Add up to 100 test users. Their authorization lapses after seven days, so plan for weekly reconnects during a pilot.",
       "minutes": 5,
-      "scenarios": ["testing"],
-      "claims": ["test-user-cap", "testing-expiry"]
+      "scenarios": [
+        "testing"
+      ],
+      "claims": [
+        "test-user-cap",
+        "testing-expiry"
+      ]
     },
     {
       "n": 5,
@@ -233,8 +356,12 @@
       "owner": "agent",
       "detail": "Scope justifications, a demo video script, a privacy policy that covers Gmail data, and a homepage on a domain you own.",
       "minutes": 240,
-      "scenarios": ["public-restricted"],
-      "claims": ["restricted-verification"],
+      "scenarios": [
+        "public-restricted"
+      ],
+      "claims": [
+        "restricted-verification"
+      ],
       "agent_prompt": "Draft our Google OAuth verification package: a justification for each restricted Gmail scope tied to a user-facing feature, a 2-minute demo video script showing the consent flow and each scope in use, and the privacy-policy paragraphs on Gmail data use, storage and deletion."
     },
     {
@@ -243,48 +370,78 @@
       "owner": "you",
       "detail": "Submit from the Verification Center and expect back-and-forth with Google's reviewers.",
       "minutes": 30,
-      "scenarios": ["public-restricted"],
-      "claims": ["restricted-verification", "several-weeks"]
+      "scenarios": [
+        "public-restricted"
+      ],
+      "claims": [
+        "restricted-verification",
+        "several-weeks"
+      ]
     },
     {
       "n": 7,
       "title": "Book and pass the security assessment",
       "owner": "you",
       "detail": "Pick a Google-approved assessor, fix findings, and get your letter. You pay the assessor, and it repeats every 12 months.",
-      "scenarios": ["public-restricted"],
-      "claims": ["casa-assessment", "annual-reassessment", "casa-price-reported"]
+      "scenarios": [
+        "public-restricted"
+      ],
+      "claims": [
+        "casa-assessment",
+        "annual-reassessment",
+        "casa-price-reported"
+      ]
     },
     {
       "n": 8,
       "title": "Verification and assessment review",
       "owner": "provider",
       "detail": "Google reviews the app and the assessor tests it. Google only says this can take several weeks.",
-      "scenarios": ["public-restricted"],
-      "claims": ["several-weeks"]
+      "scenarios": [
+        "public-restricted"
+      ],
+      "claims": [
+        "several-weeks"
+      ]
     }
   ],
   "blockers": [
     {
       "symptom": "Users see 'Google hasn't verified this app' or can't connect beyond your test list",
       "fix": "Expected while in Testing. Add them as test users for a pilot, or use Internal if they are all in your Workspace organization.",
-      "claims": ["test-user-cap", "internal-user-type"]
+      "claims": [
+        "test-user-cap",
+        "internal-user-type"
+      ]
     },
     {
       "symptom": "Pilot users get disconnected about a week after connecting",
       "fix": "Testing authorizations expire after seven days. Reconnect, or move to production.",
-      "claims": ["testing-expiry"]
+      "claims": [
+        "testing-expiry"
+      ]
     },
     {
       "symptom": "Verification asks for a security assessment you didn't plan for",
       "fix": "It applies whenever restricted Gmail data touches your servers. Budget for an approved assessor, or redesign to avoid restricted scopes.",
       "escalate": "Reply to Google's verification team through the Verification Center thread.",
-      "claims": ["casa-assessment"]
+      "claims": [
+        "casa-assessment"
+      ]
     }
   ],
   "composio": {
-    "managed_auth_available": null,
+    "managed_auth_available": true,
+    "toolkit": "gmail",
+    "auth_modes": [
+      "OAUTH2"
+    ],
+    "managed_auth_schemes": [
+      "OAUTH2"
+    ],
+    "checked_on": "2026-10-29",
     "callback_url": "https://backend.composio.dev/api/v3/toolkits/auth/callback",
-    "notes": "Composio's managed Google app is the fastest way to develop. Your own app is needed for your brand on the consent screen, and then the verification path above is yours to complete. Confirm the exact redirect URI in the auth config form."
+    "notes": "Composio manages an OAuth app for Gmail (OAUTH2), so your users can connect through Composio today without you registering one. You need your own app, and the paths below, to show your brand on the consent screen, request custom scopes or get your own rate-limit quota, as Composio recommends for production. To bring your own app, register the redirect URI shown when you create a custom auth config in Composio, then enter the app's client ID and secret there."
   },
   "origin": "curated",
   "review_status": "approved",

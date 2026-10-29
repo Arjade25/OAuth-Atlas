@@ -286,5 +286,17 @@
       "note": "",
       "judge": "nli (cross-encoder/nli-deberta-v3-base)"
     }
-  ]
+  ],
+  "managed_auth": {
+    "checked": true,
+    "found": true,
+    "toolkit": "pipedrive",
+    "name": "Pipedrive",
+    "auth_modes": [
+      "OAUTH2",
+      "API_KEY"
+    ],
+    "managed_schemes": [],
+    "checked_on": "2026-10-29"
+  }
 }

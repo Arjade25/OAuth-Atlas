@@ -21,6 +21,8 @@ Getting credentials is easy; getting approved is not. Each guide answers four qu
 
 ```
 app name or website
+  -> ask Composio's toolkits API whether Composio already manages an OAuth app for it
+     (the one setup step an agent can do for anyone; the guide opens with the answer)
   -> search (Composio COMPOSIO_SEARCH_WEB; only result URLs are used, never the search summary)
   -> fetch up to 8 pages, provider docs first (COMPOSIO_SEARCH_FETCH_URL_CONTENT)
   -> pick about 28 relevant passages (BM25, no model)
@@ -56,7 +58,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\Activate.ps1    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 
-pytest                         # 122 tests, no network
+pytest                         # 129 tests, no network
 python -m atlas.library        # validate the curated guides
 uvicorn atlas.app:app --reload # then open http://127.0.0.1:8000
 ```
@@ -70,7 +72,14 @@ python -m atlas.generate Pipedrive          # or a website: pipedrive.com
 python -m atlas.generate Pipedrive --replay # re-run the recording, no keys
 ```
 
-Or open `/generate` in the app and watch it work. Results land in `generated/` and appear in the library.
+Or open `/generate` in the app and watch it work.
+
+To record Composio's managed-auth answer on every guide in the library (needs `COMPOSIO_API_KEY`):
+
+```bash
+python -m atlas.managed          # print what Composio says for each guide
+python -m atlas.managed --write  # save it into guides/, generated/ and runs/
+``` Results land in `generated/` and appear in the library.
 
 ### Choosing the support judge
 

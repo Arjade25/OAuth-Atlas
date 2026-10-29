@@ -45,3 +45,8 @@ def test_a_deadline_is_not_shown_as_a_wait():
     assert s["wait_days"] is None
     assert s["effort_basis"].startswith("model's estimate")
     assert "No verified duration" in client.get("/guides/linkedin").text
+
+
+def test_every_guide_opens_with_the_managed_auth_question():
+    r = client.get("/guides/github")
+    assert "Do you need your own OAuth app?" in r.text and "managed-auth" in r.text
