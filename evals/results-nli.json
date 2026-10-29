@@ -1,0 +1,231 @@
+{
+  "system": {
+    "false_passes": [
+      "pd-6",
+      "pd-8"
+    ],
+    "false_flags": [
+      "pd-5",
+      "pd-17",
+      "pd-18"
+    ]
+  },
+  "judge": "nli (cross-encoder/nli-deberta-v3-base)",
+  "threshold": 0.75,
+  "items": 22,
+  "correct_pass_or_hold": 15,
+  "false_passes": [
+    "pd-0",
+    "pd-6",
+    "pd-8",
+    "pd-9"
+  ],
+  "false_flags": [
+    "pd-5",
+    "pd-17",
+    "pd-18"
+  ],
+  "contradictions_caught": 4,
+  "contradictions_total": 4,
+  "median_ms": 485,
+  "rows": [
+    {
+      "id": "pd-2",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9962642327054437,
+      "ms": 594,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-3",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9877981032623607,
+      "ms": 680,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-4",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9953622384704462,
+      "ms": 515,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-5",
+      "label": "supports",
+      "result": "unclear",
+      "p_supports": 0.006620270145770421,
+      "ms": 485,
+      "note": "support probability 0.01 is below 0.75",
+      "policy": true
+    },
+    {
+      "id": "pd-10",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9979371703536304,
+      "ms": 398,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-11",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9975009063452581,
+      "ms": 568,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-12",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9926393428601321,
+      "ms": 532,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-15",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9982131533249179,
+      "ms": 453,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-16",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9909044103467652,
+      "ms": 415,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-17",
+      "label": "supports",
+      "result": "unclear",
+      "p_supports": 0.2557356363039058,
+      "ms": 447,
+      "note": "support probability 0.26 is below 0.75",
+      "policy": true
+    },
+    {
+      "id": "pd-18",
+      "label": "supports",
+      "result": "unclear",
+      "p_supports": 0.43585006962486644,
+      "ms": 485,
+      "note": "support probability 0.44 is below 0.75",
+      "policy": true
+    },
+    {
+      "id": "pd-19",
+      "label": "supports",
+      "result": "pass",
+      "p_supports": 0.9967398904452092,
+      "ms": 424,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-0",
+      "label": "unclear",
+      "result": "pass",
+      "p_supports": 0.9927843182172369,
+      "ms": 450,
+      "note": "",
+      "policy": false
+    },
+    {
+      "id": "pd-6",
+      "label": "unclear",
+      "result": "pass",
+      "p_supports": 0.9965120794588296,
+      "ms": 461,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-7",
+      "label": "unclear",
+      "result": "unclear",
+      "p_supports": 0.02881149388617007,
+      "ms": 487,
+      "note": "support probability 0.03 is below 0.75",
+      "policy": false
+    },
+    {
+      "id": "pd-8",
+      "label": "unclear",
+      "result": "pass",
+      "p_supports": 0.9973052153163211,
+      "ms": 519,
+      "note": "",
+      "policy": true
+    },
+    {
+      "id": "pd-9",
+      "label": "unclear",
+      "result": "pass",
+      "p_supports": 0.9960037328116595,
+      "ms": 535,
+      "note": "",
+      "policy": false
+    },
+    {
+      "id": "pd-15-alt",
+      "label": "unclear",
+      "result": "unclear",
+      "p_supports": 6.956603463487928e-05,
+      "ms": 458,
+      "note": "support probability 0.00 is below 0.75",
+      "policy": true
+    },
+    {
+      "id": "pd-5-alt",
+      "label": "contradicts",
+      "result": "fail",
+      "p_supports": 0.00018018866108772416,
+      "ms": 538,
+      "note": "the judge found the passage contradicts the claim",
+      "policy": true
+    },
+    {
+      "id": "pd-17-alt",
+      "label": "contradicts",
+      "result": "fail",
+      "p_supports": 0.00017637887632217852,
+      "ms": 544,
+      "note": "the judge found the passage contradicts the claim",
+      "policy": true
+    },
+    {
+      "id": "pd-16-alt",
+      "label": "contradicts",
+      "result": "fail",
+      "p_supports": 8.66669873612741e-05,
+      "ms": 429,
+      "note": "the judge found the passage contradicts the claim",
+      "policy": true
+    },
+    {
+      "id": "pd-3-alt",
+      "label": "contradicts",
+      "result": "fail",
+      "p_supports": 6.0790145682168625e-05,
+      "ms": 438,
+      "note": "the judge found the passage contradicts the claim",
+      "policy": false
+    }
+  ]
+}

@@ -1,0 +1,653 @@
+{
+  "app": "Pipedrive",
+  "provider": "Pipedrive",
+  "slug": "pipedrive",
+  "summary": "Creating a Pipedrive OAuth app starts in Developer Hub on a developer sandbox account. A private or test app can be used immediately for sandbox testing, while a public Marketplace app must go through review and requires required legal URLs, scopes, email confirmation, and agreement to the Developer Partner Agreement. No review timeline is given in the passages.",
+  "developer_portal": null,
+  "scenarios": [
+    {
+      "id": "private-sandbox-testing",
+      "label": "Private or test app for sandbox testing",
+      "audience": "Developers testing with their own developer sandbox account",
+      "state": "available_now",
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 1,
+        "approval": 0,
+        "uncertainty": 1,
+        "maintenance": 1
+      },
+      "effort_hours": {
+        "min": 2.0,
+        "max": 6.0
+      },
+      "wait_days": null,
+      "blocked_by": [],
+      "claims": [
+        "sandbox-account",
+        "one-callback-url",
+        "redirect-must-match",
+        "each-user-installs",
+        "sandbox-separate",
+        "client-id-not-changeable"
+      ]
+    },
+    {
+      "id": "public-marketplace-app",
+      "label": "Public app listed in Pipedrive Marketplace",
+      "audience": "Pipedrive customers installing from the Marketplace",
+      "state": "production_blocked",
+      "dimensions": {
+        "technical": 3,
+        "prerequisites": 3,
+        "approval": 4,
+        "uncertainty": 3,
+        "maintenance": 2
+      },
+      "effort_hours": {
+        "min": 8.0,
+        "max": 20.0
+      },
+      "wait_days": null,
+      "blocked_by": [
+        "submit-for-approval"
+      ],
+      "claims": [
+        "submit-for-approval",
+        "agree-terms-send-review",
+        "email-confirmation-required",
+        "website-url-required",
+        "tos-url-required",
+        "privacy-url-required",
+        "access-scopes-required",
+        "callback-url-before-approval",
+        "one-callback-url",
+        "redirect-must-match",
+        "each-user-installs"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "sandbox-account",
+      "text": "A developer sandbox account is used to access Developer Hub and create apps.",
+      "kind": "fact",
+      "applies_to": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/client-id-and-client-secret",
+        "quote": "Log in to Developer Hub on your developer sandbox account",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.996568320045635,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "one-callback-url",
+      "text": "Each app can have only one callback URL.",
+      "kind": "limit",
+      "applies_to": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/client-id-and-client-secret",
+        "quote": "Keep in mind that we allow only one callback URL per app",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "unclear",
+        "policy": "pass",
+        "supports_p": 0.4006697183538007,
+        "notes": [
+          "support probability 0.40 is below 0.75"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "callback-url-before-approval",
+      "text": "A non-functioning callback URL can be used at first, but it must be changed to a functioning one before submitting for approval.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/client-id-and-client-secret",
+        "quote": "make sure you change it to a functioning one before submitting it for approval",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9965189597825247,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "private-not-published",
+      "text": "Private apps are not published in the Pipedrive Marketplace.",
+      "kind": "limit",
+      "applies_to": [
+        "private-sandbox-testing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/faq",
+        "quote": "Apps that are private will not be published in the Pipedrive Marketplace.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9981341428782295,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "submit-for-approval",
+      "text": "To publish publicly, the app must be submitted for the app approval process.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/faq",
+        "quote": "you’d need to submit it for the app approval process",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9976412268495278,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "agree-terms-send-review",
+      "text": "Sending an app for review requires agreeing to the Pipedrive Developer Partner Agreement and clicking Send to review.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/marketplace-registering-the-app",
+        "quote": "Send it for review by agreeing to the terms and conditions of the Pipedrive Developer Partner Agreement and clicking on the green “Send to review” button.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "fail",
+        "supports_p": 0.9979613697273344,
+        "notes": [
+          "Claim 'agree-terms-send-review' says 'requires', but its quote does not state an obligation or limit"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "email-confirmation-required",
+      "text": "Confirming your email address is a requirement for all public apps before the app is sent to the Marketplace team for review.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/marketplace-registering-the-app",
+        "quote": "The final step involves confirming your email address – a requirement for all public apps.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9962668541388985,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "website-url-required",
+      "text": "Public app registration requires a Website URL.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/marketplace-registering-the-app",
+        "quote": "Website URL (required)",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9624979169812954,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "tos-url-required",
+      "text": "Public app registration requires a Terms of Service URL.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/marketplace-registering-the-app",
+        "quote": "Terms of Service URL (required)",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.947310615903036,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "privacy-url-required",
+      "text": "Public app registration requires a Privacy Policy URL.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/marketplace-registering-the-app",
+        "quote": "Privacy Policy URL (required)",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9528953892212136,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "access-scopes-required",
+      "text": "Access scopes are required when registering the app.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/marketplace-registering-the-app",
+        "quote": "Access scopes (required)",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "unclear",
+        "policy": "pass",
+        "supports_p": 0.003809078394331416,
+        "notes": [
+          "support probability 0.00 is below 0.75"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "redirect-must-match",
+      "text": "The redirect_uri in the OAuth request must match the callback URL defined in Developer Hub.",
+      "kind": "limit",
+      "applies_to": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/marketplace-oauth-and-api-proxy-status-codes",
+        "quote": "Provided value of redirect_uri parameter doesn't match with value defined in Developer Hub",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "unclear",
+        "policy": "fail",
+        "supports_p": 0.04416149699157587,
+        "notes": [
+          "Claim 'redirect-must-match' says 'must', but its quote does not state an obligation or limit",
+          "support probability 0.04 is below 0.75"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "each-user-installs",
+      "text": "Each user must individually install and allow access to the app for their account.",
+      "kind": "limit",
+      "applies_to": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/faq",
+        "quote": "No, each user must individually install and allow access to the app for their account.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.992796084959531,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "sandbox-separate",
+      "text": "Developer sandbox data is completely separate and not synced with live or production accounts.",
+      "kind": "fact",
+      "applies_to": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/faq",
+        "quote": "No, the data in developer sandbox accounts are completely separate and are in no way synced with live/production accounts.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9963784127467521,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "client-id-not-changeable",
+      "text": "The client_id cannot be refreshed or changed for existing apps; a new app is needed for a new client_id.",
+      "kind": "limit",
+      "applies_to": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://pipedrive.readme.io/docs/client-id-and-client-secret",
+        "quote": "The client_id cannot be refreshed or changed for existing apps. The only way to get a new client_id would be to create a new app.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9949338184208346,
+        "notes": []
+      },
+      "status": "verified"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Sign up for or log in to a developer sandbox account",
+      "owner": "you",
+      "detail": "Create a developer sandbox account and log in to Developer Hub to begin app creation.",
+      "scenarios": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "minutes": 10,
+      "claims": [
+        "sandbox-account",
+        "sandbox-separate"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 2,
+      "title": "Create a new app in Developer Hub",
+      "owner": "you",
+      "detail": "Click Create an app, choose public or private, fill in App name and OAuth Callback URL, and save. For a public app, select Yes for Intent to Publish; for a test app, select No.",
+      "scenarios": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "minutes": 15,
+      "claims": [
+        "one-callback-url",
+        "sandbox-account"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 3,
+      "title": "Configure OAuth callback URL and access scopes",
+      "owner": "agent",
+      "detail": "Set the callback URL (a non-functioning URL is acceptable temporarily), select the required access scopes, and save to generate client_id and client_secret.",
+      "scenarios": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "minutes": 20,
+      "claims": [
+        "one-callback-url",
+        "access-scopes-required",
+        "redirect-must-match"
+      ],
+      "agent_prompt": "In Developer Hub, open the app’s OAuth & access scopes tab. Enter the callback URL, select the access scopes the app needs, save the form, and copy the generated client_id and client_secret."
+    },
+    {
+      "n": 4,
+      "title": "Install and test the app in the sandbox",
+      "owner": "you",
+      "detail": "Use Install & test in Developer Hub to authorize the app on your sandbox account and verify the OAuth flow.",
+      "scenarios": [
+        "private-sandbox-testing",
+        "public-marketplace-app"
+      ],
+      "minutes": 30,
+      "claims": [
+        "each-user-installs",
+        "redirect-must-match"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 5,
+      "title": "Add required public app listing fields",
+      "owner": "you",
+      "detail": "Fill in Website URL, Terms of Service URL, and Privacy Policy URL in the app registration form.",
+      "scenarios": [
+        "public-marketplace-app"
+      ],
+      "minutes": 30,
+      "claims": [
+        "website-url-required",
+        "tos-url-required",
+        "privacy-url-required"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 6,
+      "title": "Update callback URL to a functioning endpoint",
+      "owner": "you",
+      "detail": "Replace any placeholder callback URL with a real, functioning URL before submitting for approval.",
+      "scenarios": [
+        "public-marketplace-app"
+      ],
+      "minutes": 15,
+      "claims": [
+        "callback-url-before-approval"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 7,
+      "title": "Send the app for Marketplace review",
+      "owner": "you",
+      "detail": "Agree to the Pipedrive Developer Partner Agreement, click Send to review, provide test account information if requested, and confirm your email address.",
+      "scenarios": [
+        "public-marketplace-app"
+      ],
+      "minutes": 20,
+      "claims": [
+        "agree-terms-send-review",
+        "email-confirmation-required",
+        "submit-for-approval"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 8,
+      "title": "Provider reviews the app",
+      "owner": "provider",
+      "detail": "The Marketplace team reviews the app during approval; status changes to In review after email confirmation.",
+      "scenarios": [
+        "public-marketplace-app"
+      ],
+      "minutes": null,
+      "claims": [
+        "submit-for-approval"
+      ],
+      "agent_prompt": null
+    }
+  ],
+  "blockers": [
+    {
+      "symptom": "App cannot be sent for review or published",
+      "fix": "Agree to the Developer Partner Agreement, click Send to review, and confirm the account email address.",
+      "escalate": null,
+      "claims": [
+        "agree-terms-send-review",
+        "email-confirmation-required",
+        "submit-for-approval"
+      ]
+    },
+    {
+      "symptom": "OAuth redirect or authorization fails with redirect URI mismatch",
+      "fix": "Ensure the redirect_uri sent in the OAuth request exactly matches the callback URL saved in Developer Hub.",
+      "escalate": null,
+      "claims": [
+        "redirect-must-match"
+      ]
+    },
+    {
+      "symptom": "Private app is not visible in the Marketplace",
+      "fix": "This is expected; private apps are not published. Submit a public app for approval to make it publicly available.",
+      "escalate": null,
+      "claims": [
+        "private-not-published",
+        "submit-for-approval"
+      ]
+    }
+  ],
+  "composio": {
+    "managed_auth_available": null,
+    "callback_url": null,
+    "notes": "Check the toolkit page for managed auth. To bring your own app, register the redirect URI shown when you create a custom auth config."
+  },
+  "origin": "generated",
+  "review_status": "pending",
+  "last_verified": "2026-10-29",
+  "generation": {
+    "run_at": "2026-10-29T06:32:43Z",
+    "query": "Pipedrive",
+    "extraction_model": "nvidia/nemotron-3.5-super-vl:free",
+    "support_backend": "nli (cross-encoder/nli-deberta-v3-base)",
+    "searches": [
+      "Pipedrive OAuth app create client ID redirect URI developer documentation",
+      "Pipedrive OAuth app review approval requirements",
+      "Pipedrive app marketplace listing publish requirements review",
+      "Pipedrive OAuth scopes permissions verification"
+    ],
+    "pages": [
+      "https://pipedrive.readme.io/docs/client-id-and-client-secret",
+      "https://pipedrive.readme.io/docs/faq",
+      "https://pipedrive.readme.io/docs/marketplace-registering-the-app",
+      "https://developers.pipedrive.com/docs/api/v1/Oauth",
+      "https://pipedrive.readme.io/docs/marketplace-oauth-and-api-proxy-status-codes",
+      "https://pipedrive.readme.io/docs/marketplace-oauth-api",
+      "https://developers.pipedrive.com/tutorials/build-your-first-pipedrive-hello-world-app",
+      "https://pipedrive.readme.io/docs/create-pipedrive-app-cli"
+    ],
+    "replayed": true,
+    "notes": [
+      "removed 'no wait' on 'private-sandbox-testing': no claim says there is no review, so the wait is unknown",
+      "'agree-terms-send-review, email-confirmation-required' on 'public-marketplace-app' is a step you take, not a review or approval, so it no longer counts as a blocker"
+    ]
+  }
+}

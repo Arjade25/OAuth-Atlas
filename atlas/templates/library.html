@@ -3,12 +3,14 @@
 <section class="intro">
   <h1>Which path are you on?</h1>
   <p>The same app can take fifteen minutes or two months. Each guide splits it by who you're building for, then separates the hours you'll spend from the time you'll wait on the provider.</p>
+  <p><a class="cta" href="/generate">Write a guide for another app</a></p>
 </section>
 
 <section class="library" aria-label="Guides">
   {% for v in guides %}
   <article class="app-row">
     <h2><a href="/guides/{{ v.g.slug }}">{{ v.g.app }}</a></h2>
+    {% if v.g.origin.value == "generated" %}<p class="origin">Written by the agent, not yet reviewed: {{ v.counts.verified }} of {{ v.counts.total }} claims verified</p>{% endif %}
     <p class="app-summary">{{ v.g.summary }}</p>
     <ul class="paths">
       {% for sv in v.scenarios %}{% set v = sv %}

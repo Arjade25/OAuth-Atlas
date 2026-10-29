@@ -12,7 +12,7 @@
       "state": "available_now",
       "dimensions": {"technical": 1, "prerequisites": 0, "approval": 0, "uncertainty": 0, "maintenance": 0},
       "effort_hours": {"min": 0.25, "max": 0.5},
-      "wait_days": {"min": 0, "max": 0},
+      "wait_days": null,
       "claims": ["self-serve-registration", "acts-as-user"]
     },
     {
@@ -30,7 +30,7 @@
   "claims": [
     {
       "id": "self-serve-registration",
-      "text": "You register an OAuth app yourself from Developer settings; the documented flow has no submission or review step.",
+      "text": "You register an OAuth app yourself, from Developer settings in your own account.",
       "kind": "fact",
       "applies_to": ["any-user", "restricted-org"],
       "evidence": {
@@ -72,7 +72,7 @@
     },
     {
       "id": "github-apps-preferred",
-      "text": "GitHub generally recommends GitHub Apps over OAuth apps, because they request narrower permissions.",
+      "text": "GitHub says GitHub Apps are generally preferred over OAuth apps.",
       "kind": "fact",
       "applies_to": ["any-user", "restricted-org"],
       "evidence": {

@@ -2,7 +2,7 @@
   "app": "Slack",
   "provider": "Slack (Salesforce)",
   "slug": "slack",
-  "summary": "Easy to start, slow to list. An app works in its own workspace immediately and can be installed by other workspaces once you turn on public distribution, with no review. Commercial apps are expected to go through Slack Marketplace review, and Slack publishes no timeline for it.",
+  "summary": "Easy to start, slow to list. An app works in its own workspace immediately and can be installed by other workspaces once you turn on public distribution, with no review. Commercial apps are expected to go through Slack Marketplace review. We found no published timeline for it; one developer reported four months.",
   "developer_portal": "https://api.slack.com/apps",
   "scenarios": [
     {
@@ -12,7 +12,7 @@
       "state": "available_now",
       "dimensions": {"technical": 1, "prerequisites": 0, "approval": 0, "uncertainty": 0, "maintenance": 0},
       "effort_hours": {"min": 0.25, "max": 0.5},
-      "wait_days": {"min": 0, "max": 0},
+      "wait_days": null,
       "claims": ["one-workspace"]
     },
     {
@@ -98,8 +98,8 @@
     },
     {
       "id": "commercial-needs-marketplace",
-      "text": "Apps meant for commercial distribution are expected to be submitted and approved for Marketplace listing.",
-      "kind": "requirement",
+      "text": "Slack says apps meant for commercial distribution should be submitted and approved for Marketplace listing.",
+      "kind": "fact",
       "applies_to": ["marketplace"],
       "evidence": {
         "url": "https://docs.slack.dev/app-management/distribution/",
@@ -140,7 +140,7 @@
     },
     {
       "id": "review-anecdote",
-      "text": "Slack publishes no review timeline; one developer reported a four-month Marketplace review.",
+      "text": "One developer reported a four-month Marketplace review. This is a single third-party report, not a figure from Slack.",
       "kind": "wait_time",
       "applies_to": ["marketplace"],
       "evidence": {

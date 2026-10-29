@@ -7,7 +7,7 @@ from a scenario's dimensions, never written by hand or by a model.
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
 from typing import Optional
 
@@ -43,6 +43,7 @@ class ScenarioState(str, Enum):
     available_now = "available_now"
     available_for_testing = "available_for_testing"
     production_blocked = "production_blocked"
+    unconfirmed = "unconfirmed"  # a listing path whose sources never say it is open
 
 
 class Owner(str, Enum):
@@ -72,6 +73,8 @@ class Checks(BaseModel):
     exists: CheckResult = CheckResult.not_run    # quote appears in the stored page text
     supports: CheckResult = CheckResult.not_run  # the passage entails the claim
     policy: CheckResult = CheckResult.not_run    # deterministic rules in atlas.policy
+    supports_p: Optional[float] = Field(None, ge=0, le=1, description="Support checker's probability for 'supports'")
+    notes: list[str] = Field(default_factory=list, description="Why a check did not pass")
 
 
 class Range(BaseModel):
@@ -150,6 +153,18 @@ class ComposioInfo(BaseModel):
     notes: Optional[str] = None
 
 
+class GenerationInfo(BaseModel):
+    """How an agent-generated guide was produced, so a reviewer can reproduce it."""
+    run_at: datetime
+    query: str
+    extraction_model: str
+    support_backend: str
+    searches: list[str] = Field(default_factory=list)
+    pages: list[str] = Field(default_factory=list)
+    replayed: bool = False
+    notes: list[str] = Field(default_factory=list)
+
+
 class Guide(BaseModel):
     app: str
     provider: str
@@ -164,6 +179,7 @@ class Guide(BaseModel):
     origin: Origin
     review_status: ReviewStatus
     last_verified: date
+    generation: Optional[GenerationInfo] = None
 
     def claim(self, claim_id: str) -> Optional[Claim]:
         return next((c for c in self.claims if c.id == claim_id), None)

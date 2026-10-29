@@ -1,0 +1,1159 @@
+{
+  "best": "window-lower",
+  "results": {
+    "window-lower": {
+      "input_format": "window-lower",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8"
+        ],
+        "false_flags": [
+          "pd-5"
+        ]
+      },
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 17,
+      "false_passes": [
+        "pd-0",
+        "pd-6",
+        "pd-8",
+        "pd-9"
+      ],
+      "false_flags": [
+        "pd-5"
+      ],
+      "contradictions_caught": 4,
+      "contradictions_total": 4,
+      "median_ms": 448,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9972586982277448,
+          "ms": 648,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9951946058902462,
+          "ms": 664,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9969618573711705,
+          "ms": 492,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.007207939070695603,
+          "ms": 464,
+          "note": "support probability 0.01 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9979478039116099,
+          "ms": 368,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9981470390953837,
+          "ms": 448,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9938069840150849,
+          "ms": 528,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9979812332656204,
+          "ms": 443,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9963181640353018,
+          "ms": 403,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9981341428782295,
+          "ms": 387,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.992796084959531,
+          "ms": 482,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9978855368303162,
+          "ms": 642,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.992906065844584,
+          "ms": 504,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9976122147445877,
+          "ms": 403,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 0.12264027558155091,
+          "ms": 438,
+          "note": "support probability 0.12 is below 0.75",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9976118017394374,
+          "ms": 504,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.993871462287755,
+          "ms": 517,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 7.28207610184405e-05,
+          "ms": 422,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 0.00012994717084713442,
+          "ms": 442,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 0.0002916542211464403,
+          "ms": 380,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 0.0001507772357359685,
+          "ms": 381,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 0.00012038730549270646,
+          "ms": 398,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": false
+        }
+      ]
+    },
+    "window": {
+      "input_format": "window",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8"
+        ],
+        "false_flags": [
+          "pd-5",
+          "pd-18"
+        ]
+      },
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 16,
+      "false_passes": [
+        "pd-0",
+        "pd-6",
+        "pd-8",
+        "pd-9"
+      ],
+      "false_flags": [
+        "pd-5",
+        "pd-18"
+      ],
+      "contradictions_caught": 4,
+      "contradictions_total": 4,
+      "median_ms": 437,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9961708859099105,
+          "ms": 416,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9838858506496595,
+          "ms": 397,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9952857010303194,
+          "ms": 442,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.004731207496043403,
+          "ms": 463,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9979665839788715,
+          "ms": 386,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.997050771533993,
+          "ms": 437,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9872819672501477,
+          "ms": 502,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9981949941972765,
+          "ms": 432,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9674109611628592,
+          "ms": 394,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9967151252750935,
+          "ms": 380,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.12767155284542864,
+          "ms": 471,
+          "note": "support probability 0.13 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9972736649610486,
+          "ms": 406,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9917446840660853,
+          "ms": 514,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9966745070469705,
+          "ms": 542,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 0.027979376082675998,
+          "ms": 479,
+          "note": "support probability 0.03 is below 0.75",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9972921363269807,
+          "ms": 503,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.995334824604301,
+          "ms": 537,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 8.32536152278832e-05,
+          "ms": 393,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 0.00012106828398009332,
+          "ms": 467,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 0.0001786082181297076,
+          "ms": 385,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 6.96949181788197e-05,
+          "ms": 384,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 6.980113429504152e-05,
+          "ms": 420,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": false
+        }
+      ]
+    },
+    "window+source": {
+      "input_format": "window+source",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8"
+        ],
+        "false_flags": [
+          "pd-5",
+          "pd-17",
+          "pd-18"
+        ]
+      },
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 15,
+      "false_passes": [
+        "pd-0",
+        "pd-6",
+        "pd-8",
+        "pd-9"
+      ],
+      "false_flags": [
+        "pd-5",
+        "pd-17",
+        "pd-18"
+      ],
+      "contradictions_caught": 4,
+      "contradictions_total": 4,
+      "median_ms": 435,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9962518896695312,
+          "ms": 444,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.986438536551016,
+          "ms": 420,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9955282258410176,
+          "ms": 441,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.007392787052706715,
+          "ms": 478,
+          "note": "support probability 0.01 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9979793073500484,
+          "ms": 384,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9972438982609938,
+          "ms": 449,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9908783298830971,
+          "ms": 506,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9982022375035277,
+          "ms": 435,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9921703726194958,
+          "ms": 417,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.2233867975082327,
+          "ms": 397,
+          "note": "support probability 0.22 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.21386953825918317,
+          "ms": 490,
+          "note": "support probability 0.21 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9969827133060579,
+          "ms": 419,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9923879289020098,
+          "ms": 431,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9964777582191,
+          "ms": 422,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 0.029909577201127645,
+          "ms": 477,
+          "note": "support probability 0.03 is below 0.75",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9973854172454808,
+          "ms": 545,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9959544369442243,
+          "ms": 550,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 6.940357803314949e-05,
+          "ms": 418,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 0.00017535888931060272,
+          "ms": 481,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 0.00018117607056397197,
+          "ms": 394,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 8.076994023834877e-05,
+          "ms": 392,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 6.23130345098693e-05,
+          "ms": 414,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": false
+        }
+      ]
+    },
+    "sentence": {
+      "input_format": "sentence",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8"
+        ],
+        "false_flags": [
+          "pd-3",
+          "pd-5",
+          "pd-11",
+          "pd-12"
+        ]
+      },
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 15,
+      "false_passes": [
+        "pd-6",
+        "pd-8",
+        "pd-9"
+      ],
+      "false_flags": [
+        "pd-3",
+        "pd-5",
+        "pd-11",
+        "pd-12"
+      ],
+      "contradictions_caught": 4,
+      "contradictions_total": 4,
+      "median_ms": 270,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9971310292978788,
+          "ms": 271,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.0011512335485963847,
+          "ms": 255,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9980340275741466,
+          "ms": 289,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.007832999605315685,
+          "ms": 241,
+          "note": "support probability 0.01 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9983791066880072,
+          "ms": 233,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.0006628344591556687,
+          "ms": 305,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.0006990660558420167,
+          "ms": 303,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9982249707156706,
+          "ms": 300,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9984685034553894,
+          "ms": 316,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9975210244913223,
+          "ms": 269,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9960004682036966,
+          "ms": 259,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9972175057227401,
+          "ms": 312,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 0.000480233941689274,
+          "ms": 242,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9974328969689261,
+          "ms": 270,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 0.017000191460259016,
+          "ms": 268,
+          "note": "support probability 0.02 is below 0.75",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9982242492480109,
+          "ms": 286,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9973955542881525,
+          "ms": 309,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 9.24851797021994e-05,
+          "ms": 283,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 1.7900003696639032e-05,
+          "ms": 239,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 5.962147947042235e-05,
+          "ms": 238,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 4.431731148683316e-05,
+          "ms": 263,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 2.6335676967396346e-05,
+          "ms": 261,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": false
+        }
+      ]
+    },
+    "sentence+source": {
+      "input_format": "sentence+source",
+      "system": {
+        "false_passes": [
+          "pd-6",
+          "pd-8"
+        ],
+        "false_flags": [
+          "pd-3",
+          "pd-11",
+          "pd-12"
+        ]
+      },
+      "judge": "nli (cross-encoder/nli-deberta-v3-base)",
+      "threshold": 0.75,
+      "items": 22,
+      "correct_pass_or_hold": 16,
+      "false_passes": [
+        "pd-6",
+        "pd-8",
+        "pd-9"
+      ],
+      "false_flags": [
+        "pd-3",
+        "pd-11",
+        "pd-12"
+      ],
+      "contradictions_caught": 4,
+      "contradictions_total": 4,
+      "median_ms": 282,
+      "rows": [
+        {
+          "id": "pd-2",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9973158597329218,
+          "ms": 292,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-3",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.0019140071885699035,
+          "ms": 276,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-4",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9977759697414913,
+          "ms": 335,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-5",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9969965600071319,
+          "ms": 264,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-10",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9981628320619595,
+          "ms": 241,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-11",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.0006671684748584152,
+          "ms": 310,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-12",
+          "label": "supports",
+          "result": "unclear",
+          "p_supports": 0.0021644225470274997,
+          "ms": 318,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-15",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9981557789486348,
+          "ms": 313,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-16",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.998089666822064,
+          "ms": 282,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-17",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.996575762857947,
+          "ms": 264,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-18",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9954661751615925,
+          "ms": 265,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-19",
+          "label": "supports",
+          "result": "pass",
+          "p_supports": 0.9970934939235484,
+          "ms": 332,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-0",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 0.0007527712519462932,
+          "ms": 255,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": false
+        },
+        {
+          "id": "pd-6",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9968642198942906,
+          "ms": 273,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-7",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 0.0299799970650306,
+          "ms": 282,
+          "note": "support probability 0.03 is below 0.75",
+          "policy": false
+        },
+        {
+          "id": "pd-8",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.9981731629894973,
+          "ms": 290,
+          "note": "",
+          "policy": true
+        },
+        {
+          "id": "pd-9",
+          "label": "unclear",
+          "result": "pass",
+          "p_supports": 0.997643278867006,
+          "ms": 320,
+          "note": "",
+          "policy": false
+        },
+        {
+          "id": "pd-15-alt",
+          "label": "unclear",
+          "result": "unclear",
+          "p_supports": 7.083516694227601e-05,
+          "ms": 300,
+          "note": "support probability 0.00 is below 0.75",
+          "policy": true
+        },
+        {
+          "id": "pd-5-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 4.410193328634383e-05,
+          "ms": 254,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-17-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 8.307471524806269e-05,
+          "ms": 252,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-16-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 4.714351117585361e-05,
+          "ms": 270,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": true
+        },
+        {
+          "id": "pd-3-alt",
+          "label": "contradicts",
+          "result": "fail",
+          "p_supports": 2.7333838752910717e-05,
+          "ms": 271,
+          "note": "the judge found the passage contradicts the claim",
+          "policy": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,565 @@
+{
+  "app": "LinkedIn",
+  "provider": "LinkedIn",
+  "slug": "linkedin",
+  "summary": "Create a LinkedIn developer app, associate it with a LinkedIn Page, and get Page super admin verification before requesting product access. If you own the Page you can self-verify; otherwise a super admin has up to 30 days to approve. Public distribution is blocked until LinkedIn completes app review, identity vetting, and organization access verification.",
+  "developer_portal": "https://www.developer.linkedin.com/",
+  "scenarios": [
+    {
+      "id": "self-owned-page-testing",
+      "label": "Test with your own LinkedIn Page",
+      "audience": "Developers who are LinkedIn Page super admins",
+      "state": "available_for_testing",
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 2,
+        "approval": 1,
+        "uncertainty": 1,
+        "maintenance": 1
+      },
+      "effort_hours": {
+        "min": 2.0,
+        "max": 6.0
+      },
+      "wait_days": null,
+      "blocked_by": [],
+      "claims": [
+        "linkedin-page-association-required",
+        "page-owner-can-self-verify",
+        "sign-in-oidc-requires-access-request",
+        "redirect-url-must-be-authorized",
+        "privacy-policy-url-required"
+      ]
+    },
+    {
+      "id": "page-super-admin-approval",
+      "label": "Use a LinkedIn Page owned by another admin",
+      "audience": "Developers who need a Page super admin to approve app association",
+      "state": "production_blocked",
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 3,
+        "approval": 2,
+        "uncertainty": 2,
+        "maintenance": 1
+      },
+      "effort_hours": {
+        "min": 4.0,
+        "max": 10.0
+      },
+      "wait_days": null,
+      "blocked_by": [
+        "page-super-admin-must-approve"
+      ],
+      "claims": [
+        "linkedin-page-association-required",
+        "page-super-admin-must-approve",
+        "page-super-admin-30-day-window",
+        "sign-in-oidc-requires-access-request",
+        "redirect-url-must-be-authorized",
+        "privacy-policy-url-required"
+      ]
+    },
+    {
+      "id": "public-distribution",
+      "label": "Public listing or access for other customers",
+      "audience": "Developers publishing to the public or other organizations",
+      "state": "production_blocked",
+      "dimensions": {
+        "technical": 3,
+        "prerequisites": 4,
+        "approval": 4,
+        "uncertainty": 3,
+        "maintenance": 2
+      },
+      "effort_hours": {
+        "min": 8.0,
+        "max": 20.0
+      },
+      "wait_days": null,
+      "blocked_by": [
+        "developer-product-review-process",
+        "organization-must-meet-access-requirements"
+      ],
+      "claims": [
+        "developer-product-review-process",
+        "identity-vetting-verifies-organization",
+        "organization-must-meet-access-requirements",
+        "rejection-causes"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "linkedin-page-association-required",
+      "text": "You must associate your app with a LinkedIn Page for certain functionality and products.",
+      "kind": "requirement",
+      "applies_to": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://www.linkedin.com/help/linkedin/answer/a1665329",
+        "quote": "For certain functionality and products, you’re required to associate your app with a LinkedIn Page.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9965549295745618,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "page-super-admin-must-approve",
+      "text": "A LinkedIn Page super admin must approve or deny the app association request.",
+      "kind": "requirement",
+      "applies_to": [
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://www.linkedin.com/help/linkedin/answer/a1665329",
+        "quote": "You must send an app verification request to your Page super admin who is responsible for approving or denying the request to associate an app with a LinkedIn Page.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9973965130145968,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "page-super-admin-30-day-window",
+      "text": "The Page super admin has up to 30 days to verify the app using the unique URL.",
+      "kind": "wait_time",
+      "applies_to": [
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": {
+        "min": 0.0,
+        "max": 30.0
+      },
+      "evidence": {
+        "url": "https://www.linkedin.com/help/linkedin/answer/a1665329",
+        "quote": "Your Page super admin has 30 days to verify the app with the unique URL.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "fail",
+        "supports_p": 0.9919204102148957,
+        "notes": [
+          "Claim 'page-super-admin-30-day-window' describes a deadline or expiry, not how long you wait"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "page-owner-can-self-verify",
+      "text": "If you own the LinkedIn Page, you can complete the app verification yourself.",
+      "kind": "fact",
+      "applies_to": [
+        "self-owned-page-testing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://techdocs.akamai.com/identity-cloud/docs/the-linkedin-oauth-20-social-login-configuration-guide",
+        "quote": "If you’re the owner of the LinkedIn page you can paste this URL into the address bar of your web press, press ENTER, and then complete the verification process yourself.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "third_party"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9954393128898525,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "developer-product-review-process",
+      "text": "Developer product requests go through an approval review process.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://www.linkedin.com/help/linkedin/answer/a1449586",
+        "quote": "Requests related to Developer Product management undergo an approval review process.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "fail",
+        "supports_p": 0.9979814214959407,
+        "notes": [
+          "Claim 'developer-product-review-process' is filed as a requirement, but its quote does not state an obligation"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "identity-vetting-verifies-organization",
+      "text": "LinkedIn verifies whether your organization meets access requirements during Identity Vetting.",
+      "kind": "fact",
+      "applies_to": [
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://www.linkedin.com/help/linkedin/answer/a1449586",
+        "quote": "Identity Vetting: We are verifying whether your organization meets our access requirements.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "unclear",
+        "policy": "pass",
+        "supports_p": 0.001640280756390805,
+        "notes": [
+          "support probability 0.00 is below 0.75"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "organization-must-meet-access-requirements",
+      "text": "Your organization must meet LinkedIn's access requirements to be approved.",
+      "kind": "requirement",
+      "applies_to": [
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://www.linkedin.com/help/linkedin/answer/a1449586",
+        "quote": "Organization doesn’t meet our access requirements. We were unable to verify that your organization meets our access requirements.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "unclear",
+        "policy": "pass",
+        "supports_p": 0.004749897395332396,
+        "notes": [
+          "support probability 0.00 is below 0.75"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "sign-in-oidc-requires-access-request",
+      "text": "You must request access for Sign In with LinkedIn using OpenID Connect.",
+      "kind": "requirement",
+      "applies_to": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://supabase.com/docs/guides/auth/social-sign-in/auth-linkedin",
+        "quote": "Look for `Sign In with LinkedIn using OpenID Connect` and click on Request Access",
+        "retrieved_at": "2026-10-29",
+        "source_type": "third_party"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "fail",
+        "supports_p": 0.9714416924035465,
+        "notes": [
+          "Claim 'sign-in-oidc-requires-access-request' says 'must', but its quote does not state an obligation or limit"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "redirect-url-must-be-authorized",
+      "text": "You must add your redirect URL to the app's authorized redirect URLs.",
+      "kind": "requirement",
+      "applies_to": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://supabase.com/docs/guides/auth/social-sign-in/auth-linkedin",
+        "quote": "Add your `Redirect URL` to the `Authorized Redirect URLs for your app` section",
+        "retrieved_at": "2026-10-29",
+        "source_type": "third_party"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "fail",
+        "supports_p": 0.991576762742316,
+        "notes": [
+          "Claim 'redirect-url-must-be-authorized' says 'must', but its quote does not state an obligation or limit"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "privacy-policy-url-required",
+      "text": "You must enter a privacy policy URL for your LinkedIn app.",
+      "kind": "requirement",
+      "applies_to": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://techdocs.akamai.com/identity-cloud/docs/the-linkedin-oauth-20-social-login-configuration-guide",
+        "quote": "Enter the URL of your privacy policy in the Privacy policy URL field:",
+        "retrieved_at": "2026-10-29",
+        "source_type": "third_party"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "fail",
+        "supports_p": 0.9089710750571388,
+        "notes": [
+          "Claim 'privacy-policy-url-required' says 'must', but its quote does not state an obligation or limit"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "rejection-causes",
+      "text": "Apps can be rejected for insufficient access form details, unapproved use cases, failed email or organization verification, invalid website or page, missing privacy policy, invalid screencast, disallowed app name, or data restriction non-compliance.",
+      "kind": "limit",
+      "applies_to": [
+        "public-distribution"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://www.linkedin.com/help/linkedin/answer/a1449586",
+        "quote": "Your application is not in compliance with the relevant LinkedIn API terms.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "unclear",
+        "policy": "pass",
+        "supports_p": 0.10616358516516437,
+        "notes": [
+          "quote was found in P4, not the cited P3",
+          "support probability 0.11 is below 0.75"
+        ]
+      },
+      "status": "flagged"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Create a LinkedIn developer account and app",
+      "owner": "you",
+      "detail": "Obtain a LinkedIn developer account from https://www.developer.linkedin.com, then create a new LinkedIn application and copy the client ID and client secret.",
+      "scenarios": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "minutes": 30,
+      "claims": [],
+      "agent_prompt": null
+    },
+    {
+      "n": 2,
+      "title": "Associate app with a LinkedIn Page and enter app details",
+      "owner": "you",
+      "detail": "Enter your LinkedIn Page, upload an app logo (PNG or JPG stored locally), and enter the privacy policy URL in the Privacy policy URL field.",
+      "scenarios": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "minutes": 20,
+      "claims": [
+        "linkedin-page-association-required",
+        "privacy-policy-url-required"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 3,
+      "title": "Send app verification request to Page super admin",
+      "owner": "you",
+      "detail": "In the app Settings tab, click Verify, generate a URL, copy it, and send it to the Page super admin by email or LinkedIn Messaging.",
+      "scenarios": [
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "minutes": 10,
+      "claims": [
+        "page-super-admin-must-approve"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 4,
+      "title": "Complete Page verification (owner only) or wait for super admin",
+      "owner": "provider",
+      "detail": "If you own the LinkedIn Page, paste the verification URL into your browser and complete verification yourself. Otherwise, the Page super admin has up to 30 days to approve or deny using the unique URL.",
+      "scenarios": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "minutes": null,
+      "claims": [
+        "page-owner-can-self-verify",
+        "page-super-admin-30-day-window"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 5,
+      "title": "Request access for Sign In with LinkedIn using OpenID Connect",
+      "owner": "you",
+      "detail": "Click Products, find Sign In with LinkedIn using OpenID Connect, and click Request Access.",
+      "scenarios": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "minutes": 5,
+      "claims": [
+        "sign-in-oidc-requires-access-request"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 6,
+      "title": "Add authorized redirect URL",
+      "owner": "you",
+      "detail": "Go to the Auth tab and add your redirect URI to the Authorized Redirect URLs for your app section, then click Update.",
+      "scenarios": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "minutes": 5,
+      "claims": [
+        "redirect-url-must-be-authorized"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 7,
+      "title": "Copy Client ID and Client Secret",
+      "owner": "you",
+      "detail": "Copy the app's Client ID and reveal/copy the Client Secret for configuring LinkedIn OAuth in your application.",
+      "scenarios": [
+        "self-owned-page-testing",
+        "page-super-admin-approval",
+        "public-distribution"
+      ],
+      "minutes": 5,
+      "claims": [],
+      "agent_prompt": null
+    }
+  ],
+  "blockers": [
+    {
+      "symptom": "Page super admin does not approve the app verification request.",
+      "fix": "Resend the verification URL to the Page super admin; note that denial invalidates all generated links for that app.",
+      "escalate": "Contact LinkedIn developer support if the Page super admin is unresponsive.",
+      "claims": [
+        "page-super-admin-must-approve",
+        "page-super-admin-30-day-window"
+      ]
+    },
+    {
+      "symptom": "App review or organization vetting fails.",
+      "fix": "Correct the access request form, use an approved use case, pass email and organization verification, provide a valid company website and LinkedIn Page, add a valid privacy policy, provide a valid screencast, avoid LinkedIn/Microsoft names in the app name, and comply with LinkedIn API data restrictions.",
+      "escalate": "Contact LinkedIn developer support for questions about application status.",
+      "claims": [
+        "developer-product-review-process",
+        "identity-vetting-verifies-organization",
+        "organization-must-meet-access-requirements",
+        "rejection-causes"
+      ]
+    }
+  ],
+  "composio": {
+    "managed_auth_available": null,
+    "callback_url": null,
+    "notes": "Check the toolkit page for managed auth. To bring your own app, register the redirect URI shown when you create a custom auth config."
+  },
+  "origin": "generated",
+  "review_status": "pending",
+  "last_verified": "2026-10-29",
+  "generation": {
+    "run_at": "2026-10-29T04:43:13Z",
+    "query": "linkedin.com",
+    "extraction_model": "nvidia/nemotron-3.5-super-vl:free",
+    "support_backend": "nli (cross-encoder/nli-deberta-v3-base)",
+    "searches": [
+      "Linkedin OAuth app create client ID redirect URI developer documentation",
+      "Linkedin OAuth app review approval requirements",
+      "Linkedin app marketplace listing publish requirements review",
+      "Linkedin OAuth scopes permissions verification"
+    ],
+    "pages": [
+      "https://www.linkedin.com/help/linkedin/answer/a1449586",
+      "https://www.linkedin.com/help/linkedin/answer/a1665329",
+      "https://www.linkedin.com/help/lms/answer/a1665329",
+      "https://techdocs.akamai.com/identity-cloud/docs/the-linkedin-oauth-20-social-login-configuration-guide",
+      "https://supabase.com/docs/guides/auth/social-sign-in/auth-linkedin"
+    ],
+    "replayed": true,
+    "notes": [
+      "'page-super-admin-30-day-window' on 'page-super-admin-approval' is not a requirement, so it no longer counts as a blocker",
+      "removed the wait time on 'page-super-admin-approval': no verified claim with a number backs it",
+      "'identity-vetting-verifies-organization' on 'public-distribution' is not a requirement, so it no longer counts as a blocker"
+    ]
+  }
+}

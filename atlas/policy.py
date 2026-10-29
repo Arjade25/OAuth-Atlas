@@ -11,7 +11,8 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-from .schema import CheckResult, ClaimKind, ClaimStatus, Guide, ReviewStatus, ScenarioState, SourceType
+from .evidence import normalize
+from .schema import CheckResult, Claim, ClaimKind, ClaimStatus, Guide, ReviewStatus, ScenarioState, SourceType
 from .scoring import scenario_score
 
 # How old evidence may be before a guide is stale, by scenario score.
@@ -36,6 +37,125 @@ def _has_number(text: str) -> bool:
     return bool(re.search(r"\d", text)) or bool(
         re.search(r"\b(one|two|three|four|five|six|seven|eight|nine|ten|twelve)\b", text, re.I)
     )
+
+
+_NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
+
+
+def _numbers(text: str) -> set[str]:
+    return {m.group().replace(",", "") for m in _NUM.finditer(text)}
+
+
+# Words that turn a claim into an obligation or a hard limit, and the words a
+# quote must contain to back one. An instruction ("Insert a link to...") is
+# not evidence that something is required.
+_STRONG_CLAIM = re.compile(r"\b(required|requires|requirement|mandatory|must|only|always|never|cannot|prerequisites?)\b")
+_STRONG_QUOTE = re.compile(
+    r"\b(must|required|requires?|requirements?|mandatory|need|needs|needed|only|always|never|cannot|can't|"
+    r"not allowed|not possible|impossible|unable to|make sure|have to|has to|limited|at most|up to|every)\b")
+
+
+# A wait is how long you wait on someone else. A deadline for the approver
+# ("has 30 days to verify") or an expiry is a different number and must not
+# be shown as one.
+_DEADLINE = re.compile(
+    r"\b(?:has|have|gets?|given)\s+(?:up to\s+)?\d+\s+(?:business\s+|calendar\s+)?"
+    r"(?:minutes?|hours?|days?|weeks?|months?)\s+to\b|\bexpir\w*|\bvalid for\b|\bdeadline\b")
+
+# A blocker is a decision someone else makes. "Send it for review" or "agree to
+# the terms" is a step you take, not a gate, so the phrase that sends something
+# to review does not count.
+_SENT_TO_GATE = re.compile(r"\b(?:for|to) (?:a |the )?(?:review|approval)\b")
+_GATE = re.compile(r"\b(?:review(?:ed|s|ers?)?|approv\w*|verif\w*|assess\w*|vett\w*|audit\w*)\b")
+
+
+# "No wait" is a claim too: it needs a source saying there is no review,
+# not just a source that never mentions one.
+_NO_REVIEW = re.compile(
+    r"(?:\b(?:no|without|not|never)|n't)\b(?:\W+\w+){0,8}?\W+(?:reviews?|reviewed|approvals?|approved|verifications?|verified)\b"
+    r"|\b(?:reviews?|approvals?|verifications?)\b(?:\W+\w+){0,3}?\W+(?:isn't|is not|not|no longer)\W+(?:required|needed|necessary)\b"
+    r"|\bexceptions? to\b(?:\W+\w+){0,4}?\W+(?:reviews?|approvals?|verifications?)\b")
+
+
+def states_no_review(c: Claim) -> bool:
+    """True when a claim, or its quote, says a path has no review or approval."""
+    texts = [c.text] + ([c.evidence.quote] if c.evidence else [])
+    return any(_NO_REVIEW.search(normalize(t)) for t in texts)
+
+
+# Paths that put an app in a provider's listing usually pass a review. Calling
+# one open needs a source that says it is not reviewed.
+_LISTING = re.compile(r"\b(?:marketplace|app directory|app store|listed|listing|publish\w*)\b")
+_NOT_LISTING = re.compile(r"\b(?:unlisted|not listed|without (?:being )?list\w*|non-listed)\b")
+
+
+def is_listing_path(label: str, scenario_id: str) -> bool:
+    """True for a path that lists or publishes the app in the provider's directory."""
+    text = normalize(f"{label} {scenario_id.replace('-', ' ')}")
+    return bool(_LISTING.search(text)) and not _NOT_LISTING.search(text)
+
+
+def is_gate(c: Claim) -> bool:
+    """True when a claim describes a review, approval or check that someone else decides."""
+    return bool(_GATE.search(_SENT_TO_GATE.sub(" ", normalize(c.text))))
+
+
+def _without_negated(text: str) -> str:
+    """Drop negated obligations: 'not required' and 'optional' state the absence of one."""
+    return re.sub(r"\b(not|isn't|aren't|no longer|never)\s+(required|mandatory)\b", " ", text)
+
+
+def claim_issues(c: Claim, today: date) -> list[Issue]:
+    """Rules that judge one claim against its own evidence. Used both by
+    check_guide and by the pipeline to set a claim's policy check."""
+    out: list[Issue] = []
+    ev = c.evidence
+    if ev is None:
+        return out
+
+    # Over-precision: a numeric wait needs a number in its source.
+    if c.kind == ClaimKind.wait_time and c.wait_days is not None and not _has_number(ev.quote):
+        out.append(Issue("over_precise_wait", "error",
+                         f"Claim '{c.id}' states a numeric wait but its quote contains no number", c.id))
+
+    # A deadline or expiry is not a wait.
+    if c.kind == ClaimKind.wait_time and (_DEADLINE.search(normalize(ev.quote)) or _DEADLINE.search(normalize(c.text))):
+        out.append(Issue("deadline_as_wait", "error",
+                         f"Claim '{c.id}' describes a deadline or expiry, not how long you wait", c.id))
+
+    # Every number the claim states must appear in its quote ("21 days" vs "several weeks").
+    missing = _numbers(c.text) - _numbers(ev.quote)
+    if missing:
+        out.append(Issue("number_not_in_quote", "error",
+                         f"Claim '{c.id}' states {', '.join(sorted(missing))}, which its quote does not contain", c.id))
+
+    # Obligation: "X is required" needs a quote that says so, not just an instruction.
+    strong = _STRONG_CLAIM.findall(_without_negated(normalize(c.text)))
+    if strong and not _STRONG_QUOTE.search(normalize(ev.quote)):
+        out.append(Issue("obligation_not_in_quote", "error",
+                         f"Claim '{c.id}' says '{strong[0]}', but its quote does not state an obligation or limit", c.id))
+
+    # The same test for a claim *filed* as a requirement, whatever its wording:
+    # copying "Sign up for a sandbox account" and labelling it a requirement is
+    # the same overstatement, moved into the claim's type.
+    if c.kind == ClaimKind.requirement and not strong and not _STRONG_QUOTE.search(normalize(ev.quote)):
+        out.append(Issue("requirement_not_in_quote", "error",
+                         f"Claim '{c.id}' is filed as a requirement, but its quote does not state an obligation", c.id))
+
+    # A claim that only repeats its quote passes every check trivially and reads as a fragment.
+    if normalize(c.text) == normalize(ev.quote):
+        out.append(Issue("claim_repeats_quote", "warning",
+                         f"Claim '{c.id}' repeats its quote word for word instead of stating it plainly", c.id))
+
+    if ev.source_type == SourceType.third_party:
+        out.append(Issue("third_party_source", "warning",
+                         f"Claim '{c.id}' rests on a third-party source; show it as reported, not fact", c.id))
+    if len(ev.quote.split()) > MAX_QUOTE_WORDS:
+        out.append(Issue("quote_too_long", "warning",
+                         f"Claim '{c.id}' quote exceeds {MAX_QUOTE_WORDS} words; keep evidence to the passage", c.id))
+    if (ev.retrieved_at - today).days > 1:  # a day of leeway: fetch and check may be in different time zones
+        out.append(Issue("future_evidence", "error", f"Claim '{c.id}' evidence is dated in the future", c.id))
+    return out
 
 
 def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
@@ -88,20 +208,7 @@ def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
         if c.status != ClaimStatus.flagged and CheckResult.failed in (c.checks.exists, c.checks.supports, c.checks.policy):
             add("failed_check_not_flagged", "error", f"Claim '{c.id}' failed a check but is not flagged", c.id)
 
-        # Over-precision: a numeric wait needs a number in its source.
-        if c.kind == ClaimKind.wait_time and c.wait_days is not None and ev is not None and not _has_number(ev.quote):
-            add("over_precise_wait", "error",
-                f"Claim '{c.id}' states a numeric wait but its quote contains no number", c.id)
-
-        if ev is not None:
-            if ev.source_type == SourceType.third_party:
-                add("third_party_source", "warning",
-                    f"Claim '{c.id}' rests on a third-party source; show it as reported, not fact", c.id)
-            if len(ev.quote.split()) > MAX_QUOTE_WORDS:
-                add("quote_too_long", "warning",
-                    f"Claim '{c.id}' quote exceeds {MAX_QUOTE_WORDS} words; keep evidence to the passage", c.id)
-            if ev.retrieved_at > today:
-                add("future_evidence", "error", f"Claim '{c.id}' evidence is dated in the future", c.id)
+        issues.extend(claim_issues(c, today))
 
     # Conflicts: claims on the same topic must agree.
     by_topic: dict[str, set[str]] = {}
@@ -119,6 +226,10 @@ def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
             add("blocked_without_reason", "error", f"Scenario '{s.id}' is production_blocked but names no blocking claim", s.id)
         if s.state != ScenarioState.production_blocked and s.blocked_by:
             add("reason_without_block", "error", f"Scenario '{s.id}' lists blocking claims but is not production_blocked", s.id)
+        for cid in s.blocked_by:
+            if cid in by_id and not is_gate(by_id[cid]):
+                add("blocker_not_a_gate", "error",
+                    f"Scenario '{s.id}' is blocked by '{cid}', which is a step you take, not a review or approval", s.id)
         if not s.claims and not s.blocked_by:
             add("unjustified_state", "warning", f"Scenario '{s.id}' state cites no claims", s.id)
 
@@ -129,6 +240,13 @@ def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
 
         if s.wait_days is not None and s.wait_days.max > 0 and not any(c.kind == ClaimKind.wait_time for c in cited):
             add("unsourced_wait", "error", f"Scenario '{s.id}' gives a wait time but cites no wait_time claim", s.id)
+        if (s.state == ScenarioState.available_now and is_listing_path(s.label, s.id)
+                and not any(states_no_review(c) for c in cited)):
+            add("open_listing_unsourced", "error",
+                f"Scenario '{s.id}' is a listing path marked available_now, but cites no claim that it needs no review", s.id)
+        if s.wait_days is not None and s.wait_days.max == 0 and not any(states_no_review(c) for c in cited):
+            add("unsourced_no_wait", "error",
+                f"Scenario '{s.id}' says there is no wait but cites no claim that there is no review", s.id)
 
         window = FRESHNESS_DAYS[scenario_score(s)]
         for c in cited:

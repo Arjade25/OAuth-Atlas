@@ -1,0 +1,610 @@
+{
+  "app": "Notion",
+  "provider": "Notion",
+  "slug": "notion",
+  "summary": "Create a public OAuth connection in the Notion Developer portal, choose its installation scope once (Any workspace or Selected workspaces only), and implement the OAuth authorization and token-exchange flow on your server. Listing on the Notion Marketplace is optional and requires Any workspace scope plus review by the Notion team, typically within 5-10 business days. Personal access tokens are for your own scripts only and do not provide an OAuth install flow for other users.",
+  "developer_portal": "https://developers.notion.com/",
+  "scenarios": [
+    {
+      "id": "selected-workspaces-only",
+      "label": "Selected workspaces only (private or internal)",
+      "audience": "Only the workspaces you select at creation time",
+      "state": "available_now",
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 1,
+        "approval": 0,
+        "uncertainty": 1,
+        "maintenance": 1
+      },
+      "effort_hours": {
+        "min": 4.0,
+        "max": 10.0
+      },
+      "wait_days": null,
+      "blocked_by": [],
+      "claims": [
+        "public-connection-created-in-portal",
+        "installation-scope-set-at-creation",
+        "selected-workspaces-not-marketplace-eligible",
+        "oauth-works-without-listing"
+      ]
+    },
+    {
+      "id": "any-workspace-unlisted",
+      "label": "Any workspace, not listed on Marketplace",
+      "audience": "Any Notion user in any workspace via direct OAuth flow",
+      "state": "available_now",
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 1,
+        "approval": 0,
+        "uncertainty": 1,
+        "maintenance": 1
+      },
+      "effort_hours": {
+        "min": 4.0,
+        "max": 10.0
+      },
+      "wait_days": null,
+      "blocked_by": [],
+      "claims": [
+        "public-connection-created-in-portal",
+        "installation-scope-set-at-creation",
+        "any-workspace-marketplace-eligible",
+        "oauth-works-without-listing"
+      ]
+    },
+    {
+      "id": "marketplace-listing",
+      "label": "Listed on the Notion Marketplace",
+      "audience": "All Notion users discovering the app in the Marketplace",
+      "state": "production_blocked",
+      "dimensions": {
+        "technical": 2,
+        "prerequisites": 1,
+        "approval": 4,
+        "uncertainty": 2,
+        "maintenance": 2
+      },
+      "effort_hours": {
+        "min": 6.0,
+        "max": 15.0
+      },
+      "wait_days": {
+        "min": 5.0,
+        "max": 10.0
+      },
+      "blocked_by": [
+        "notion-team-reviews-every-listing"
+      ],
+      "claims": [
+        "listing-submitted-for-review",
+        "notion-team-reviews-every-listing",
+        "review-timeline-5-10-business-days",
+        "listing-is-optional"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "public-connection-created-in-portal",
+      "text": "Create a new public connection in the Notion Developer portal and fill out the connection details form.",
+      "kind": "fact",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/authorization",
+        "quote": "Navigate to the Developer portal and create a new public connection. Fill out the form with your connection details",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "unclear",
+        "policy": "pass",
+        "supports_p": 0.008246187948871499,
+        "notes": [
+          "support probability 0.01 is below 0.75"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "installation-scope-set-at-creation",
+      "text": "Choose the installation scope when creating the connection; it cannot be changed afterward.",
+      "kind": "requirement",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/public-connections",
+        "quote": "Installation scope is set once, at creation time, and can’t be changed afterward.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9963933936990857,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "selected-workspaces-not-marketplace-eligible",
+      "text": "Selected workspaces only public connections are not eligible for the Marketplace.",
+      "kind": "limit",
+      "applies_to": [
+        "selected-workspaces-only"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/marketplace-listing",
+        "quote": "Internal connections and Selected workspaces only public connections are not eligible.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9946346210250719,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "any-workspace-marketplace-eligible",
+      "text": "Public connections with an installation scope of Any workspace can be listed on the Marketplace.",
+      "kind": "fact",
+      "applies_to": [
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/marketplace-listing",
+        "quote": "Only public connections with an installation scope of Any workspace can be listed on the Marketplace.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9967551460778318,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "redirect-uri-configured",
+      "text": "Include your redirect URI(s) under the OAuth configuration section when creating the connection.",
+      "kind": "fact",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/authorization",
+        "quote": "Fill out the form with your connection details, including your redirect URI(s) under the OAuth configuration section",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.997254312272458,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "oauth-works-without-listing",
+      "text": "A public connection can be used via its OAuth flow without being listed on the Marketplace.",
+      "kind": "fact",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/marketplace-listing",
+        "quote": "Public connections work independently of Marketplace listings. Listing on the Marketplace is optional ... but your connection can be used via its OAuth flow without being listed.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "not_run",
+        "policy": "pass",
+        "supports_p": null,
+        "notes": [
+          "not in the recorded run"
+        ]
+      },
+      "status": "unverified"
+    },
+    {
+      "id": "listing-submitted-for-review",
+      "text": "Submit the listing for review by the Notion team from the Listings > Connections page.",
+      "kind": "requirement",
+      "applies_to": [
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/marketplace-listing",
+        "quote": "Submit your listing for review by the Notion team.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "fail",
+        "supports_p": 0.9935334309599312,
+        "notes": [
+          "Claim 'listing-submitted-for-review' is filed as a requirement, but its quote does not state an obligation"
+        ]
+      },
+      "status": "flagged"
+    },
+    {
+      "id": "notion-team-reviews-every-listing",
+      "text": "The Notion team reviews every Marketplace listing submission.",
+      "kind": "requirement",
+      "applies_to": [
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/marketplace-listing",
+        "quote": "The Notion team reviews every listing submission.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9856515326405072,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "review-timeline-5-10-business-days",
+      "text": "Expect to hear back from the Notion team within 5-10 business days via email after submission.",
+      "kind": "wait_time",
+      "applies_to": [
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": {
+        "min": 5.0,
+        "max": 10.0
+      },
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/marketplace-listing",
+        "quote": "After submission, expect to hear back from our team within 5-10 business days via email.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9825656408461269,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "listing-is-optional",
+      "text": "Listing on the Marketplace is optional and not required to use the OAuth flow.",
+      "kind": "fact",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/marketplace-listing",
+        "quote": "Listing on the Marketplace is optional and helps your connection reach a wider audience",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9441664524153593,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "pat-for-own-use-only",
+      "text": "Use a personal access token when a script, CLI workflow, Worker, or trusted tool should act as you; PATs do not provide an OAuth install flow for other users.",
+      "kind": "fact",
+      "applies_to": [],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/authorization",
+        "quote": "Use a PAT when a script, CLI workflow, Worker, or trusted tool should act as you.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9902991485832177,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "token-exchange-on-server",
+      "text": "Exchange the OAuth code for a token on a server you control; the token endpoint requires a client secret and must run server-side.",
+      "kind": "requirement",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/handling-api-keys",
+        "quote": "For apps that other people use, create a public connection, which uses OAuth. Exchange the OAuth code for a token on a server you control. ... OAuth code exchange requires a client secret and must run on a server.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "not_run",
+        "policy": "pass",
+        "supports_p": null,
+        "notes": [
+          "not in the recorded run"
+        ]
+      },
+      "status": "unverified"
+    },
+    {
+      "id": "authorization-url-flow",
+      "text": "Direct users to the connection’s authorization URL to start the OAuth flow.",
+      "kind": "fact",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/authorization",
+        "quote": "To start the authorization flow for a public connection, direct the prospective user to the authorization URL.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9965058873606025,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "store-access-token",
+      "text": "Store the access token returned by the Notion API for future API requests.",
+      "kind": "fact",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/authorization",
+        "quote": "Store the access token for future API requests.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9982474679873147,
+        "notes": []
+      },
+      "status": "verified"
+    },
+    {
+      "id": "secrets-protected",
+      "text": "Connection secrets from the Configuration tab should be protected and never included in source code or version control.",
+      "kind": "requirement",
+      "applies_to": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "topic": null,
+      "value": null,
+      "wait_days": null,
+      "evidence": {
+        "url": "https://developers.notion.com/guides/get-started/authorization",
+        "quote": "these values should be protected and should never be included in source code or version control.",
+        "retrieved_at": "2026-10-29",
+        "source_type": "official"
+      },
+      "checks": {
+        "exists": "pass",
+        "supports": "pass",
+        "policy": "pass",
+        "supports_p": 0.9972337114507336,
+        "notes": []
+      },
+      "status": "verified"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Create a public connection in the Developer portal",
+      "owner": "you",
+      "detail": "Navigate to the Notion Developer portal, create a new public connection, and fill out the form including redirect URI(s) under OAuth configuration and the installation scope (Any workspace or Selected workspaces only). Remember the scope cannot be changed after creation.",
+      "scenarios": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "minutes": 15,
+      "claims": [
+        "public-connection-created-in-portal",
+        "installation-scope-set-at-creation",
+        "redirect-uri-configured"
+      ],
+      "agent_prompt": null
+    },
+    {
+      "n": 2,
+      "title": "Implement server-side OAuth authorization and token exchange",
+      "owner": "agent",
+      "detail": "Build the authorization URL redirect to https://api.notion.com/v1/oauth/authorize, handle the callback, and exchange the authorization code for an access token on a server you control using the client ID and client secret. Never expose the client secret in browser source.",
+      "scenarios": [
+        "selected-workspaces-only",
+        "any-workspace-unlisted",
+        "marketplace-listing"
+      ],
+      "minutes": 120,
+      "claims": [
+        "authorization-url-flow",
+        "token-exchange-on-server",
+        "store-access-token",
+        "secrets-protected"
+      ],
+      "agent_prompt": "Write server-side code (Node/Python/etc.) that redirects the user to Notion's OAuth authorization URL, receives the authorization code, POSTs to the token endpoint with client credentials, stores the access token securely, and sets the Notion-Version header."
+    },
+    {
+      "n": 3,
+      "title": "Optionally submit a Marketplace listing",
+      "owner": "you",
+      "detail": "If you want the app discoverable by all Notion users, ensure the connection scope is Any workspace, go to Listings > Connections, start a new connection listing, fill in details, save as draft, and submit for review by the Notion team.",
+      "scenarios": [
+        "marketplace-listing"
+      ],
+      "minutes": 60,
+      "claims": [
+        "listing-submitted-for-review",
+        "notion-team-reviews-every-listing",
+        "review-timeline-5-10-business-days"
+      ],
+      "agent_prompt": null
+    }
+  ],
+  "blockers": [
+    {
+      "symptom": "You want to list on the Marketplace but the connection was created with Selected workspaces only scope.",
+      "fix": "Create a new public connection with Any workspace scope, because installation scope cannot be changed after creation.",
+      "escalate": null,
+      "claims": [
+        "installation-scope-set-at-creation"
+      ]
+    },
+    {
+      "symptom": "Marketplace listing is not approved or is rejected.",
+      "fix": "Review the Notion team's feedback email, make changes, and resubmit the listing.",
+      "escalate": null,
+      "claims": [
+        "notion-team-reviews-every-listing"
+      ]
+    },
+    {
+      "symptom": "You need an OAuth install flow for other users but only have a personal access token.",
+      "fix": "Create a public connection instead; PATs do not provide an OAuth install flow for other users.",
+      "escalate": null,
+      "claims": [
+        "pat-for-own-use-only"
+      ]
+    }
+  ],
+  "composio": {
+    "managed_auth_available": null,
+    "callback_url": null,
+    "notes": "Check the toolkit page for managed auth. To bring your own app, register the redirect URI shown when you create a custom auth config."
+  },
+  "origin": "generated",
+  "review_status": "pending",
+  "last_verified": "2026-10-29",
+  "generation": {
+    "run_at": "2026-10-29T04:43:12Z",
+    "query": "Notion",
+    "extraction_model": "nvidia/nemotron-3.5-super-vl:free",
+    "support_backend": "nli (cross-encoder/nli-deberta-v3-base)",
+    "searches": [
+      "Notion OAuth app create client ID redirect URI developer documentation",
+      "Notion OAuth app review approval requirements",
+      "Notion app marketplace listing publish requirements review",
+      "Notion OAuth scopes permissions verification"
+    ],
+    "pages": [
+      "https://developers.notion.com/guides/get-started/public-connections",
+      "https://developers.notion.com/guides/get-started/authorization",
+      "https://developers.notion.com/reference/create-a-token",
+      "https://developers.notion.com/workers/guides/oauth",
+      "https://developers.notion.com/guides/mcp/build-mcp-client",
+      "https://developers.notion.com/guides/get-started/marketplace-listing",
+      "https://developers.notion.com/guides/get-started/handling-api-keys"
+    ],
+    "replayed": true,
+    "notes": [
+      "dropped unknown reference 'only-any-workspace-eligible-for-marketplace' in scenario marketplace-listing",
+      "'listing-submitted-for-review' on 'marketplace-listing' is a step you take, not a review or approval, so it no longer counts as a blocker",
+      "dropped unknown reference 'only-any-workspace-eligible-for-marketplace' in step 3",
+      "dropped unknown reference 'only-any-workspace-eligible-for-marketplace' in a blocker"
+    ]
+  }
+}

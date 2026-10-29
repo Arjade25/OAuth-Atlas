@@ -1,0 +1,26 @@
+# Render Blueprint: one free web service. In Render, New > Blueprint, pick this repo.
+# Without keys the site runs in replay mode: the library, guide pages, API and
+# recorded runs all work. Add COMPOSIO_API_KEY and OPENROUTER_API_KEY in the
+# service's Environment tab to turn on live research.
+services:
+  - type: web
+    name: oauth-atlas
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn atlas.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/guides
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: COMPOSIO_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      # PyTorch does not fit the free plan, so the support judge is a free
+      # OpenRouter model. It scored the same as the local NLI judge once the
+      # fixed rules are applied (see README).
+      - key: SUPPORT_BACKEND
+        value: llm
+      - key: LIVE_RUNS_PER_HOUR
+        value: "6"

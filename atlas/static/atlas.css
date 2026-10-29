@@ -75,11 +75,13 @@ main > section { margin-bottom: 3rem; }
 .gate.state-available_now .seg.on { background: var(--now); }
 .gate.state-available_for_testing .seg.on { background: var(--testing); }
 .gate.state-production_blocked .seg.on { background: var(--blocked); }
+.gate.state-unconfirmed .seg.on { background: var(--muted); }
 
 .state-text { font-weight: 600; font-size: 0.9rem; }
 .state-text.state-available_now { color: var(--now); }
 .state-text.state-available_for_testing { color: var(--testing); }
 .state-text.state-production_blocked { color: var(--blocked); }
+.state-text.state-unconfirmed { color: var(--muted); }
 
 /* --- Library ------------------------------------------------------------ */
 .intro h1 { max-width: 22ch; margin-bottom: 0.75rem; }
@@ -114,6 +116,7 @@ main > section { margin-bottom: 3rem; }
 .scenario.state-available_now { border-left-color: var(--now); }
 .scenario.state-available_for_testing { border-left-color: var(--testing); }
 .scenario.state-production_blocked { border-left-color: var(--blocked); }
+.scenario.state-unconfirmed { border-left-color: var(--muted); border-left-style: dashed; }
 .audience { color: var(--muted); margin: 0.2rem 0 0.75rem; }
 .verdict { display: flex; flex-wrap: wrap; align-items: end; gap: 0.75rem; margin-bottom: 0.75rem; }
 .score-label { color: var(--muted); font-size: 0.9rem; }
@@ -179,3 +182,46 @@ main > section { margin-bottom: 3rem; }
   .paths li .state-text { grid-column: 2; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* --- Generated guides and the Generate page ------------------------------ */
+.cta { font-weight: 600; }
+.origin { color: var(--testing); font-size: 0.9rem; font-weight: 600; margin: -0.2rem 0 0.4rem; }
+.review-panel { background: var(--raise); border-left: 6px solid var(--testing); padding: 1.1rem 1.25rem; }
+.review-panel h2 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+.issues { margin: 0.25rem 0 0.75rem; padding-left: 1.2rem; font-size: 0.9rem; }
+.issues.quiet { color: var(--muted); }
+.review-panel summary { cursor: pointer; color: var(--link); font-size: 0.9rem; }
+.flag { color: var(--blocked); font-weight: 800; margin-right: 0.25rem; }
+.flag.quiet { color: var(--muted); }
+.check-notes { font-size: 0.8rem; color: var(--blocked); margin: 0.25rem 0 0; }
+
+.gen-form label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+.gen-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.gen-row input {
+  flex: 1 1 16rem; font: inherit; padding: 0.55rem 0.75rem; color: var(--ink);
+  background: var(--raise); border: 1px solid var(--line); border-radius: 4px;
+}
+.gen-row button {
+  font: inherit; font-weight: 600; padding: 0.55rem 1.1rem; cursor: pointer;
+  color: var(--paper); background: var(--ink); border: 1px solid var(--ink); border-radius: 4px;
+}
+.gen-row button:disabled { opacity: 0.6; cursor: progress; }
+.gen-row input:focus-visible { outline: 3px solid var(--link); outline-offset: 1px; }
+button.linkish { font: inherit; background: none; border: 0; padding: 0; color: var(--link); text-decoration: underline; cursor: pointer; }
+.setup-note { border-left: 4px solid var(--blocked); padding-left: 0.75rem; }
+.log { list-style: none; padding: 0; margin: 1.5rem 0 0; font-size: 0.92rem; }
+.log .ev { padding: 0.2rem 0 0.2rem 1.1rem; position: relative; }
+.log .ev::before { content: ""; position: absolute; left: 0; top: 0.75em; width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+.log .ev-step { font-weight: 600; }
+.log .ev-step::before { background: var(--ink); }
+.log .ev-detail { color: var(--muted); }
+.log .ev-warn { color: var(--testing); }
+.log .ev-warn::before { background: var(--testing); }
+.log .ev-error { color: var(--blocked); font-weight: 600; }
+.log .ev-error::before { background: var(--blocked); }
+.log .ev-done { color: var(--now); font-weight: 800; }
+.log .ev-done::before { background: var(--now); }
+.result { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; }
+
+/* Effort hours are estimates; say so next to the number. */
+.time .basis { display: block; font-size: 0.8em; font-weight: normal; opacity: 0.7; }
