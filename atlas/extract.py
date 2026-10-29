@@ -119,7 +119,7 @@ Scenarios are the distinct paths a developer can take (examples: testing with yo
 - "state": "available_now" (usable today for that audience), "available_for_testing" (works only within testing limits), or "production_blocked" (a named requirement must be met first). A blocked scenario lists the claim ids that block it in "blocked_by".
 - "dimensions", each 0 to 5: technical (configuring credentials and scopes), prerequisites (domain, business documents, paid plan), approval (reviews, audits, partner approval), uncertainty (unpublished timelines, variable queues), maintenance (recurring assessments, ongoing compliance).
 - "effort_hours": hands-on hours for the developer, as a min-max range. This is your estimate.
-- "wait_days": only when a claim with a number backs it; otherwise null. Use {"min":0,"max":0} when there is no review at all.
+- "wait_days": only when a claim with a number backs it; otherwise null. Use {"min":0,"max":0} only when a claim you cite says there is no review or approval; if the passages never mention review, use null.
 - "claims": the claim ids that justify the state.
 
 Steps are in order. "owner" is "agent" (drafting text, justifications, checklists, configuration an AI agent can prepare), "you" (anything needing the developer's identity, money, legal standing or a click in a console) or "provider" (the provider's review). Agent steps include "agent_prompt", a ready instruction the developer can hand to their agent.

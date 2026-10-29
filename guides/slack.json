@@ -12,7 +12,7 @@
       "state": "available_now",
       "dimensions": {"technical": 1, "prerequisites": 0, "approval": 0, "uncertainty": 0, "maintenance": 0},
       "effort_hours": {"min": 0.25, "max": 0.5},
-      "wait_days": {"min": 0, "max": 0},
+      "wait_days": null,
       "claims": ["one-workspace"]
     },
     {

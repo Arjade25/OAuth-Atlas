@@ -358,3 +358,19 @@ def test_a_step_you_take_stops_blocking_while_a_review_remains():
     s = g.scenario("marketplace")
     assert s.blocked_by == ["security-review"] and "register" in s.claims
     assert any("step you take" in e.message for e in events if e.type == "warn")
+
+
+def test_zero_wait_without_a_no_review_claim_becomes_unknown():
+    class ZeroWaitUnbacked(FakeModel):
+        def complete(self, messages):
+            return super().complete(messages).replace('"claims": ["unlisted-cap", "register"]', '"claims": ["register"]')
+
+    g, _, events = run_ok(model=ZeroWaitUnbacked())
+    assert g.scenario("unlisted-pilots").wait_days is None
+    assert any("no claim says there is no review" in e.message for e in events if e.type == "warn")
+
+
+def test_zero_wait_backed_by_a_no_review_claim_is_kept():
+    g, _, _ = run_ok()
+    w = g.scenario("unlisted-pilots").wait_days
+    assert w is not None and w.max == 0

@@ -49,10 +49,10 @@ def _numbers(text: str) -> set[str]:
 # Words that turn a claim into an obligation or a hard limit, and the words a
 # quote must contain to back one. An instruction ("Insert a link to...") is
 # not evidence that something is required.
-_STRONG_CLAIM = re.compile(r"\b(required|requires|requirement|mandatory|must|only|always|never|cannot)\b")
+_STRONG_CLAIM = re.compile(r"\b(required|requires|requirement|mandatory|must|only|always|never|cannot|prerequisites?)\b")
 _STRONG_QUOTE = re.compile(
     r"\b(must|required|requires?|requirements?|mandatory|need|needs|needed|only|always|never|cannot|can't|"
-    r"not allowed|make sure|have to|has to|limited|at most|up to|every)\b")
+    r"not allowed|not possible|impossible|unable to|make sure|have to|has to|limited|at most|up to|every)\b")
 
 
 # A wait is how long you wait on someone else. A deadline for the approver
@@ -67,6 +67,20 @@ _DEADLINE = re.compile(
 # to review does not count.
 _SENT_TO_GATE = re.compile(r"\b(?:for|to) (?:a |the )?(?:review|approval)\b")
 _GATE = re.compile(r"\b(?:review(?:ed|s|ers?)?|approv\w*|verif\w*|assess\w*|vett\w*|audit\w*)\b")
+
+
+# "No wait" is a claim too: it needs a source saying there is no review,
+# not just a source that never mentions one.
+_NO_REVIEW = re.compile(
+    r"(?:\b(?:no|without|not|never)|n't)\b(?:\W+\w+){0,8}?\W+(?:reviews?|reviewed|approvals?|approved|verifications?|verified)\b"
+    r"|\b(?:reviews?|approvals?|verifications?)\b(?:\W+\w+){0,3}?\W+(?:isn't|is not|not|no longer)\W+(?:required|needed|necessary)\b"
+    r"|\bexceptions? to\b(?:\W+\w+){0,4}?\W+(?:reviews?|approvals?|verifications?)\b")
+
+
+def states_no_review(c: Claim) -> bool:
+    """True when a claim, or its quote, says a path has no review or approval."""
+    texts = [c.text] + ([c.evidence.quote] if c.evidence else [])
+    return any(_NO_REVIEW.search(normalize(t)) for t in texts)
 
 
 def is_gate(c: Claim) -> bool:
@@ -214,6 +228,9 @@ def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
 
         if s.wait_days is not None and s.wait_days.max > 0 and not any(c.kind == ClaimKind.wait_time for c in cited):
             add("unsourced_wait", "error", f"Scenario '{s.id}' gives a wait time but cites no wait_time claim", s.id)
+        if s.wait_days is not None and s.wait_days.max == 0 and not any(states_no_review(c) for c in cited):
+            add("unsourced_no_wait", "error",
+                f"Scenario '{s.id}' says there is no wait but cites no claim that there is no review", s.id)
 
         window = FRESHNESS_DAYS[scenario_score(s)]
         for c in cited:

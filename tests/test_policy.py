@@ -244,3 +244,41 @@ def test_a_review_someone_else_decides_is_a_blocker(raw):
                  "Public apps must complete Google's restricted-scope verification."):
         raw["claims"][1]["text"] = text
         assert "blocker_not_a_gate" not in error_codes(raw), text
+
+
+def test_no_wait_needs_a_claim_that_there_is_no_review(raw):
+    """'None' is a claim too: a source that never mentions review does not back it."""
+    raw["claims"][0]["text"] = "Apps for your own account are created in the console."
+    raw["claims"][0]["evidence"]["quote"] = "Create the app in the console."
+    raw["claims"][0]["kind"] = "fact"
+    assert "unsourced_no_wait" in error_codes(raw)
+
+
+def test_no_review_phrasings_back_a_zero_wait(raw):
+    from atlas.policy import states_no_review
+    from atlas.schema import Claim
+    for text in ("Apps for your own account need no review.",
+                 "you don't need to submit your app for a review",
+                 "verification isn't required",
+                 "Internal use is listed as an exception to restricted-scope verification.",
+                 "Unlisted apps can be installed without review."):
+        assert states_no_review(Claim(id="c", text=text)), text
+    for text in ("Create the app in the console.", "Marketplace apps are reviewed by Acme."):
+        assert not states_no_review(Claim(id="c", text=text)), text
+
+
+def test_prerequisite_is_an_obligation_word(raw):
+    """A list of setup steps does not make the first one a prerequisite."""
+    c = raw["claims"][1]
+    c["text"] = "A developer team is a prerequisite for creating an app."
+    c["evidence"]["quote"] = "Create a developer team, then create your app, then install it."
+    c["kind"] = "fact"
+    assert "obligation_not_in_quote" in error_codes(raw)
+
+
+def test_not_possible_states_a_limit(raw):
+    c = raw["claims"][1]
+    c["text"] = "A LAN app cannot register webhooks."
+    c["evidence"]["quote"] = "It's not possible to register webhooks with a non public URL."
+    c["kind"] = "limit"
+    assert "obligation_not_in_quote" not in error_codes(raw)

@@ -42,7 +42,7 @@ A claim is verified only if all three checks pass. Generated guides are shown wi
 "Verified" means the claim passed these checks against its quoted passage. It does not mean the claim is beyond doubt: the checks are only as good as the quote, and the support judge still lets some overstatements through (see the measurements below).
 
 **What the numbers on a guide mean**
-- **Waiting on the provider** is shown only when a verified claim gives a duration. A deadline for someone else ("your admin has 30 days to verify") or an expiry is not a wait, and is flagged if filed as one. Where a number exists but is not a verified wait, the page says "No verified duration"; where the provider gives none, "Not published".
+- **Waiting on the provider** is shown only when a verified claim gives a duration. A deadline for someone else ("your admin has 30 days to verify") or an expiry is not a wait, and is flagged if filed as one. "None" (no wait) needs a cited claim that there is no review or approval; a source that simply never mentions review does not count. Where a number exists but is not a verified wait, the page says "No verified duration"; where the provider gives none, "Not published".
 - **Your work** (hours) is always an estimate, never measured. Curated guides carry the author's estimate and generated guides the model's; the page and the API (`effort_basis`) say which.
 - **Blocked until approved** names the review or approval that blocks the path. A conditional requirement, such as Gmail's security assessment (needed only if restricted data touches your servers), is listed on the path but does not block it on its own.
 
@@ -55,7 +55,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\Activate.ps1    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 
-pytest                         # 112 tests, no network
+pytest                         # 118 tests, no network
 python -m atlas.library        # validate the curated guides
 uvicorn atlas.app:app --reload # then open http://127.0.0.1:8000
 ```
