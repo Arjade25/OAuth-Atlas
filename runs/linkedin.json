@@ -209,5 +209,18 @@
       "note": "support probability 0.11 is below 0.75",
       "judge": "nli (cross-encoder/nli-deberta-v3-base)"
     }
-  ]
+  ],
+  "managed_auth": {
+    "checked": true,
+    "found": true,
+    "toolkit": "linkedin",
+    "name": "LinkedIn",
+    "auth_modes": [
+      "OAUTH2"
+    ],
+    "managed_schemes": [
+      "OAUTH2"
+    ],
+    "checked_on": "2026-10-29"
+  }
 }
