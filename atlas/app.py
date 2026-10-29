@@ -7,7 +7,11 @@ from __future__ import annotations
 
 import json
 import os
+import threading
+import time
+from collections import deque
 from pathlib import Path
+from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
@@ -159,6 +163,26 @@ def generate_page(request: Request, app_name: str = ""):
         "ready": ready, "setup_message": msg, "recordings": _recordings(), "prefill": app_name})
 
 
+# A public demo spends the host's free API quota, so live runs are capped and
+# run one at a time. Replays are free and never capped.
+_live_lock = threading.Lock()
+_live_starts: deque[float] = deque()
+
+
+def _live_slot() -> Optional[str]:
+    """Reserve a live run, or say why not."""
+    cap = int(os.getenv("LIVE_RUNS_PER_HOUR", "6"))
+    now = time.monotonic()
+    while _live_starts and now - _live_starts[0] > 3600:
+        _live_starts.popleft()
+    if len(_live_starts) >= cap:
+        return f"This server allows {cap} live runs an hour and they are used up. Replay a recorded run instead."
+    if not _live_lock.acquire(blocking=False):
+        return "Another live run is in progress. Try again in a minute, or replay a recorded run."
+    _live_starts.append(now)
+    return None
+
+
 def _events(query: str, replay: bool):
     def send(d: dict) -> str:
         return f"data: {json.dumps(d)}\n\n"
@@ -167,6 +191,25 @@ def _events(query: str, replay: bool):
     if not query:
         yield send({"type": "error", "message": "Enter an app name or website."})
         return
+    if not replay:
+        ready, _ = _keys_ready()
+        if not ready:
+            yield send({"type": "error", "message": "Live research is off on this server because no API keys are set. "
+                                                    "Replay one of the recorded runs instead."})
+            return
+        why_not = _live_slot()
+        if why_not:
+            yield send({"type": "error", "message": why_not})
+            return
+        try:
+            yield from _run(query, replay, send)
+        finally:
+            _live_lock.release()
+        return
+    yield from _run(query, replay, send)
+
+
+def _run(query: str, replay: bool, send):
     try:
         if replay:
             path = pipeline.RUNS_DIR / f"{slugify(pipeline.resolve(query).app)}.json"

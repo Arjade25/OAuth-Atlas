@@ -61,3 +61,23 @@ def test_empty_app_is_an_error_event(recorded):
 
 def test_curated_guides_have_no_review_panel(recorded):
     assert "What the checks found" not in recorded.get("/guides/gmail").text
+
+
+def test_live_run_without_keys_points_to_replay(recorded, monkeypatch):
+    monkeypatch.setattr(webapp, "_keys_ready", lambda: (False, "One or both are missing."))
+    evs = events(recorded, "/generate/stream?app=Acme")
+    assert [e["type"] for e in evs] == ["error"] and "Replay" in evs[0]["message"]
+    assert "disabled" in recorded.get("/generate").text
+
+
+def test_live_runs_are_capped_per_hour(recorded, monkeypatch):
+    monkeypatch.setattr(webapp, "_keys_ready", lambda: (True, ""))
+    monkeypatch.setenv("LIVE_RUNS_PER_HOUR", "0")
+    monkeypatch.setattr(webapp, "_live_starts", webapp.deque())
+    evs = events(recorded, "/generate/stream?app=Acme")
+    assert [e["type"] for e in evs] == ["error"] and "live runs an hour" in evs[0]["message"]
+
+
+def test_replay_is_never_capped(recorded, monkeypatch):
+    monkeypatch.setenv("LIVE_RUNS_PER_HOUR", "0")
+    assert events(recorded, "/generate/stream?app=Acme&replay=1")[-1]["type"] == "done"

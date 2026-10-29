@@ -4,6 +4,12 @@ Evidence-backed guides to creating and getting approval for OAuth apps. Built fo
 
 Getting credentials is easy; getting approved is not. Each guide answers four questions up front: how hard is this path, how many hours will I spend versus how long will I wait on the provider, what could block me, and which steps an agent can do for me. Every claim links to the passage it came from.
 
+## Try it
+
+- **Live demo:** _link added once deployed_. The free host sleeps when idle, so the first load can take up to a minute.
+- **No keys needed to review:** every guide, the JSON API and the three recorded agent runs (Pipedrive, Notion, LinkedIn) work without any API keys. Open **Write a new guide** and pick a recorded run to watch the full pipeline replay: search, fetch, passage selection, drafting and all three checks.
+- **Live research** for a new app needs a Composio key and an OpenRouter key, set on the server or in `.env` locally. On the demo it is capped at a few runs an hour, one at a time, and uses the free OpenRouter model as the support judge, since the local NLI model does not fit the free host.
+
 ## What's here
 
 **The library**
@@ -49,7 +55,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\Activate.ps1    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 
-pytest                         # 109 tests, no network
+pytest                         # 112 tests, no network
 python -m atlas.library        # validate the curated guides
 uvicorn atlas.app:app --reload # then open http://127.0.0.1:8000
 ```
@@ -94,6 +100,10 @@ What still gets through: claims that call something "required" when the quote us
 - Generated guides show flagged claims and policy errors on the page by design. They are what the checks found, not something to hide.
 - Effort hours are estimates, not measurements.
 - Six apps, sixteen paths. The point is the method, not coverage.
+
+### Deploy your own copy
+
+`render.yaml` describes a free Render web service. In Render, choose **New > Blueprint**, connect this repo and pick the branch. It deploys in replay mode; add `COMPOSIO_API_KEY` and `OPENROUTER_API_KEY` in the service's Environment tab to turn on live research. `LIVE_RUNS_PER_HOUR` (default 6) caps live runs.
 
 ## API
 
