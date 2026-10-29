@@ -29,7 +29,8 @@ from .policy import check_guide, claim_issues, is_gate, is_listing_path, states_
 from .schema import (Blocker, CheckResult, Checks, Claim, ClaimKind, ClaimStatus, ComposioInfo, Dimensions,
                      Evidence, GenerationInfo, Guide, Origin, Owner, Range, ReviewStatus, Scenario, ScenarioState,
                      SourceType, Step)
-from .sources import Page, ReplaySources, Sources, host
+from .managed import composio_info
+from .sources import NOT_CHECKED, Page, ReplaySources, Sources, host
 from .support import ReplaySupport, SupportChecker, judge_input
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -111,6 +112,7 @@ class _Ctx:
     fetched: dict[str, date]
     support: SupportChecker
     run_support: list[dict] = field(default_factory=list)
+    managed: dict = field(default_factory=lambda: dict(NOT_CHECKED))
 
 
 # --- assembly -----------------------------------------------------------------
@@ -299,8 +301,7 @@ def assemble(draft: Draft, ctx: _Ctx, query: str, today: date, notes: list[str])
         app=app, provider=draft.provider or app, slug=slugify(ctx.t.app), summary=draft.summary or "",
         developer_portal=_url_ok(draft.developer_portal), scenarios=scenarios, claims=claims, steps=steps,
         blockers=blockers,
-        composio=ComposioInfo(notes="Check the toolkit page for managed auth. To bring your own app, register the "
-                                    "redirect URI shown when you create a custom auth config."),
+        composio=composio_info(ctx.managed, app),
         origin=Origin.generated, review_status=ReviewStatus.pending, last_verified=today)
 
 
@@ -316,6 +317,26 @@ def run(query: str, sources: Sources, model: ChatModel, support: SupportChecker,
     notes: list[str] = []
 
     try:
+        # 0. The one setup step the agent can do for anyone: ask Composio whether it
+        #    already manages an OAuth app for this toolkit.
+        managed = NOT_CHECKED
+        if hasattr(sources, "managed_auth"):
+            yield Event("step", f"Checking whether Composio manages an OAuth app for {t.app}")
+            try:
+                managed = sources.managed_auth(slugify(t.app)) or NOT_CHECKED
+            except Exception as e:
+                yield Event("warn", f"Could not check Composio's managed auth, continuing: {e}")
+            if managed.get("checked"):
+                if not managed.get("found"):
+                    yield Event("detail", f"Composio has no toolkit for {t.app}")
+                elif managed.get("managed_schemes"):
+                    yield Event("detail", f"Composio manages {', '.join(managed['managed_schemes'])} for "
+                                          f"{t.app}: users can connect without your own OAuth app")
+                else:
+                    yield Event("detail", f"Composio has a {t.app} toolkit but no managed OAuth app: "
+                                          "you need your own")
+        record["managed_auth"] = managed
+
         # 1. Search
         found: list[str] = []
         for q in queries(t.app):
@@ -366,7 +387,7 @@ def run(query: str, sources: Sources, model: ChatModel, support: SupportChecker,
 
         # 5. Check and assemble
         yield Event("step", f"Checking each claim against its source (support judge: {support.name})")
-        ctx = _Ctx(t=t, passages=passages, fetched=fetched, support=support)
+        ctx = _Ctx(t=t, passages=passages, fetched=fetched, support=support, managed=managed)
         guide = assemble(draft, ctx, query, today, notes)
         judges = list(dict.fromkeys(r.get("judge", support.name) for r in ctx.run_support)) or [support.name]
         record["support_backend"] = ", ".join(judges)

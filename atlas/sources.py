@@ -35,6 +35,17 @@ class Sources(Protocol):
 
     def fetch(self, urls: list[str]) -> list[Page]: ...
 
+    def managed_auth(self, toolkit: str) -> Optional[dict]: ...
+
+
+# What managed_auth returns when nothing was checked (a replay of an older recording).
+NOT_CHECKED = {"checked": False}
+
+
+def toolkit_candidates(app_slug: str) -> list[str]:
+    """Composio toolkit slugs to try for an app: 'google-calendar' -> 'googlecalendar' too."""
+    return list(dict.fromkeys([app_slug, app_slug.replace("-", ""), app_slug.replace("-", "_")]))
+
 
 def _get(obj: Any, *names: str) -> Any:
     for n in names:
@@ -75,6 +86,23 @@ def host(url: str) -> str:
 
 class LiveSources:
     name = "composio"
+
+    def managed_auth(self, toolkit: str) -> dict:
+        """Composio's own record for a toolkit: its auth methods and which of
+        them Composio manages. {"found": False} when there is no such toolkit."""
+        for slug in toolkit_candidates(toolkit):
+            try:
+                tk = self.client.toolkits.get(slug)
+            except Exception as e:
+                if "404" in str(e) or "not found" in str(e).lower():
+                    continue
+                raise
+            modes = [m for m in (_get(d, "mode") for d in (_get(tk, "auth_config_details") or [])) if m]
+            return {"checked": True, "found": True, "toolkit": _get(tk, "slug") or slug,
+                    "name": _get(tk, "name") or toolkit, "auth_modes": list(dict.fromkeys(modes)),
+                    "managed_schemes": list(_get(tk, "composio_managed_auth_schemes") or []),
+                    "checked_on": date.today().isoformat()}
+        return {"checked": True, "found": False, "toolkit": toolkit, "checked_on": date.today().isoformat()}
 
     def __init__(self, api_key: Optional[str] = None, user_id: str = "oauth-atlas", max_chars: int = 30000):
         from composio import Composio  # imported lazily so tests and replay need no SDK
@@ -127,6 +155,9 @@ class ReplaySources:
 
     def search(self, query: str) -> list[str]:
         return list(self._searches.get(query, []))
+
+    def managed_auth(self, toolkit: str) -> dict:
+        return self.run.get("managed_auth") or NOT_CHECKED
 
     def fetch(self, urls: list[str]) -> list[Page]:
         wanted = set(urls)

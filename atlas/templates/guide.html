@@ -40,6 +40,12 @@
 </section>
 {% endif %}
 
+<section class="managed managed-{{ managed.kind }}" aria-label="Do you need your own OAuth app?">
+  <h2>Do you need your own OAuth app?</h2>
+  <p>{{ managed.answer }}</p>
+  <p class="note">{% if managed.checked_on %}The agent checked Composio's toolkits API on {{ managed.checked_on }}. {% endif %}Source: <a href="{{ managed.docs }}">Composio's managed OAuth directory</a>.</p>
+</section>
+
 <section class="scenarios" aria-label="Paths">
   <h2>Pick your path</h2>
   {% for v in scenarios %}
