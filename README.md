@@ -2,7 +2,7 @@
 
 Evidence-backed guides to creating and getting approval for OAuth apps. Built for Composio's APM (toolkits) take-home.
 
-Getting credentials is easy; getting approved is not. Each guide answers four questions up front: how hard is this path, how many hours will I spend versus how long will I wait on the provider, what could block me, and which steps an agent can do for me. Every claim links to the passage it came from.
+Getting credentials is easy; getting approved is not. Each guide first answers whether you need your own OAuth app at all, from Composio's own data, then four questions per path: how hard is it, how many hours will I spend versus how long will I wait on the provider, what could block me, and which steps an agent can do for me. Every claim links to the passage it came from.
 
 ## Try it
 
@@ -14,8 +14,9 @@ Getting credentials is easy; getting approved is not. Each guide answers four qu
 
 **The library**
 - **One schema for every guide** (`atlas/schema.py`). Evidence lives on each claim: URL, exact short quote, retrieval date, source type and the result of three checks.
-- **Scenarios, not apps, get scored** (`atlas/scoring.py`). The same app can be "Self-serve" in testing and "Audited" in production. The 1 to 5 score is the highest of five dimensions: technical effort, prerequisites, approval, external uncertainty and maintenance. Each scenario also has a state: available now, testing only, or blocked until approved.
+- **Scenarios, not apps, get scored** (`atlas/scoring.py`). The same app can be "Self-serve" in testing and "Audited" in production. The 1 to 5 score is the highest of five dimensions: technical effort, prerequisites, approval, external uncertainty and maintenance. Each scenario also has a state: available now, testing only, blocked until approved, or not confirmed open.
 - **Three hand-verified seed guides** (`guides/`): GitHub, Slack and Gmail, from self-serve to restricted-scope verification plus an annual security assessment.
+- **Three agent-written guides** (`generated/`): Pipedrive, Notion and LinkedIn, from live runs, labelled "not yet reviewed". Their recordings are in `runs/`.
 
 **The research agent** (`atlas/pipeline.py`)
 
@@ -29,14 +30,16 @@ app name or website
   -> draft the guide (free OpenRouter model; must quote passages verbatim)
   -> check every claim three ways, independently:
        1. quote exists   the quote is really in a passage the model was given
-       2. supports       a separate judge (Laya, or another model) says the passage backs the claim
+       2. supports       a separate judge (a local NLI model, or a free chat model) says
+                         the passage backs the claim
        3. policy         deterministic rules: every number in a claim is in its quote,
                          no numeric wait without a number in the source, a deadline
                          or expiry is never shown as a wait, and more
   -> assemble: wait times kept only if a verified claim with a number backs them,
      named blockers force a blocked state, a step you take yourself ("agree to the
      terms", "submit for review") is not a blocker while a real review or approval
-     remains, unknown references are dropped and reported
+     remains, "no wait" needs a claim that there is no review, a listing path is not
+     shown as open without one, unknown references are dropped and reported
 ```
 
 A claim is verified only if all three checks pass. Generated guides are shown with what the checks found and stay "not yet reviewed" until a person approves them. Model confidence is never used as a stand-in for evidence.
@@ -72,14 +75,18 @@ python -m atlas.generate Pipedrive          # or a website: pipedrive.com
 python -m atlas.generate Pipedrive --replay # re-run the recording, no keys
 ```
 
-Or open `/generate` in the app and watch it work.
+Or open `/generate` in the app and watch it work. Results land in `generated/` and appear in the library.
 
 To record Composio's managed-auth answer on every guide in the library (needs `COMPOSIO_API_KEY`):
 
 ```bash
 python -m atlas.managed          # print what Composio says for each guide
 python -m atlas.managed --write  # save it into guides/, generated/ and runs/
-``` Results land in `generated/` and appear in the library.
+```
+
+### Deploy your own copy
+
+`render.yaml` describes a free Render web service. In Render, choose **New > Blueprint**, connect this repo and pick the branch. It deploys in replay mode; add `COMPOSIO_API_KEY` and `OPENROUTER_API_KEY` in the service's Environment tab to turn on live research. `LIVE_RUNS_PER_HOUR` (default 6) caps live runs.
 
 ### Choosing the support judge
 
@@ -109,11 +116,9 @@ What still gets through: claims that call something "required" when the quote us
 - The three curated guides were checked by hand. Their quotes are short excerpts, so two Gmail claims lean on the section the quote sits in rather than the quote alone: that internal-only use is a verification exception, and which scopes count as restricted. Open the linked page to confirm both.
 - Generated guides show flagged claims and policy errors on the page by design. They are what the checks found, not something to hide.
 - Effort hours are estimates, not measurements.
+- The checks catch what a guide overstates, not what it leaves out. Three live runs for Miro gave three different sets of paths, and one dropped the Marketplace path entirely. A missing path looks like a smaller guide, not an error, which is the main reason agent guides stay "not yet reviewed".
+- The managed-auth answers in the library are a snapshot from the date shown on each guide. Re-run `python -m atlas.managed --write` to refresh them; live runs always check afresh.
 - Six apps, sixteen paths. The point is the method, not coverage.
-
-### Deploy your own copy
-
-`render.yaml` describes a free Render web service. In Render, choose **New > Blueprint**, connect this repo and pick the branch. It deploys in replay mode; add `COMPOSIO_API_KEY` and `OPENROUTER_API_KEY` in the service's Environment tab to turn on live research. `LIVE_RUNS_PER_HOUR` (default 6) caps live runs.
 
 ## API
 
