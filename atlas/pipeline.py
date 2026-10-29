@@ -25,7 +25,7 @@ from .evidence import normalize, quote_in_page
 from .extract import Draft, extract, slugify
 from .llm import ChatModel, ReplayModel
 from .passages import Passage, select
-from .policy import check_guide, claim_issues
+from .policy import check_guide, claim_issues, is_gate
 from .schema import (Blocker, CheckResult, Checks, Claim, ClaimKind, ClaimStatus, ComposioInfo, Dimensions,
                      Evidence, GenerationInfo, Guide, Origin, Owner, Range, ReviewStatus, Scenario, ScenarioState,
                      SourceType, Step)
@@ -245,6 +245,14 @@ def assemble(draft: Draft, ctx: _Ctx, query: str, today: date, notes: list[str])
             notes.append(f"'{', '.join(not_req)}' on '{ds.id}' is not a requirement, so it no longer counts as a blocker")
             blocked = [c for c in blocked if c not in not_req]
             cited = list(dict.fromkeys(cited + not_req))
+        # A step you take ("agree to the terms") is not a blocker; a review or
+        # approval someone else decides is. Drop the former while one remains.
+        not_gate = [c for c in blocked if not is_gate(by_id[c])]
+        if not_gate and len(not_gate) < len(blocked):
+            notes.append(f"'{', '.join(not_gate)}' on '{ds.id}' is a step you take, not a review or approval, "
+                         "so it no longer counts as a blocker")
+            blocked = [c for c in blocked if c not in not_gate]
+            cited = list(dict.fromkeys(cited + not_gate))
         state = ds.state if ds.state in _STATES else "production_blocked"
         if blocked and state != "production_blocked":
             notes.append(f"scenario '{ds.id}' names blockers, so it is marked blocked")

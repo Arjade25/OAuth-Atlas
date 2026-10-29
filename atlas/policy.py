@@ -55,6 +55,25 @@ _STRONG_QUOTE = re.compile(
     r"not allowed|make sure|have to|has to|limited|at most|up to|every)\b")
 
 
+# A wait is how long you wait on someone else. A deadline for the approver
+# ("has 30 days to verify") or an expiry is a different number and must not
+# be shown as one.
+_DEADLINE = re.compile(
+    r"\b(?:has|have|gets?|given)\s+(?:up to\s+)?\d+\s+(?:business\s+|calendar\s+)?"
+    r"(?:minutes?|hours?|days?|weeks?|months?)\s+to\b|\bexpir\w*|\bvalid for\b|\bdeadline\b")
+
+# A blocker is a decision someone else makes. "Send it for review" or "agree to
+# the terms" is a step you take, not a gate, so the phrase that sends something
+# to review does not count.
+_SENT_TO_GATE = re.compile(r"\b(?:for|to) (?:a |the )?(?:review|approval)\b")
+_GATE = re.compile(r"\b(?:review(?:ed|s|ers?)?|approv\w*|verif\w*|assess\w*|vett\w*|audit\w*)\b")
+
+
+def is_gate(c: Claim) -> bool:
+    """True when a claim describes a review, approval or check that someone else decides."""
+    return bool(_GATE.search(_SENT_TO_GATE.sub(" ", normalize(c.text))))
+
+
 def _without_negated(text: str) -> str:
     """Drop negated obligations: 'not required' and 'optional' state the absence of one."""
     return re.sub(r"\b(not|isn't|aren't|no longer|never)\s+(required|mandatory)\b", " ", text)
@@ -72,6 +91,11 @@ def claim_issues(c: Claim, today: date) -> list[Issue]:
     if c.kind == ClaimKind.wait_time and c.wait_days is not None and not _has_number(ev.quote):
         out.append(Issue("over_precise_wait", "error",
                          f"Claim '{c.id}' states a numeric wait but its quote contains no number", c.id))
+
+    # A deadline or expiry is not a wait.
+    if c.kind == ClaimKind.wait_time and (_DEADLINE.search(normalize(ev.quote)) or _DEADLINE.search(normalize(c.text))):
+        out.append(Issue("deadline_as_wait", "error",
+                         f"Claim '{c.id}' describes a deadline or expiry, not how long you wait", c.id))
 
     # Every number the claim states must appear in its quote ("21 days" vs "several weeks").
     missing = _numbers(c.text) - _numbers(ev.quote)
@@ -176,6 +200,10 @@ def check_guide(g: Guide, today: Optional[date] = None) -> list[Issue]:
             add("blocked_without_reason", "error", f"Scenario '{s.id}' is production_blocked but names no blocking claim", s.id)
         if s.state != ScenarioState.production_blocked and s.blocked_by:
             add("reason_without_block", "error", f"Scenario '{s.id}' lists blocking claims but is not production_blocked", s.id)
+        for cid in s.blocked_by:
+            if cid in by_id and not is_gate(by_id[cid]):
+                add("blocker_not_a_gate", "error",
+                    f"Scenario '{s.id}' is blocked by '{cid}', which is a step you take, not a review or approval", s.id)
         if not s.claims and not s.blocked_by:
             add("unjustified_state", "warning", f"Scenario '{s.id}' state cites no claims", s.id)
 

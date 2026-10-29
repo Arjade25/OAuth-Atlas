@@ -23,12 +23,22 @@ app name or website
        1. quote exists   the quote is really in a passage the model was given
        2. supports       a separate judge (Laya, or another model) says the passage backs the claim
        3. policy         deterministic rules: every number in a claim is in its quote,
-                         no numeric wait without a number in the source, and more
+                         no numeric wait without a number in the source, a deadline
+                         or expiry is never shown as a wait, and more
   -> assemble: wait times kept only if a verified claim with a number backs them,
-     named blockers force a blocked state, unknown references are dropped and reported
+     named blockers force a blocked state, a step you take yourself ("agree to the
+     terms", "submit for review") is not a blocker while a real review or approval
+     remains, unknown references are dropped and reported
 ```
 
 A claim is verified only if all three checks pass. Generated guides are shown with what the checks found and stay "not yet reviewed" until a person approves them. Model confidence is never used as a stand-in for evidence.
+
+"Verified" means the claim passed these checks against its quoted passage. It does not mean the claim is beyond doubt: the checks are only as good as the quote, and the support judge still lets some overstatements through (see the measurements below).
+
+**What the numbers on a guide mean**
+- **Waiting on the provider** is shown only when a verified claim gives a duration. A deadline for someone else ("your admin has 30 days to verify") or an expiry is not a wait, and is flagged if filed as one. Where a number exists but is not a verified wait, the page says "No verified duration"; where the provider gives none, "Not published".
+- **Your work** (hours) is always an estimate, never measured. Curated guides carry the author's estimate and generated guides the model's; the page and the API (`effort_basis`) say which.
+- **Blocked until approved** names the review or approval that blocks the path. A conditional requirement, such as Gmail's security assessment (needed only if restricted data touches your servers), is listed on the path but does not block it on its own.
 
 Every live run is recorded in `runs/<app>.json` (searches, the passages the model saw, its replies, the judge's verdicts), so it can be replayed with no keys.
 
@@ -39,7 +49,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\Activate.ps1    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 
-pytest                         # 74 tests, no network
+pytest                         # 109 tests, no network
 python -m atlas.library        # validate the curated guides
 uvicorn atlas.app:app --reload # then open http://127.0.0.1:8000
 ```
@@ -77,6 +87,13 @@ It reports false passes (unsupported claims let through, the costly error) and f
 The NLI judge is the default: same result with the rules, but it also caught all 4 contradicted claims, runs locally in about half a second per claim, costs nothing and has no rate limits. Its input format was also chosen by measurement (`--compare-inputs`): the lowercased context window beat the cased window, adding the source name, and the quote's sentence alone.
 
 What still gets through: claims that call something "required" when the quote uses "needs" or "must" in another sense (for example "Access scopes are required" from "specify precisely what data access your application needs"). Neither judge nor rule catches these yet, which is why generated guides stay "not yet reviewed" until a person approves them.
+
+## Known limitations
+
+- The three curated guides were checked by hand. Their quotes are short excerpts, so two Gmail claims lean on the section the quote sits in rather than the quote alone: that internal-only use is a verification exception, and which scopes count as restricted. Open the linked page to confirm both.
+- Generated guides show flagged claims and policy errors on the page by design. They are what the checks found, not something to hide.
+- Effort hours are estimates, not measurements.
+- Six apps, sixteen paths. The point is the method, not coverage.
 
 ## API
 

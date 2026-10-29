@@ -53,9 +53,7 @@
       },
       "wait_days": null,
       "blocked_by": [
-        "submit-for-approval",
-        "agree-terms-send-review",
-        "email-confirmation-required"
+        "submit-for-approval"
       ],
       "claims": [
         "submit-for-approval",
@@ -629,7 +627,7 @@
   "review_status": "pending",
   "last_verified": "2026-10-29",
   "generation": {
-    "run_at": "2026-10-28T19:01:51Z",
+    "run_at": "2026-10-29T04:43:12Z",
     "query": "Pipedrive",
     "extraction_model": "nvidia/nemotron-3.5-super-vl:free",
     "support_backend": "nli (cross-encoder/nli-deberta-v3-base)",
@@ -650,6 +648,8 @@
       "https://pipedrive.readme.io/docs/create-pipedrive-app-cli"
     ],
     "replayed": true,
-    "notes": []
+    "notes": [
+      "'agree-terms-send-review, email-confirmation-required' on 'public-marketplace-app' is a step you take, not a review or approval, so it no longer counts as a blocker"
+    ]
   }
 }

@@ -2,7 +2,7 @@
   "app": "Gmail",
   "provider": "Google",
   "slug": "gmail",
-  "summary": "Two very different apps. In testing it works today for up to 100 named users, who re-consent weekly. Public use of restricted Gmail scopes means Google verification plus a third-party security assessment, repeated every year, and Google only says it can take several weeks.",
+  "summary": "Two very different apps. In testing it works today for up to 100 named users, who re-consent weekly. Public use of restricted Gmail scopes means Google verification, plus a third-party security assessment if restricted data is stored on or passes through your servers. Both repeat at least every 12 months, and Google only says verification can take several weeks.",
   "developer_portal": "https://console.cloud.google.com/apis/credentials",
   "scenarios": [
     {
@@ -33,8 +33,8 @@
       "dimensions": {"technical": 2, "prerequisites": 3, "approval": 5, "uncertainty": 4, "maintenance": 4},
       "effort_hours": {"min": 8, "max": 40},
       "wait_days": null,
-      "blocked_by": ["restricted-verification", "casa-assessment"],
-      "claims": ["restricted-scopes-list", "several-weeks", "annual-reassessment", "casa-price-reported"]
+      "blocked_by": ["restricted-verification"],
+      "claims": ["restricted-scopes-list", "casa-assessment", "several-weeks", "annual-reassessment", "casa-price-reported"]
     }
   ],
   "claims": [
@@ -110,7 +110,7 @@
     },
     {
       "id": "restricted-scopes-list",
-      "text": "Most Gmail scopes are restricted, including gmail.readonly, gmail.modify, gmail.compose and full mail access. gmail.send is not on the restricted list.",
+      "text": "Google categorizes some Gmail scopes as restricted; the linked page lists which ones.",
       "kind": "fact",
       "applies_to": ["public-restricted"],
       "evidence": {
@@ -180,7 +180,7 @@
     },
     {
       "id": "casa-price-reported",
-      "text": "Google does not publish assessment pricing. One approved assessor lists its entry-level assessment from $3,000.",
+      "text": "One Google-approved assessor lists $3,000 for its no-rush AL1 assessment. This is that vendor's price, not Google's.",
       "kind": "fact",
       "applies_to": ["public-restricted"],
       "evidence": {

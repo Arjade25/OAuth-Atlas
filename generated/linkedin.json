@@ -47,10 +47,7 @@
         "min": 4.0,
         "max": 10.0
       },
-      "wait_days": {
-        "min": 0.0,
-        "max": 30.0
-      },
+      "wait_days": null,
       "blocked_by": [
         "page-super-admin-must-approve"
       ],
@@ -169,11 +166,13 @@
       "checks": {
         "exists": "pass",
         "supports": "pass",
-        "policy": "pass",
+        "policy": "fail",
         "supports_p": 0.9919204102148957,
-        "notes": []
+        "notes": [
+          "Claim 'page-super-admin-30-day-window' describes a deadline or expiry, not how long you wait"
+        ]
       },
-      "status": "verified"
+      "status": "flagged"
     },
     {
       "id": "page-owner-can-self-verify",
@@ -539,7 +538,7 @@
   "review_status": "pending",
   "last_verified": "2026-10-29",
   "generation": {
-    "run_at": "2026-10-28T19:05:48Z",
+    "run_at": "2026-10-29T04:43:13Z",
     "query": "linkedin.com",
     "extraction_model": "nvidia/nemotron-3.5-super-vl:free",
     "support_backend": "nli (cross-encoder/nli-deberta-v3-base)",
@@ -556,9 +555,10 @@
       "https://techdocs.akamai.com/identity-cloud/docs/the-linkedin-oauth-20-social-login-configuration-guide",
       "https://supabase.com/docs/guides/auth/social-sign-in/auth-linkedin"
     ],
-    "replayed": false,
+    "replayed": true,
     "notes": [
       "'page-super-admin-30-day-window' on 'page-super-admin-approval' is not a requirement, so it no longer counts as a blocker",
+      "removed the wait time on 'page-super-admin-approval': no verified claim with a number backs it",
       "'identity-vetting-verifies-organization' on 'public-distribution' is not a requirement, so it no longer counts as a blocker"
     ]
   }

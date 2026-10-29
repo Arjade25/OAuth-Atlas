@@ -54,7 +54,7 @@
       <span class="score-label">{{ v.score_label }}, set by {{ v.driver | lower }}</span>
     </div>
     <dl class="time">
-      <div><dt>Your work (estimate)</dt><dd>{{ v.hours }}</dd></div>
+      <div><dt>Your work</dt><dd>{{ v.hours }} <span class="basis">{{ v.hours_basis }}</span></dd></div>
       <div><dt>Waiting on {{ g.provider }}</dt><dd>{{ v.wait }}</dd></div>
     </dl>
     {% if v.blocked_by %}

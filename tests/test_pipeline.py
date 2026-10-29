@@ -344,3 +344,17 @@ def test_a_path_blocked_only_by_facts_keeps_them_as_blockers():
     g, _, _ = run_ok(model=OnlyFactBlocks())
     s = g.scenario("marketplace")
     assert s.state.value == "production_blocked" and s.blocked_by == ["register"]
+
+
+def test_a_step_you_take_stops_blocking_while_a_review_remains():
+    class BlocksWithAStep(FakeModel):
+        def complete(self, messages):
+            out = super().complete(messages)
+            out = out.replace('"text": "You register an OAuth app in the Acme Developer Hub.", "kind": "fact"',
+                              '"text": "You register an OAuth app in the Acme Developer Hub.", "kind": "requirement"')
+            return out.replace('"blocked_by": ["security-review"]', '"blocked_by": ["security-review", "register"]')
+
+    g, _, events = run_ok(model=BlocksWithAStep())
+    s = g.scenario("marketplace")
+    assert s.blocked_by == ["security-review"] and "register" in s.claims
+    assert any("step you take" in e.message for e in events if e.type == "warn")

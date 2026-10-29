@@ -204,3 +204,43 @@ def test_evidence_one_day_ahead_is_a_time_zone_not_the_future(raw):
     assert "future_evidence" not in error_codes(raw)          # TODAY is 2026-10-28
     raw["claims"][0]["evidence"]["retrieved_at"] = "2026-10-31"
     assert "future_evidence" in error_codes(raw)
+
+
+def test_deadline_is_not_a_wait(raw):
+    """'Has 30 days to verify' is the approver's deadline, not how long you wait."""
+    c = raw["claims"][2]
+    c["text"] = "The admin has up to 30 days to verify the app."
+    c["wait_days"] = {"min": 0, "max": 30}
+    c["evidence"]["quote"] = "Your admin has 30 days to verify the app with the unique URL."
+    assert "deadline_as_wait" in error_codes(raw)
+
+
+def test_expiry_is_not_a_wait(raw):
+    c = raw["claims"][2]
+    c["text"] = "The approval link expires after 14 days."
+    c["wait_days"] = {"min": 14, "max": 14}
+    c["evidence"]["quote"] = "The approval link expires after 14 days."
+    assert "deadline_as_wait" in error_codes(raw)
+
+
+def test_hearing_back_within_a_range_is_a_wait(raw):
+    c = raw["claims"][2]
+    c["text"] = "Expect to hear back within 5-10 business days."
+    c["wait_days"] = {"min": 5, "max": 10}
+    c["evidence"]["quote"] = "After submission, expect to hear back from our team within 5-10 business days via email."
+    assert "deadline_as_wait" not in error_codes(raw)
+
+
+def test_a_step_you_take_is_not_a_blocker(raw):
+    """Agreeing to terms or sending something for review is your action, not a gate."""
+    raw["claims"][1]["text"] = "Sending the app for review requires agreeing to the partner terms."
+    assert "blocker_not_a_gate" in error_codes(raw)
+
+
+def test_a_review_someone_else_decides_is_a_blocker(raw):
+    for text in ("Public apps need a security review.",
+                 "The Notion team reviews every listing submission.",
+                 "A Page super admin must approve or deny the request.",
+                 "Public apps must complete Google's restricted-scope verification."):
+        raw["claims"][1]["text"] = text
+        assert "blocker_not_a_gate" not in error_codes(raw), text

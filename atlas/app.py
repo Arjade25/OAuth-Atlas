@@ -45,11 +45,20 @@ def fmt_hours(r: Range) -> str:
 def fmt_wait(s: Scenario, g: Guide) -> str:
     if s.wait_days is None:
         wait_claims = [g.claim(c) for c in s.claims if g.claim(c) and g.claim(c).kind.value == "wait_time"]
-        return "Not published" if not wait_claims else "Not published as a number"
+        # A claim may give a number that is not a wait (a deadline, an anecdote),
+        # or one that failed its checks; neither is shown as a duration.
+        if not wait_claims:
+            return "Not published"
+        return "No verified duration" if any(c.wait_days for c in wait_claims) else "Not published as a number"
     if s.wait_days.max == 0:
         return "None"
     r = s.wait_days
     return f"{r.min:g} days" if r.exact else f"{r.min:g} to {r.max:g} days"
+
+
+def effort_basis(g: Guide) -> str:
+    """Effort hours are estimates, never measurements: say whose."""
+    return "author's estimate" if g.origin.value == "curated" else "model's estimate, unreviewed"
 
 
 def scenario_view(s: Scenario, g: Guide) -> dict:
@@ -61,6 +70,7 @@ def scenario_view(s: Scenario, g: Guide) -> dict:
         "driver": DIMENSION_LABELS[driver(s.dimensions)],
         "state_text": STATE_TEXT[s.state.value],
         "hours": fmt_hours(s.effort_hours),
+        "hours_basis": effort_basis(g),
         "wait": fmt_wait(s, g),
         "dimensions": [(DIMENSION_LABELS[k], v) for k, v in s.dimensions.model_dump().items()],
         "blocked_by": [g.claim(c) for c in s.blocked_by if g.claim(c)],
@@ -118,6 +128,7 @@ def api_guide(slug: str):
     data = g.model_dump(mode="json")
     for s in data["scenarios"]:
         s["score"] = scenario_score(g.scenario(s["id"]))
+        s["effort_basis"] = effort_basis(g)
     return JSONResponse(data)
 
 
