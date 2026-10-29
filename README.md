@@ -6,7 +6,7 @@ Getting credentials is easy; getting approved is not. Each guide answers four qu
 
 ## Try it
 
-- **Live demo:** _link added once deployed_. The free host sleeps when idle, so the first load can take up to a minute.
+- **Live demo:** https://oauth-atlas-18r4.onrender.com. The free host sleeps when idle, so the first load can take up to a minute.
 - **No keys needed to review:** every guide, the JSON API and the three recorded agent runs (Pipedrive, Notion, LinkedIn) work without any API keys. Open **Write a new guide** and pick a recorded run to watch the full pipeline replay: search, fetch, passage selection, drafting and all three checks.
 - **Live research** for a new app needs a Composio key and an OpenRouter key, set on the server or in `.env` locally. On the demo it is capped at a few runs an hour, one at a time, and uses the free OpenRouter model as the support judge, since the local NLI model does not fit the free host.
 
